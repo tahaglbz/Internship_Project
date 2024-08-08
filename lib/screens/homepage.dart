@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_app/auth/login.dart';
+import 'package:my_app/auth/signup.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -34,9 +36,9 @@ class _HomepageState extends State<Homepage> {
                 begin: Alignment.centerLeft, // Aynı yönü sağlamak için
                 end: Alignment.centerRight,
                 colors: [
-                  Color.fromARGB(255, 38, 2, 85),
+                  Color.fromARGB(255, 5, 9, 237),
                   Color.fromARGB(255, 8, 1, 134),
-                  Color.fromARGB(255, 48, 5, 95),
+                  Color.fromARGB(255, 5, 0, 74),
                 ],
               ),
             ),
@@ -51,9 +53,9 @@ class _HomepageState extends State<Homepage> {
             begin: Alignment.centerLeft, // AppBar ile aynı yönü sağlamak için
             end: Alignment.centerRight,
             colors: [
-              Color.fromARGB(255, 38, 2, 85),
+              Color.fromARGB(255, 5, 9, 237),
               Color.fromARGB(255, 8, 1, 134),
-              Color.fromARGB(255, 48, 5, 95),
+              Color.fromARGB(255, 5, 0, 74),
             ],
           ),
         ),
@@ -74,15 +76,25 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(
               height: 35,
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushReplacement,
+            ElevatedButton.icon(
+              icon: Image.asset(
+                'lib/assets/log-in.png',
+                height: 32,
+                width: 32,
+              ),
+              onPressed: () =>
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return const LoginPage();
+                },
+              )),
               style: ElevatedButton.styleFrom(
                   elevation: 13,
                   shadowColor: Colors.white,
-                  minimumSize: const Size(337.1, 50),
+                  minimumSize: const Size(369.1, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0))),
-              child: Text('Log In',
+              label: Text('Log In',
                   style: GoogleFonts.zillaSlab(
                       color: const Color.fromARGB(255, 8, 1, 134),
                       fontSize: 30,
@@ -91,41 +103,57 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(
               height: 35,
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushReplacement,
+            ElevatedButton.icon(
+              icon: Image.asset(
+                'lib/assets/add-friend.png',
+                height: 32,
+                width: 32,
+              ),
+              onPressed: () =>
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return const Signup();
+                },
+              )),
               style: ElevatedButton.styleFrom(
                   elevation: 13,
                   shadowColor: Colors.white,
-                  minimumSize: const Size(337.1, 50),
+                  minimumSize: const Size(369.1, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0))),
-              child: Text(
-                'Sign Up',
-                style: GoogleFonts.zillaSlab(
-                    color: const Color.fromARGB(255, 8, 1, 134),
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700),
-              ),
+              label: Text('Sign Up',
+                  style: GoogleFonts.zillaSlab(
+                      color: const Color.fromARGB(255, 8, 1, 134),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700)),
             ),
             const SizedBox(
               height: 35,
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushReplacement,
+            ElevatedButton.icon(
+              icon: Image.asset(
+                'lib/assets/google.png',
+                height: 32,
+                width: 32,
+              ),
+              onPressed: () =>
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return const LoginPage();
+                },
+              )),
               style: ElevatedButton.styleFrom(
                   elevation: 13,
                   shadowColor: Colors.white,
                   minimumSize: const Size(337.1, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0))),
-              child: Text(
-                'Continue with Google',
-                style: GoogleFonts.zillaSlab(
-                    color: const Color.fromARGB(255, 8, 1, 134),
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700),
-              ),
-            )
+              label: Text('Continue with Google',
+                  style: GoogleFonts.zillaSlab(
+                      color: const Color.fromARGB(255, 8, 1, 134),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700)),
+            ),
           ],
         ),
       ),
