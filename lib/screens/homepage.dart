@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_app/auth/authservice.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 
@@ -15,6 +18,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
+    final AuthService _authService = Get.put(AuthService());
 
     double appBarHeight = deviceWidth * 0.28;
 
@@ -136,12 +140,7 @@ class _HomepageState extends State<Homepage> {
                 height: 32,
                 width: 32,
               ),
-              onPressed: () =>
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (context) {
-                  return const LoginPage();
-                },
-              )),
+              onPressed: () => _authService.signWithGoogle(context),
               style: ElevatedButton.styleFrom(
                   elevation: 13,
                   shadowColor: Colors.white,
