@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "681322937413",
+    "project_id": "stingeness",
+    "storage_bucket": "stingeness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681322937413:android:f1451f0ae3b8455f50f72c",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiyI9lz620Xqjgn5YAXHJzr7giJoWRXF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

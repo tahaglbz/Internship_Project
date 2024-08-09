@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/auth/login.dart';
+import 'package:form_field_validator/form_field_validator.dart'; // Import form_field_validator
+import 'package:my_app/auth/authservice.dart';
 import 'package:my_app/screens/homepage.dart';
 
 class Signup extends StatefulWidget {
@@ -12,17 +14,10 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailCont = TextEditingController();
-  final TextEditingController _passwordCont = TextEditingController();
-  final TextEditingController _passConfCont = TextEditingController();
-  final TextEditingController _usernameCont = TextEditingController();
+  final AuthService _authService = Get.put(AuthService());
 
   @override
   void dispose() {
-    _emailCont.dispose();
-    _passwordCont.dispose();
-    _passConfCont.dispose();
-    _usernameCont.dispose();
     super.dispose();
   }
 
@@ -89,7 +84,7 @@ class _SignupState extends State<Signup> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: deviceHeight / 48,
+                    height: deviceHeight / 95,
                   ),
                   Text(
                     'Sign Up',
@@ -100,84 +95,108 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   const SizedBox(
-                    height: 60,
+                    height: 48,
                   ),
                   TextFormField(
-                    controller: _emailCont,
+                    controller: _authService.emailController,
                     decoration: const InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      labelText: 'Email',
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 3,
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Email',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 3,
+                          ),
                         ),
-                      ),
-                      labelStyle: TextStyle(
-                        color: Color.fromARGB(255, 8, 1, 134),
-                      ),
-                    ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(255, 8, 1, 134),
+                        ),
+                        errorStyle: TextStyle(color: Colors.white)),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'Email is required'),
+                      EmailValidator(errorText: 'Invalid email address'),
+                    ]).call,
                   ),
                   const SizedBox(
                     height: 40,
                   ),
                   TextFormField(
-                    controller: _usernameCont,
+                    controller: _authService.usernameController,
                     decoration: const InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      labelText: 'Username',
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 3,
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Username',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 3,
+                          ),
                         ),
-                      ),
-                      labelStyle: TextStyle(
-                        color: Color.fromARGB(255, 8, 1, 134),
-                      ),
-                    ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(255, 8, 1, 134),
+                        ),
+                        errorStyle: TextStyle(color: Colors.white)),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'Username is required'),
+                      MinLengthValidator(3,
+                          errorText:
+                              'Username must be at least 3 characters long'),
+                    ]).call,
                   ),
                   const SizedBox(
                     height: 40,
                   ),
                   TextFormField(
-                    controller: _passwordCont,
+                    controller: _authService.passwordController,
+                    obscureText: true,
                     decoration: const InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      labelText: 'Password',
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 3,
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Password',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 3,
+                          ),
                         ),
-                      ),
-                      labelStyle: TextStyle(
-                        color: Color.fromARGB(255, 8, 1, 134),
-                      ),
-                    ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(255, 8, 1, 134),
+                        ),
+                        errorStyle: TextStyle(color: Colors.white)),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'Password is required'),
+                      MinLengthValidator(6,
+                          errorText:
+                              'Password must be at least 6 characters long'),
+                    ]).call,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   TextFormField(
-                    controller: _passConfCont,
+                    controller: _authService.passwordConfirmController,
+                    obscureText: true,
                     decoration: const InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      labelText: 'Password Confirm',
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 3,
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Password Confirm',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 3,
+                          ),
                         ),
-                      ),
-                      labelStyle: TextStyle(
-                        color: Color.fromARGB(255, 8, 1, 134),
-                      ),
-                    ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(255, 8, 1, 134),
+                        ),
+                        errorStyle: TextStyle(color: Colors.white)),
+                    validator: (value) {
+                      if (value != _authService.passwordController.text) {
+                        return 'Passwords does not match';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 40,
@@ -188,12 +207,11 @@ class _SignupState extends State<Signup> {
                       height: 32,
                       width: 32,
                     ),
-                    onPressed: () =>
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) {
-                        return const LoginPage();
-                      },
-                    )),
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        _authService.signUp();
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                         elevation: 9,
                         shadowColor: Colors.white,

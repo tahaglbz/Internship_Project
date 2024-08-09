@@ -4,6 +4,4 @@
 
 First Page for auth navigation
 
-![image](https://github.com/user-attachments/assets/db6ba223-efd6-4248-a19a-ba07524044f8)
-![image](image.png)
-![image](image-1.png)
+![My Photo]("https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/Screenshot_1723201138.png")
