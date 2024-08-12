@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, no_leading_underscores_for_local_identifiers
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,10 +40,7 @@ class AuthService extends GetxController {
           await FirebaseFirestore.instance
               .collection('users')
               .doc(user.uid)
-              .set({
-            'email': user.email,
-            'name': user.displayName,
-          });
+              .set({'email': user.email, 'registrationDate': DateTime.now()});
         }
       }
     } catch (e) {
@@ -81,7 +78,7 @@ class AuthService extends GetxController {
                 .set({
               'email': emailController.text,
               'username': usernameController.text,
-              // Add any other fields you want to store
+              'registrationDate': DateTime.now()
             });
             Get.snackbar('Success', 'Signing Up...');
             Get.offAllNamed('/login'); // Navigate to the login page

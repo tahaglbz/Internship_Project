@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
+import 'package:my_app/screens/cryptoScreens/crypto.dart';
 import 'package:my_app/screens/homepage.dart';
 import 'package:my_app/screens/mainmenu.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Stinginess',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 0, 5, 142),
+          seedColor: const Color.fromARGB(255, 8, 1, 134),
         ),
         useMaterial3: true,
       ),
@@ -49,6 +50,10 @@ class MyApp extends StatelessWidget {
             name: '/mainmenu',
             page: () => const MainMenu(),
             transition: Transition.fadeIn),
+        GetPage(
+            name: '/crypto',
+            page: () => Crypto(),
+            transition: Transition.fadeIn)
       ],
       debugShowCheckedModeBanner: false,
     );
@@ -70,10 +75,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _checkLoginStatus() async {
-    // FirebaseAuth instance'ını kullanarak oturum durumunu kontrol edin
     User? user = FirebaseAuth.instance.currentUser;
     await Future.delayed(
-        const Duration(seconds: 2)); // Splash ekranının görünme süresi
+        const Duration(seconds: 3)); // Splash ekranının görünme süresi
     if (user != null) {
       // Kullanıcı giriş yapmışsa, ana menüye yönlendir
       Get.offAllNamed('/mainmenu');
