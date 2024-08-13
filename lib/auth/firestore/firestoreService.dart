@@ -53,7 +53,7 @@ class FirestoreService {
     await _firestore
         .collection('users')
         .doc(currentUser?.uid)
-        .collection('exchangeAsset')
+        .collection('exchangeAsset') // Make sure this is the same
         .doc(assetName)
         .set({
       'amount': amount,

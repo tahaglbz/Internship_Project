@@ -105,50 +105,51 @@ class Exchange extends StatelessWidget {
                 if (assetController.assets.isEmpty) {
                   return const Text(
                     'No assets found',
-                    style: TextStyle(color: Color.fromARGB(255, 158, 123, 120)),
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 158, 123, 120),
+                        fontSize: 16),
                   );
                 } else {
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: assetController.assets.map((asset) {
-                        return Card(
-                          child: ListTile(
-                            leading: Image.asset(
-                              asset['assetIconPath'] as String? ??
-                                  'lib/assets/default_icon.png',
-                            ),
-                            title: Text(
-                              asset['assetName'] as String? ?? 'Unknown Asset',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w800),
-                            ),
-                            subtitle: Text(
-                              asset['amount']?.toString() ?? '0',
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  color: Colors.purple,
-                                  onPressed: () {
-                                    showUpdateDia(context, asset['assetName']);
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  color: Colors.red,
-                                  onPressed: () {
-                                    assetController
-                                        .deleteAsset(asset['assetName']);
-                                  },
-                                ),
-                              ],
-                            ),
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: assetController.assets.length,
+                    itemBuilder: (context, index) {
+                      final asset = assetController.assets[index];
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: ListTile(
+                          leading: Image.asset(asset['assetIconPath']),
+                          title: Text(
+                            asset['assetName'],
+                            style: const TextStyle(fontWeight: FontWeight.w800),
                           ),
-                        );
-                      }).toList(),
-                    ),
+                          subtitle: Text('Amount: ${asset['amount']}'),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                color: Colors.purple,
+                                onPressed: () {
+                                  showUpdateDia(context, asset['assetName'],
+                                      asset['amount'], asset['assetIconPath']);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                color: Colors.red,
+                                onPressed: () {
+                                  assetController
+                                      .deleteAsset(asset['assetName']);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 }
               }),
