@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 import 'package:my_app/screens/cryptoScreens/crypto.dart';
+import 'package:my_app/screens/exchangeScreens/exchange.dart';
 import 'package:my_app/screens/homepage.dart';
 import 'package:my_app/screens/mainmenu.dart';
 
@@ -31,29 +32,43 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/splashscreen', // Splash ekranı için başlangıç rotası
+      initialRoute: '/login', // Splash ekranı için başlangıç rotası
       getPages: [
-        GetPage(name: '/splashscreen', page: () => const SplashScreen()),
+        GetPage(
+            name: '/splashscreen',
+            page: () => const SplashScreen(),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(seconds: 2)),
         GetPage(
             name: '/homepage',
             page: () => const Homepage(),
-            transition: Transition.fadeIn),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(seconds: 2)),
         GetPage(
             name: '/signup',
             page: () => const Signup(),
-            transition: Transition.cupertinoDialog),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 2)),
         GetPage(
             name: '/login',
             page: () => const LoginPage(),
-            transition: Transition.fadeIn),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(seconds: 2)),
         GetPage(
             name: '/mainmenu',
             page: () => const MainMenu(),
-            transition: Transition.fadeIn),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(seconds: 2)),
         GetPage(
             name: '/crypto',
-            page: () => Crypto(),
-            transition: Transition.fadeIn)
+            page: () => const Crypto(),
+            transition: Transition.downToUp,
+            transitionDuration: const Duration(seconds: 2)),
+        GetPage(
+            name: '/exchange',
+            page: () => const Exchange(),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 2))
       ],
       debugShowCheckedModeBanner: false,
     );

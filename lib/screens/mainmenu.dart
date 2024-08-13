@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_app/auth/widgets/CustomBottomNav.dart';
+import 'package:my_app/widgets/CustomBottomNav.dart';
 import 'package:my_app/screens/cryptoScreens/crypto.dart';
 
 class MainMenu extends StatefulWidget {
@@ -23,14 +23,9 @@ class _MainMenuState extends State<MainMenu> {
         break;
       case 1:
         Get.offAllNamed('/crypto');
-
         break;
       case 2:
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) {
-            return const Crypto();
-          },
-        ));
+        Get.offAllNamed('/exchange');
         break;
       case 3:
         Navigator.pushReplacement(

@@ -43,15 +43,14 @@ class _CryptoState extends State<Crypto> {
 
   Future<void> _fetchAndCalculateTotalValue() async {
     final service = CoinMarketCapService();
+
     try {
       final data = await service.fetchCoinData(cryptoCont.text.trim());
       setState(() {
-        // CoinMarketCap'ten gelen fiyat bilgisini al
         coinPrice =
             data['data'][cryptoCont.text.trim()]['quote']['USD']['price'];
       });
 
-      // Firestore'dan gelen amount değerini al
       final assetData = await firestoreService.getAsset(cryptoCont.text.trim());
       if (assetData != null) {
         setState(() {
@@ -59,18 +58,16 @@ class _CryptoState extends State<Crypto> {
         });
       }
 
-      // Toplam değeri hesapla
       if (coinPrice != null) {
         setState(() {
           totalValue = coinPrice! * coinAsset;
         });
       } else {
         setState(() {
-          totalValue = null; // Fiyat bilgisi alınamadıysa null döndür
+          totalValue = null;
         });
       }
     } catch (e) {
-      // Hata yönetimi
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -85,7 +82,7 @@ class _CryptoState extends State<Crypto> {
         ),
       );
       setState(() {
-        totalValue = null; // Hata durumunda null döndür
+        totalValue = null;
       });
     }
   }
@@ -97,7 +94,7 @@ class _CryptoState extends State<Crypto> {
       setState(() {
         coinData = data['data'][cryptoCont.text.trim()];
       });
-      _loadExistingAsset(); // Load asset after fetching data
+      _loadExistingAsset();
     } catch (e) {
       showDialog(
         context: context,
@@ -127,7 +124,7 @@ class _CryptoState extends State<Crypto> {
         'https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData!['id']}.png';
     await firestoreService.saveAsset(
         cryptoCont.text.trim(), coinAsset, imageUrl);
-    _loadExistingAsset(); // Reload asset after saving
+    _loadExistingAsset();
   }
 
   @override
@@ -146,8 +143,10 @@ class _CryptoState extends State<Crypto> {
               onPressed: () => Get.offAllNamed('/mainmenu'),
               icon: const Icon(Icons.arrow_back_ios_new_sharp)),
           elevation: 0,
-          title: Image.asset(
-            'lib/assets/logo.png',
+          title: Text(
+            'Crypto Wallets',
+            style: GoogleFonts.adamina(
+                color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900),
           ),
           centerTitle: true,
           flexibleSpace: Container(
@@ -182,14 +181,6 @@ class _CryptoState extends State<Crypto> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 20),
-              Text(
-                'Crypto Wallets',
-                style: GoogleFonts.adamina(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900),
-              ),
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -251,7 +242,6 @@ class _CryptoState extends State<Crypto> {
                   ),
                 ),
               ),
-              // "Search" section
               if (coinData != null) ...[
                 const SizedBox(height: 20),
                 Text(
@@ -262,6 +252,9 @@ class _CryptoState extends State<Crypto> {
                       fontWeight: FontWeight.w700),
                 ),
                 Card(
+                  color: coinData!['quote']['USD']['percent_change_24h'] >= 0
+                      ? Colors.green[50]
+                      : Colors.red[50],
                   margin: const EdgeInsets.all(16.0),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -345,7 +338,6 @@ class _CryptoState extends State<Crypto> {
                   ),
                 ),
               ],
-              // "Your Coins" section
               const SizedBox(height: 20),
               Text(
                 'Your Coins',
@@ -355,8 +347,7 @@ class _CryptoState extends State<Crypto> {
                     fontWeight: FontWeight.w700),
               ),
               SizedBox(
-                height: deviceHeight -
-                    (appBarHeight + 400), // Adjust height as needed
+                height: deviceHeight - (appBarHeight + 400),
                 child: StreamBuilder<List<Map<String, dynamic>>>(
                   stream: firestoreService.getAssets(),
                   builder: (context, snapshot) {

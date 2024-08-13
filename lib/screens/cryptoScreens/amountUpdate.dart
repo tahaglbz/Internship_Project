@@ -43,9 +43,8 @@ void showAmountDialog(BuildContext context, String symbol) {
                     try {
                       newAmount = double.parse(amountCont.text.trim());
                       await firestoreService.updateAsset(symbol, newAmount);
-                      Get.back(); // Close dialog on success
+                      Get.back();
                     } catch (e) {
-                      // Handle parsing or update errors
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
@@ -53,7 +52,7 @@ void showAmountDialog(BuildContext context, String symbol) {
                           content: const Text('Invalid amount entered.'),
                           actions: [
                             TextButton(
-                              onPressed: () => Get.back,
+                              onPressed: () => Get.back(),
                               child: const Text('OK'),
                             ),
                           ],
