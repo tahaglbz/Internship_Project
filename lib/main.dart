@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/login', // Splash ekranı için başlangıç rotası
+      initialRoute: '/mainmenu', // Splash ekranı için başlangıç rotası
       getPages: [
         GetPage(
             name: '/splashscreen',
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/crypto',
             page: () => const Crypto(),
-            transition: Transition.downToUp,
+            transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 2)),
         GetPage(
             name: '/exchange',
@@ -91,14 +91,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _checkLoginStatus() async {
     User? user = FirebaseAuth.instance.currentUser;
-    await Future.delayed(
-        const Duration(seconds: 3)); // Splash ekranının görünme süresi
+    await Future.delayed(const Duration(seconds: 3));
     if (user != null) {
-      // Kullanıcı giriş yapmışsa, ana menüye yönlendir
       Get.offAllNamed('/mainmenu');
     } else {
-      // Kullanıcı giriş yapmamışsa, giriş sayfasına yönlendir
-      Get.offAllNamed('/login');
+      Get.offAllNamed('/homepage');
     }
   }
 
