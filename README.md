@@ -4,16 +4,16 @@
 
 ### Author: [tahaglbz]
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/splash.png" width="400" alt="Splash Screen"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/splash.png" width="300" height = "500" alt="Splash Screen"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/giris.png" width="400" alt="Giriş"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/giris.png" width="400" height = "500"alt="Giriş"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/signup.png" width="400" alt="Signup"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/signup.png" width="400" height = "500"alt="Signup"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/login.png" width="400" alt="Login"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/login.png" width="400" height = "500"alt="Login"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/crypto.png" width="400" alt="Crypto"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/crypto.png" width="400" height = "500"alt="Crypto"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/exchangeDialog.png" width="400" alt="Exchange Dialog"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/exchangeDialog.png" width="400" height = "500" alt="Exchange Dialog"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/excWallet.png" width="400" alt="Wallet"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/excWallet.png" width="400" height = "500" alt="Wallet"/>
