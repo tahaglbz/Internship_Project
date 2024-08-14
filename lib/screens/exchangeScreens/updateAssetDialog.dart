@@ -66,11 +66,15 @@ void showUpdateDia(BuildContext context, String oldAssetName, double oldAmount,
             Row(
               children: [
                 TextButton(
-                    onPressed: () => Get.back(), child: const Text('Cancel')),
+                    onPressed: () => Get.back(),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.lightGreen),
+                    )),
                 const SizedBox(width: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 8, 1, 134)),
+                      backgroundColor: Colors.lightGreen),
                   onPressed: () async {
                     final amountText = amountCont.text.trim();
                     final amount = double.tryParse(amountText) ?? 0.0;

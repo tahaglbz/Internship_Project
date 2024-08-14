@@ -70,13 +70,17 @@ void showAssetDialog(BuildContext context) {
             Row(
               children: [
                 TextButton(
-                    onPressed: () => Get.back(), child: const Text('Cancel')),
+                    onPressed: () => Get.back(),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.lightGreen),
+                    )),
                 const SizedBox(
                   width: 20,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 8, 1, 134)),
+                      backgroundColor: Colors.lightGreen),
                   onPressed: () async {
                     final assetName = assetnameCont.text.trim();
                     final amountText = amountCont.text.trim();

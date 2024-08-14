@@ -43,7 +43,7 @@ class Exchange extends StatelessWidget {
           centerTitle: true,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-              gradient: AppColors.exchangeGradient, // Güncellenmiş gradient
+              gradient: AppColors.exchangeGradient,
             ),
           ),
         ),
@@ -52,7 +52,7 @@ class Exchange extends StatelessWidget {
         width: deviceWidth,
         height: deviceHeight,
         decoration: BoxDecoration(
-          gradient: AppColors.exchangeGradient, // Güncellenmiş gradient
+          gradient: AppColors.exchangeGradient,
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -70,7 +70,7 @@ class Exchange extends StatelessWidget {
                 onPressed: () => showAssetDialog(context),
                 label: const Text(
                   'Save Assets',
-                  style: TextStyle(color: Color.fromARGB(255, 8, 1, 134)),
+                  style: TextStyle(color: Colors.black),
                 ),
                 icon: Image.asset('lib/assets/money.png'),
                 style: ElevatedButton.styleFrom(

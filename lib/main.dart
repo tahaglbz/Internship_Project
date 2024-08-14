@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Stinginess',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 8, 1, 134),
+          seedColor: Colors.white,
         ),
         useMaterial3: true,
       ),
@@ -37,38 +37,38 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/splashscreen',
             page: () => const SplashScreen(),
-            transition: Transition.fadeIn,
-            transitionDuration: const Duration(seconds: 2)),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/homepage',
             page: () => const Homepage(),
-            transition: Transition.fadeIn,
-            transitionDuration: const Duration(seconds: 2)),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/signup',
             page: () => const Signup(),
             transition: Transition.cupertinoDialog,
-            transitionDuration: const Duration(seconds: 2)),
+            transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/login',
             page: () => const LoginPage(),
-            transition: Transition.fadeIn,
-            transitionDuration: const Duration(seconds: 2)),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/mainmenu',
             page: () => const MainMenu(),
-            transition: Transition.fadeIn,
-            transitionDuration: const Duration(seconds: 2)),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/crypto',
             page: () => const Crypto(),
             transition: Transition.cupertinoDialog,
-            transitionDuration: const Duration(seconds: 2)),
+            transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/exchange',
             page: () => const Exchange(),
             transition: Transition.cupertinoDialog,
-            transitionDuration: const Duration(seconds: 2))
+            transitionDuration: const Duration(seconds: 1))
       ],
       debugShowCheckedModeBanner: false,
     );
