@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/widgets/CustomBottomNav.dart';
-import 'package:my_app/screens/cryptoScreens/crypto.dart';
+import '../auth/firestore/firestoreService.dart';
 import '../widgets/appColors.dart';
 
 class MainMenu extends StatefulWidget {
@@ -13,6 +12,9 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+  final FirestoreService _firestoreService =
+      FirestoreService(); // FirestoreService instance
+
   final List<Map<String, dynamic>> cardData = [
     {"title": "Crypto", 'page': '/crypto', 'gradient': AppColors.defaultColors},
     {
@@ -32,34 +34,35 @@ class _MainMenuState extends State<MainMenu> {
     },
   ];
 
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (_selectedIndex) {
-      case 0:
-        Get.offAllNamed('/mainmenu');
-        break;
-      case 1:
-        Get.offAllNamed('/crypto');
-        break;
-      case 2:
-        Get.offAllNamed('/exchange');
-        break;
-      case 3:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Crypto()));
-        break;
-    }
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  //   switch (_selectedIndex) {
+  //     case 0:
+  //       Get.offAllNamed('/mainmenu');
+  //       break;
+  //     case 1:
+  //       Get.offAllNamed('/crypto');
+  //       break;
+  //     case 2:
+  //       Get.offAllNamed('/exchange');
+  //       break;
+  //     case 3:
+  //       Navigator.pushReplacement(
+  //           context, MaterialPageRoute(builder: (context) => const Crypto()));
+  //       break;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     double appBarHeight = deviceWidth * 0.28;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(appBarHeight),
@@ -72,16 +75,8 @@ class _MainMenuState extends State<MainMenu> {
           ),
           centerTitle: true,
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color.fromARGB(255, 5, 9, 237),
-                  Color.fromARGB(255, 8, 1, 134),
-                  Color.fromARGB(255, 5, 0, 74),
-                ],
-              ),
+            decoration: BoxDecoration(
+              gradient: AppColors.defaultColors,
             ),
           ),
         ),
@@ -124,7 +119,7 @@ class _MainMenuState extends State<MainMenu> {
             ),
           ],
         ),
-        Container(
+        SizedBox(
           height: 100,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -151,13 +146,189 @@ class _MainMenuState extends State<MainMenu> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 2.0),
-                        child: Text(
-                          cardData[index]['title']!,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        child: cardData[index]['title'] == 'Crypto'
+                            ? StreamBuilder<List<Map<String, dynamic>>>(
+                                stream: _firestoreService.getAssets(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Center(
+                                        child:
+                                            Text('Error: ${snapshot.error}'));
+                                  } else if (!snapshot.hasData ||
+                                      snapshot.data!.isEmpty) {
+                                    return const Center(
+                                        child: Text('No assets found'));
+                                  } else {
+                                    final assets = snapshot.data!;
+                                    final firstTwoAssets =
+                                        assets.take(2).toList();
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Crypto',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        ...firstTwoAssets.map((asset) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4.0),
+                                            child: Row(
+                                              children: [
+                                                Image.network(
+                                                  asset['imageUrl'] ?? '',
+                                                  width: 12,
+                                                  height: 12,
+                                                  errorBuilder: (context, error,
+                                                      stackTrace) {
+                                                    return const Icon(
+                                                        Icons.error,
+                                                        size: 12);
+                                                  },
+                                                ),
+                                                const SizedBox(width: 6),
+                                                Text(
+                                                  asset['symbol'] ?? '',
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(width: 16),
+                                                const Text(
+                                                  'amount : ',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                                ),
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  (asset['amount'] as double?)
+                                                          ?.toString() ??
+                                                      '0.0',
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                      ],
+                                    );
+                                  }
+                                },
+                              )
+                            : cardData[index]['title'] == 'Exchange'
+                                ? StreamBuilder<List<Map<String, dynamic>>>(
+                                    stream:
+                                        _firestoreService.getExcAssetsStream(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        return Center(
+                                            child: Text(
+                                                'Error: ${snapshot.error}'));
+                                      } else if (!snapshot.hasData ||
+                                          snapshot.data!.isEmpty) {
+                                        return const Center(
+                                            child: Text('No assets found'));
+                                      } else {
+                                        final assets = snapshot.data!;
+                                        final firstTwoAssets =
+                                            assets.take(2).toList();
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Exchange',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            ...firstTwoAssets.map((asset) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 4.0),
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      asset['assetIconPath'] ??
+                                                          '',
+                                                      width: 12,
+                                                      height: 12,
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return const Icon(
+                                                            Icons.error,
+                                                            size: 12);
+                                                      },
+                                                    ),
+                                                    const SizedBox(width: 6),
+                                                    Text(
+                                                      asset['assetName'] ?? '',
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    const SizedBox(width: 16),
+                                                    const Text(
+                                                      'amount : ',
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.white),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    Text(
+                                                      (asset['amount']
+                                                                  as double?)
+                                                              ?.toString() ??
+                                                          '0.0',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            }),
+                                          ],
+                                        );
+                                      }
+                                    },
+                                  )
+                                : Center(
+                                    child: Text(
+                                      cardData[index]['title']!,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                       ),
                     ),
                   ),
@@ -168,8 +339,9 @@ class _MainMenuState extends State<MainMenu> {
           ),
         )
       ]),
-      bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //     selectedIndex: _selectedIndex, onItemTapped
+      //     selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
     );
   }
 }

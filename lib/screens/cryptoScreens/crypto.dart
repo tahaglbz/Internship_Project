@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,52 +39,6 @@ class _CryptoState extends State<Crypto> {
       setState(() {
         coinAsset = assetData['amount'] ?? 0.0;
         amountCont.text = coinAsset.toString();
-      });
-    }
-  }
-
-  Future<void> _fetchAndCalculateTotalValue() async {
-    final service = CoinMarketCapService();
-
-    try {
-      final data = await service.fetchCoinData(cryptoCont.text.trim());
-      setState(() {
-        coinPrice =
-            data['data'][cryptoCont.text.trim()]['quote']['USD']['price'];
-      });
-
-      final assetData = await firestoreService.getAsset(cryptoCont.text.trim());
-      if (assetData != null) {
-        setState(() {
-          coinAsset = assetData['amount'] ?? 0.0;
-        });
-      }
-
-      if (coinPrice != null) {
-        setState(() {
-          totalValue = coinPrice! * coinAsset;
-        });
-      } else {
-        setState(() {
-          totalValue = null;
-        });
-      }
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Could not fetch data, please try again.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-      setState(() {
-        totalValue = null;
       });
     }
   }
@@ -408,9 +364,15 @@ class _CryptoState extends State<Crypto> {
                                       showAmountDialog(
                                           context, asset['symbol']);
                                     },
-                                    icon: const Icon(Icons.edit)),
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.purple,
+                                    )),
                                 IconButton(
-                                  icon: const Icon(Icons.delete),
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
                                   onPressed: () => firestoreService
                                       .deleteAsset(asset['symbol']),
                                 ),

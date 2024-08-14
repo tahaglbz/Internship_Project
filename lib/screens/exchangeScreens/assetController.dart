@@ -1,5 +1,7 @@
 // lib/controllers/asset_controller.dart
 
+// ignore_for_file: file_names
+
 import 'package:get/get.dart';
 
 import '../../auth/firestore/firestoreService.dart';

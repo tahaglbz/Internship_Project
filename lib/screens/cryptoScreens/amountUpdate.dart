@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/auth/firestore/firestoreService.dart';
@@ -60,10 +62,10 @@ void showAmountDialog(BuildContext context, String symbol) {
                       );
                     }
                   },
-                  child: const Text('Update'),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 8, 1, 134),
+                      backgroundColor: const Color.fromARGB(255, 8, 1, 134),
                       foregroundColor: Colors.white),
+                  child: const Text('Update'),
                 ),
               ],
             ),

@@ -14,6 +14,4 @@
 
 <img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/crypto.png" width="400" alt="Crypto"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/exchangeDialog.png" width="400" alt="Exchange Dialog"/>
-
 <img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/assets/screenshots/excWallet.png" width="400" alt="Wallet"/>

@@ -42,7 +42,7 @@ class Exchange extends StatelessWidget {
           ),
           centerTitle: true,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: AppColors.exchangeGradient,
             ),
           ),
@@ -51,7 +51,7 @@ class Exchange extends StatelessWidget {
       body: Container(
         width: deviceWidth,
         height: deviceHeight,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: AppColors.exchangeGradient,
         ),
         child: SingleChildScrollView(
