@@ -5,6 +5,8 @@ import 'package:my_app/screens/exchangeScreens/assetController.dart';
 import 'package:my_app/screens/exchangeScreens/assetDialog.dart';
 import 'package:my_app/screens/exchangeScreens/updateAssetDialog.dart';
 
+import '../../widgets/appColors.dart';
+
 class Exchange extends StatelessWidget {
   const Exchange({super.key});
 
@@ -40,16 +42,8 @@ class Exchange extends StatelessWidget {
           ),
           centerTitle: true,
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color.fromARGB(255, 5, 9, 237),
-                  Color.fromARGB(255, 8, 1, 134),
-                  Color.fromARGB(255, 5, 0, 74),
-                ],
-              ),
+            decoration: BoxDecoration(
+              gradient: AppColors.exchangeGradient, // Güncellenmiş gradient
             ),
           ),
         ),
@@ -57,16 +51,8 @@ class Exchange extends StatelessWidget {
       body: Container(
         width: deviceWidth,
         height: deviceHeight,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color.fromARGB(255, 5, 9, 237),
-              Color.fromARGB(255, 8, 1, 134),
-              Color.fromARGB(255, 5, 0, 74),
-            ],
-          ),
+        decoration: BoxDecoration(
+          gradient: AppColors.exchangeGradient, // Güncellenmiş gradient
         ),
         child: SingleChildScrollView(
           child: Column(

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/mainmenu', // Splash ekranı için başlangıç rotası
+      initialRoute: '/login', // Splash ekranı için başlangıç rotası
       getPages: [
         GetPage(
             name: '/splashscreen',

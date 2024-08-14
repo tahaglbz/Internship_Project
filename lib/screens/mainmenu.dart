@@ -18,7 +18,7 @@ class _MainMenuState extends State<MainMenu> {
     {
       "title": "Exchange",
       'page': '/exchange',
-      'gradient': AppColors.defaultColors
+      'gradient': AppColors.exchangeGradient
     },
     {
       "title": "Portfolio",

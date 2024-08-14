@@ -11,17 +11,16 @@ class AppColors {
     ],
   );
 
-  static const exchangeGradient = LinearGradient(
+  static const debtCardColors = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     colors: [
-      Color.fromARGB(255, 237, 101, 5),
+      Color.fromARGB(255, 253, 106, 0),
       Color.fromARGB(255, 134, 62, 1),
       Color.fromARGB(255, 74, 34, 0),
     ],
   );
-
-  static const debtCardColors = LinearGradient(
+  static const exchangeGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     colors: [
