@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,8 +7,10 @@ import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 import 'package:my_app/screens/cryptoScreens/crypto.dart';
 import 'package:my_app/screens/exchangeScreens/exchange.dart';
+import 'package:my_app/screens/expenseScreens/expense.dart';
 import 'package:my_app/screens/homepage.dart';
-import 'package:my_app/screens/mainmenu.dart';
+import 'package:my_app/screens/mainmenuScreens/mainmenu.dart';
+import 'package:my_app/splashscreen.dart';
 
 import 'firebase_options.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/login', // Splash ekranı için başlangıç rotası
+      initialRoute: '/expense',
       getPages: [
         GetPage(
             name: '/splashscreen',
@@ -70,44 +71,14 @@ class MyApp extends StatelessWidget {
             name: '/exchange',
             page: () => const Exchange(),
             transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
+        GetPage(
+            name: '/expense',
+            page: () => const Expense(),
+            transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1))
       ],
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _checkLoginStatus();
-  }
-
-  void _checkLoginStatus() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    await Future.delayed(const Duration(seconds: 3));
-    if (user != null) {
-      Get.offAllNamed('/mainmenu');
-    } else {
-      Get.offAllNamed('/homepage');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 9, 99),
-      body: Center(
-        child: Image.asset('lib/assets/logo.png'),
-      ),
     );
   }
 }

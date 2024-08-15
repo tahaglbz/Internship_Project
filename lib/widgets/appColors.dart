@@ -1,7 +1,15 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class AppColors {
-  static const defaultColors = LinearGradient(
+  // Dinamik renkler
+  static final Color color1 = HexColor("#C33764"); //expense
+  static final Color color2 = HexColor("#1D2671"); //expense
+
+  // Sabit LinearGradient tanımları
+  static const LinearGradient defaultColors = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     colors: [
@@ -11,7 +19,7 @@ class AppColors {
     ],
   );
 
-  static const debtCardColors = LinearGradient(
+  static const LinearGradient debtCardColorss = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     colors: [
@@ -20,7 +28,17 @@ class AppColors {
       Color.fromARGB(255, 74, 34, 0),
     ],
   );
-  static const exchangeGradient = LinearGradient(
+
+  static final LinearGradient debtCardColors = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      color1,
+      color2,
+    ],
+  );
+
+  static const LinearGradient exchangeGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     colors: [
@@ -30,7 +48,7 @@ class AppColors {
     ],
   );
 
-  static const analyticsGradient = LinearGradient(
+  static const LinearGradient analyticsGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     colors: [

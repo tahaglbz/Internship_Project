@@ -1,67 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../auth/firestore/firestoreService.dart';
-import '../widgets/appColors.dart';
+import '../../auth/firestore/firestoreService.dart';
+import '../../widgets/appColors.dart';
 
-class MainMenu extends StatefulWidget {
+class MainMenu extends StatelessWidget {
   const MainMenu({super.key});
 
-  @override
-  State<MainMenu> createState() => _MainMenuState();
-}
+  Stream<List<Map<String, dynamic>>> getAssetsStream() {
+    return FirestoreService().getAssets();
+  }
 
-class _MainMenuState extends State<MainMenu> {
-  final FirestoreService _firestoreService =
-      FirestoreService(); // FirestoreService instance
-
-  final List<Map<String, dynamic>> cardData = [
-    {"title": "Crypto", 'page': '/crypto', 'gradient': AppColors.defaultColors},
-    {
-      "title": "Exchange",
-      'page': '/exchange',
-      'gradient': AppColors.exchangeGradient
-    },
-    {
-      "title": "Portfolio",
-      'page': '/portfolio',
-      'gradient': AppColors.debtCardColors
-    },
-    {
-      "title": "Analytics",
-      'page': '/analytics',
-      'gradient': AppColors.analyticsGradient
-    },
-  ];
-
-  // int _selectedIndex = 0;
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  //   switch (_selectedIndex) {
-  //     case 0:
-  //       Get.offAllNamed('/mainmenu');
-  //       break;
-  //     case 1:
-  //       Get.offAllNamed('/crypto');
-  //       break;
-  //     case 2:
-  //       Get.offAllNamed('/exchange');
-  //       break;
-  //     case 3:
-  //       Navigator.pushReplacement(
-  //           context, MaterialPageRoute(builder: (context) => const Crypto()));
-  //       break;
-  //   }
-  // }
+  Stream<List<Map<String, dynamic>>> getExcAssetsStream() {
+    return FirestoreService().getExcAssetsStream();
+  }
 
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     double appBarHeight = deviceWidth * 0.28;
+
+    final List<Map<String, dynamic>> cardData = [
+      {
+        "title": "Crypto",
+        'page': '/crypto',
+        'gradient': AppColors.defaultColors
+      },
+      {
+        "title": "Exchange",
+        'page': '/exchange',
+        'gradient': AppColors.exchangeGradient
+      },
+      {
+        "title": "Expense",
+        'page': '/expense',
+        'gradient': AppColors.debtCardColors
+      },
+      {
+        "title": "Analytics",
+        'page': '/analytics',
+        'gradient': AppColors.analyticsGradient
+      },
+    ];
 
     return Scaffold(
       appBar: PreferredSize(
@@ -75,7 +55,7 @@ class _MainMenuState extends State<MainMenu> {
           ),
           centerTitle: true,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: AppColors.defaultColors,
             ),
           ),
@@ -130,7 +110,7 @@ class _MainMenuState extends State<MainMenu> {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
-                    Get.toNamed(cardData[index]['page']!);
+                    Navigator.pushNamed(context, cardData[index]['page']!);
                   },
                   child: Card(
                     elevation: 4.0,
@@ -148,7 +128,7 @@ class _MainMenuState extends State<MainMenu> {
                             horizontal: 8.0, vertical: 2.0),
                         child: cardData[index]['title'] == 'Crypto'
                             ? StreamBuilder<List<Map<String, dynamic>>>(
-                                stream: _firestoreService.getAssets(),
+                                stream: getAssetsStream(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -160,8 +140,26 @@ class _MainMenuState extends State<MainMenu> {
                                             Text('Error: ${snapshot.error}'));
                                   } else if (!snapshot.hasData ||
                                       snapshot.data!.isEmpty) {
-                                    return const Center(
-                                        child: Text('No assets found'));
+                                    return const Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Crypto',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          'No assets found',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    );
                                   } else {
                                     final assets = snapshot.data!;
                                     final firstTwoAssets =
@@ -233,8 +231,7 @@ class _MainMenuState extends State<MainMenu> {
                               )
                             : cardData[index]['title'] == 'Exchange'
                                 ? StreamBuilder<List<Map<String, dynamic>>>(
-                                    stream:
-                                        _firestoreService.getExcAssetsStream(),
+                                    stream: getExcAssetsStream(),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -246,8 +243,27 @@ class _MainMenuState extends State<MainMenu> {
                                                 'Error: ${snapshot.error}'));
                                       } else if (!snapshot.hasData ||
                                           snapshot.data!.isEmpty) {
-                                        return const Center(
-                                            child: Text('No assets found'));
+                                        return const Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Exchange',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              'No assets found',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        );
                                       } else {
                                         final assets = snapshot.data!;
                                         final firstTwoAssets =
@@ -339,9 +355,6 @@ class _MainMenuState extends State<MainMenu> {
           ),
         )
       ]),
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //     selectedIndex: _selectedIndex, onItemTapped
-      //     selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
     );
   }
 }
