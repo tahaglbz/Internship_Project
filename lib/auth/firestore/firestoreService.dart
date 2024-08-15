@@ -40,7 +40,6 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
-  // Save an asset
   Future<void> saveAsset(String symbol, double amount, String imageUrl) async {
     await _firestore
         .collection('users')
@@ -71,6 +70,21 @@ class FirestoreService {
         .collection('assets')
         .doc(symbol)
         .delete();
+  }
+
+  Future<void> saveExpense(String expName, double amount, String imageUrl,
+      DateTime lastPaymentDate) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('expense')
+        .doc(expName)
+        .set({
+      'expName': expName,
+      'amount': amount,
+      'imageUrl': imageUrl,
+      'lastPaymentDate': lastPaymentDate.toIso8601String(),
+    });
   }
 
   Future<void> deleteAssetEx(String assetName) async {

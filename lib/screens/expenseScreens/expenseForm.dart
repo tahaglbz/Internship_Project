@@ -17,6 +17,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
     {'icon': 'lib/assets/maintenance.png', 'label': 'Water'},
     {'icon': 'lib/assets/bill.png', 'label': 'Natural Gas'},
     {'icon': 'lib/assets/web.png', 'label': 'Internet'},
+    {'icon': 'lib/assets/mortgage.png', 'label': 'Rent'},
     {'icon': 'lib/assets/accounting-book.png', 'label': 'Education'},
     {'icon': 'lib/assets/battery.png', 'label': 'Transport'},
     {'icon': 'lib/assets/purchase.png', 'label': 'Shopping'},
@@ -112,7 +113,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                             }
                           },
                           child: Text(
-                            'Choose Date',
+                            'Choose final payment',
                             style: TextStyle(
                               color: AppColors.color1,
                               fontSize: 16,
@@ -154,8 +155,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
                                 controller.selectedIcon.value!.isEmpty) {
                               Get.snackbar('Error', 'Please select an icon.');
                             } else {
-                              Get.snackbar('Success', 'Processing...');
-                              // Continue with form submission
+                              Get.snackbar('Loading', 'Processing...');
+                              controller.saveExpense();
                             }
                           }
                         },
