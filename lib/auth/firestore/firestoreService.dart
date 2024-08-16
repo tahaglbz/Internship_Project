@@ -87,6 +87,30 @@ class FirestoreService {
     });
   }
 
+  Future<void> saveCredit(
+      String bankName,
+      String aim,
+      double remaining,
+      double monthlyPayment,
+      int instalment,
+      String imageUrl,
+      DateTime lastPaymentDate) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('credit')
+        .doc(aim)
+        .set({
+      'bankName': bankName,
+      'aim': aim,
+      'imageUrl': imageUrl,
+      'lastPaymentDate': lastPaymentDate.toIso8601String(),
+      'remaining': remaining,
+      'monthlyPayment': monthlyPayment,
+      'instalment': instalment,
+    });
+  }
+
   Future<void> deleteAssetEx(String assetName) async {
     await _firestore
         .collection('users')

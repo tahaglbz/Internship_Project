@@ -67,7 +67,7 @@ class _ExpenseState extends State<Expense> with SingleTickerProviderStateMixin {
         controller: _tabController,
         children: [
           const Center(child: Text('Sayfa 2 İçeriği')),
-          LoanDebt(),
+          const LoanDebt(),
           ExpenseForm(),
         ],
       ),

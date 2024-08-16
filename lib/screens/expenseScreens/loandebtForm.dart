@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,7 +42,7 @@ class _LoanDebtState extends State<LoanDebt> {
         gradient: AppColors.debtCardColors,
       ),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Card(
           shape: const BeveledRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -50,7 +52,7 @@ class _LoanDebtState extends State<LoanDebt> {
           ),
           elevation: 22,
           child: Padding(
-            padding: EdgeInsets.all(18.0),
+            padding: const EdgeInsets.all(18.0),
             child: Form(
                 key: controller.formKey,
                 child: SingleChildScrollView(
@@ -66,7 +68,7 @@ class _LoanDebtState extends State<LoanDebt> {
                             fontWeight: FontWeight.w900,
                           ),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _buildTextField(
                           controller: controller.bankNameController,
                           hintText: 'Enter the bank name',
@@ -78,7 +80,7 @@ class _LoanDebtState extends State<LoanDebt> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _buildTextField(
                           controller: controller.creditAim,
                           hintText: 'Enter credit purpose',
@@ -90,7 +92,7 @@ class _LoanDebtState extends State<LoanDebt> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Obx(() => DropdownButton<String>(
                               value: controller.selectedIcon.value,
                               hint: const Text('Select a credit category'),
@@ -109,12 +111,12 @@ class _LoanDebtState extends State<LoanDebt> {
                               }).toList(),
                               onChanged: controller.selectIcon,
                             )),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _buildTextField(
                           controller: controller.remainingDebt,
                           hintText: 'Enter remaining debt',
                           labelText: 'Remaining Debt',
-                          keyboardType: TextInputType.numberWithOptions(),
+                          keyboardType: const TextInputType.numberWithOptions(),
                           validator: (p0) {
                             if (p0 == null || p0.isEmpty) {
                               return 'Please enter remaining debt';
@@ -122,7 +124,7 @@ class _LoanDebtState extends State<LoanDebt> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Text(
                           'How many instalment are left?',
                           style: TextStyle(
@@ -130,7 +132,7 @@ class _LoanDebtState extends State<LoanDebt> {
                               fontWeight: FontWeight.w700,
                               color: AppColors.color2),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Obx(() => NumberPicker(
@@ -146,14 +148,14 @@ class _LoanDebtState extends State<LoanDebt> {
                                 controller.selectedInstalment.value = value;
                               },
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         _buildTextField(
                           controller: controller.monthlyPayment,
                           hintText: 'enter monthly payment',
                           labelText: 'Monthly Payment',
-                          keyboardType: TextInputType.numberWithOptions(),
+                          keyboardType: const TextInputType.numberWithOptions(),
                           validator: (p0) {
                             if (p0 == null || p0.isEmpty) {
                               return 'Please enter monthly payment';
@@ -161,7 +163,7 @@ class _LoanDebtState extends State<LoanDebt> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Row(
@@ -171,8 +173,8 @@ class _LoanDebtState extends State<LoanDebt> {
                                     controller.selectedDate.value == null
                                         ? 'No date chosen!'
                                         : 'Date: ${DateFormat.yMd().format(controller.selectedDate.value!)}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w700),
                                   )),
                             ),
                             TextButton(
@@ -198,7 +200,7 @@ class _LoanDebtState extends State<LoanDebt> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         ElevatedButton(
@@ -206,24 +208,9 @@ class _LoanDebtState extends State<LoanDebt> {
                             backgroundColor: AppColors.color1,
                           ),
                           onPressed: () {
-                            if (controller.selectedDate.value == null ||
-                                controller.selectedIcon.value == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Please select both date and category.'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else {
-                              if (controller.formKey.currentState?.validate() ??
-                                  false) {
-                                print(
-                                    'Form is valid. Proceed with further actions.');
-                              }
-                            }
+                            controller.saveCredit();
                           },
-                          child: Text(
+                          child: const Text(
                             'Submit',
                             style: TextStyle(
                               color: Colors.white,

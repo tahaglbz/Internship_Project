@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -148,17 +150,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          if (controller.formKey.currentState!.validate()) {
-                            if (controller.selectedDate.value == null) {
-                              Get.snackbar('Error', 'Please choose a date.');
-                            } else if (controller.selectedIcon.value == null ||
-                                controller.selectedIcon.value!.isEmpty) {
-                              Get.snackbar('Error', 'Please select an icon.');
-                            } else {
-                              Get.snackbar('Loading', 'Processing...');
-                              controller.saveExpense();
-                            }
-                          }
+                          controller.saveExpense();
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(150, 50),
