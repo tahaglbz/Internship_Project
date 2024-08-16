@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/screens/expenseScreens/expenseForm.dart';
 import 'package:my_app/screens/expenseScreens/loandebtForm.dart';
+import 'package:my_app/screens/expenseScreens/totalExpense.dart';
 import '../../widgets/appColors.dart';
 
 class Expense extends StatefulWidget {
@@ -57,8 +58,8 @@ class _ExpenseState extends State<Expense> with SingleTickerProviderStateMixin {
             unselectedLabelColor: Colors.white,
             tabs: const [
               Tab(text: 'Total Expenses'),
-              Tab(text: 'Loan Debt'),
               Tab(text: 'Add Expense'),
+              Tab(text: 'Loan Debt'),
             ],
           ),
         ),
@@ -66,9 +67,9 @@ class _ExpenseState extends State<Expense> with SingleTickerProviderStateMixin {
       body: TabBarView(
         controller: _tabController,
         children: [
-          const Center(child: Text('Sayfa 2 İçeriği')),
-          const LoanDebt(),
+          const TotalExpense(),
           ExpenseForm(),
+          const LoanDebt(),
         ],
       ),
     );

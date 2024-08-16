@@ -30,12 +30,29 @@ class FirestoreService {
     return doc.exists ? doc.data() : null;
   }
 
-  // Stream of a single asset by symbol
   Stream<List<Map<String, dynamic>>> getExcAssetsStream() {
     return _firestore
         .collection('users')
         .doc(currentUser?.uid)
         .collection('exchangeAsset')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
+  Stream<List<Map<String, dynamic>>> getExpenseStream() {
+    return _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('expense')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
+  Stream<List<Map<String, dynamic>>> getCreditStream() {
+    return _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('credit')
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
