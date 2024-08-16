@@ -74,7 +74,11 @@ class TotalExpense extends StatelessWidget {
                               title: Text(expense['expName'] ?? 'No Name'),
                               subtitle: Text('Debt: ${expense['amount'] ?? 0}'),
                               trailing: Text(
-                                  'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate']))}'),
+                                'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate']))}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           );
                         },
@@ -131,9 +135,34 @@ class TotalExpense extends StatelessWidget {
                               ),
                               title: Text(credit['bankName'] ?? 'No Name'),
                               subtitle:
-                                  Text('Amount: ${credit['remaining'] ?? 0}'),
-                              trailing: Text(
-                                  'Date: ${formatDate(DateTime.parse(credit['lastPaymentDate']))}'),
+                                  Text('Debt: ${credit['remaining'] ?? 0}'),
+                              trailing: Column(
+                                children: [
+                                  Text(
+                                    'Date: ${formatDate(DateTime.parse(credit['lastPaymentDate']))}',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton.icon(
+                                      onPressed: () {
+                                        // borç ödeme takip sayfası yönlendirme
+                                      },
+                                      label: Text(
+                                        'Details',
+                                        style:
+                                            TextStyle(color: AppColors.color2),
+                                      ),
+                                      icon: Image.asset(
+                                          'lib/assets/clicking.png'),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         },

@@ -137,6 +137,15 @@ class FirestoreService {
         .delete();
   }
 
+  Future<void> deleteExpense(String expName) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('exchangeAsset')
+        .doc(expName)
+        .delete();
+  }
+
   Future<void> updateAssetEx(String oldAssetName, String newAssetName,
       double newAmount, String iconPath) async {
     await _firestore
