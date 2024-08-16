@@ -141,8 +141,17 @@ class FirestoreService {
     await _firestore
         .collection('users')
         .doc(currentUser?.uid)
-        .collection('exchangeAsset')
+        .collection('expense')
         .doc(expName)
+        .delete();
+  }
+
+  Future<void> deleteCredit(String aim) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('credit')
+        .doc(aim)
         .delete();
   }
 

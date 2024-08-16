@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
-
 import '../../widgets/appColors.dart';
 import '../../auth/firestore/firestoreService.dart';
 
@@ -41,7 +39,11 @@ class TotalExpense extends StatelessWidget {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No expenses found.'));
+                  return const Center(
+                      child: Text(
+                    'No expenses found.',
+                    style: TextStyle(color: Colors.grey),
+                  ));
                 }
 
                 List<Map<String, dynamic>> expenses = snapshot.data!;
@@ -64,20 +66,51 @@ class TotalExpense extends StatelessWidget {
                         itemCount: expenses.length,
                         itemBuilder: (context, index) {
                           var expense = expenses[index];
-                          return Card(
-                            margin: const EdgeInsets.all(8.0),
-                            elevation: 4,
-                            child: ListTile(
-                              leading: Image.asset(
-                                expense['imageUrl'],
-                              ),
-                              title: Text(expense['expName'] ?? 'No Name'),
-                              subtitle: Text('Debt: ${expense['amount'] ?? 0}'),
-                              trailing: Text(
-                                'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate']))}',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                          return Dismissible(
+                            key: Key(expense['expName']),
+                            direction: DismissDirection.startToEnd,
+                            onDismissed: (direction) async {
+                              try {
+                                await firestoreService
+                                    .deleteExpense(expense['expName']);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('${expense['expName']} silindi'),
+                                  ),
+                                );
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Hata: ${e.toString()}'),
+                                  ),
+                                );
+                              }
+                            },
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerLeft,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child:
+                                  const Icon(Icons.delete, color: Colors.white),
+                            ),
+                            child: Card(
+                              margin: const EdgeInsets.all(8.0),
+                              elevation: 4,
+                              child: ListTile(
+                                leading: Image.asset(
+                                  expense['imageUrl'],
+                                ),
+                                title: Text(expense['expName'] ?? 'No Name'),
+                                subtitle:
+                                    Text('Debt: ${expense['amount'] ?? 0}'),
+                                trailing: Text(
+                                  'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate']))}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           );
@@ -103,7 +136,11 @@ class TotalExpense extends StatelessWidget {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No credits found.'));
+                  return const Center(
+                      child: Text(
+                    'No credits found.',
+                    style: TextStyle(color: Colors.grey),
+                  ));
                 }
 
                 List<Map<String, dynamic>> credits = snapshot.data!;
@@ -126,42 +163,72 @@ class TotalExpense extends StatelessWidget {
                         itemCount: credits.length,
                         itemBuilder: (context, index) {
                           var credit = credits[index];
-                          return Card(
-                            margin: const EdgeInsets.all(8.0),
-                            elevation: 4,
-                            child: ListTile(
-                              leading: Image.asset(
-                                credit['imageUrl'],
-                              ),
-                              title: Text(credit['bankName'] ?? 'No Name'),
-                              subtitle:
-                                  Text('Debt: ${credit['remaining'] ?? 0}'),
-                              trailing: Column(
-                                children: [
-                                  Text(
-                                    'Date: ${formatDate(DateTime.parse(credit['lastPaymentDate']))}',
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
+                          return Dismissible(
+                            key: Key(credit['aim']),
+                            direction: DismissDirection.startToEnd,
+                            onDismissed: (direction) async {
+                              try {
+                                await firestoreService
+                                    .deleteCredit(credit['aim']);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('${credit['aim']} silindi'),
                                   ),
-                                  const SizedBox(
-                                    height: 5,
+                                );
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Hata: ${e.toString()}'),
                                   ),
-                                  Expanded(
-                                    child: ElevatedButton.icon(
-                                      onPressed: () {
-                                        // borç ödeme takip sayfası yönlendirme
-                                      },
-                                      label: Text(
-                                        'Details',
-                                        style:
-                                            TextStyle(color: AppColors.color2),
-                                      ),
-                                      icon: Image.asset(
-                                          'lib/assets/clicking.png'),
+                                );
+                              }
+                            },
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerLeft,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child:
+                                  const Icon(Icons.delete, color: Colors.white),
+                            ),
+                            child: Card(
+                              margin: const EdgeInsets.all(8.0),
+                              elevation: 4,
+                              child: ListTile(
+                                leading: Image.asset(
+                                  credit['imageUrl'],
+                                ),
+                                title: Text(credit['bankName'] ?? 'No Name'),
+                                subtitle:
+                                    Text('Debt: ${credit['remaining'] ?? 0}'),
+                                trailing: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      'Date: ${formatDate(DateTime.parse(credit['lastPaymentDate']))}',
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  )
-                                ],
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          // borç ödeme takip sayfası yönlendirme
+                                        },
+                                        label: Text(
+                                          'Details',
+                                          style: TextStyle(
+                                              color: AppColors.color2),
+                                        ),
+                                        icon: Image.asset(
+                                            'lib/assets/clicking.png'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
