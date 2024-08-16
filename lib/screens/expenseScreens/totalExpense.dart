@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../widgets/appColors.dart';
 import '../../auth/firestore/firestoreService.dart';
@@ -150,7 +151,7 @@ class TotalExpense extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'Credit Infos',
+                        'Loan Debt',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -216,7 +217,7 @@ class TotalExpense extends StatelessWidget {
                                     Expanded(
                                       child: ElevatedButton.icon(
                                         onPressed: () {
-                                          // borç ödeme takip sayfası yönlendirme
+                                          Get.offNamed('/loandetails');
                                         },
                                         label: Text(
                                           'Details',
