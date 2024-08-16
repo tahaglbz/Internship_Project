@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
             name: '/expense',
             page: () => const Expense(),
             transition: Transition.cupertinoDialog,
-            transitionDuration: const Duration(seconds: 1))
+            transitionDuration: const Duration(seconds: 1)),
       ],
       debugShowCheckedModeBanner: false,
     );

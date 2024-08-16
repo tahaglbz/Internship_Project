@@ -45,7 +45,6 @@ class ExpenseController extends GetxController {
           lastPaymentDate,
         );
         Get.snackbar('Success', 'Expense saved successfully.');
-        // Clear fields or reset state if necessary
       } catch (e) {
         Get.snackbar('Error', 'Failed to save expense: $e');
       }

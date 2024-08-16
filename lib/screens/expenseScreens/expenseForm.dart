@@ -126,7 +126,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                     const SizedBox(height: 40),
                     Obx(() => DropdownButton<String>(
                           value: controller.selectedIcon.value,
-                          hint: const Text('Select an icon'),
+                          hint: const Text('Select an category'),
                           items: icons.map((iconData) {
                             return DropdownMenuItem<String>(
                               value: iconData['icon'],

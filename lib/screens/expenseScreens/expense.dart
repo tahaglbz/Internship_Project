@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/screens/expenseScreens/expenseForm.dart';
+import 'package:my_app/screens/expenseScreens/loandebtForm.dart';
 import '../../widgets/appColors.dart';
 
 class Expense extends StatefulWidget {
@@ -55,9 +56,9 @@ class _ExpenseState extends State<Expense> with SingleTickerProviderStateMixin {
             labelColor: const Color.fromARGB(255, 0, 233, 241),
             unselectedLabelColor: Colors.white,
             tabs: const [
-              Tab(text: 'Add Expense'),
-              Tab(text: 'Loan Debt'),
               Tab(text: 'Total Expenses'),
+              Tab(text: 'Loan Debt'),
+              Tab(text: 'Add Expense'),
             ],
           ),
         ),
@@ -65,9 +66,9 @@ class _ExpenseState extends State<Expense> with SingleTickerProviderStateMixin {
       body: TabBarView(
         controller: _tabController,
         children: [
-          ExpenseForm(), // Add Expense formu
           const Center(child: Text('Sayfa 2 İçeriği')),
-          const Center(child: Text('Sayfa 3 İçeriği')),
+          LoanDebt(),
+          ExpenseForm(),
         ],
       ),
     );
