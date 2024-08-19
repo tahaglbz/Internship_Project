@@ -13,6 +13,7 @@
 <img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/login.png" width="400" alt="Login"/>
 
 <img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/mainmenu.png" width="400" alt="MainMenu"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/mainmenu2.png" width="400" alt="MainMenu2"/>
 
 <img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/crypto.png" width="400" alt="Crypto"/>
 
