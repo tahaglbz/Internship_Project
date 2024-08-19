@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,13 +25,13 @@ class CreditDetails extends StatelessWidget {
       confirm: ElevatedButton(
         onPressed: () {
           _controller.markAsPaid(aim, monthlyPayment);
-          Get.back(); // Close the dialog
+          Get.back();
         },
-        child: Text('Yes'),
+        child: const Text('Yes'),
       ),
       cancel: ElevatedButton(
-        onPressed: () => Get.back(), // Close the dialog
-        child: Text('Cancel'),
+        onPressed: () => Get.back(),
+        child: const Text('Cancel'),
       ),
     );
   }
@@ -81,7 +83,6 @@ class CreditDetails extends StatelessWidget {
           gradient: AppColors.debtCardColors,
         ),
         child: Obx(() {
-          // Kullanıcının ilgili kredileri filtreleme ve ödeme tarihlerini hesaplama
           final filteredCredits = _controller.credits.where((creditDoc) {
             final data = creditDoc.data() as Map<String, dynamic>;
             return data['aim'] == aim;
@@ -96,7 +97,7 @@ class CreditDetails extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w900),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Expanded(
@@ -135,8 +136,8 @@ class CreditDetails extends StatelessWidget {
                                     monthlyPayment,
                                   );
                                 },
-                                label: Text('Paid'),
-                                icon: Icon(Icons.check),
+                                label: const Text('Paid'),
+                                icon: const Icon(Icons.check),
                               ),
                             ),
                           ],

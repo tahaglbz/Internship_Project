@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/auth/firestore/firestoreService.dart';
@@ -12,17 +14,18 @@ Future<void> showPaymentDialog(BuildContext context, String userId, String aim,
         false, // Dialogun dışına tıklanarak kapatılmasını engeller
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Confirm Payment'),
-        content: Text('Are you sure you want to mark this payment as paid?'),
+        title: const Text('Confirm Payment'),
+        content:
+            const Text('Are you sure you want to mark this payment as paid?'),
         actions: <Widget>[
           TextButton(
-            child: Text('No'),
+            child: const Text('No'),
             onPressed: () {
               Get.back();
             },
           ),
           TextButton(
-            child: Text('Yes'),
+            child: const Text('Yes'),
             onPressed: () async {
               await firestoreService.updateCredit(userId, aim, amount);
               onConfirmed();

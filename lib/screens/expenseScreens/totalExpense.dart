@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -123,7 +125,7 @@ class TotalExpense extends StatelessWidget {
               },
             ),
           ),
-          Divider(
+          const Divider(
             color: Colors.white,
             thickness: 1,
             height: 20,
