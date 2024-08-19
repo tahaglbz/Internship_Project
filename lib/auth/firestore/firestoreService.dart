@@ -172,7 +172,6 @@ class FirestoreService {
   Future<void> updateCredit(String userId, String aim, double amount) async {
     final firestore = FirebaseFirestore.instance;
 
-    // Firestore'dan referans al
     final docRef =
         firestore.collection('users').doc(userId).collection('credit').doc(aim);
 
@@ -188,14 +187,12 @@ class FirestoreService {
       final lastPaymentDateStr = data['lastPaymentDate'] as String;
       DateTime lastPaymentDate = DateTime.parse(lastPaymentDateStr);
 
-      // Bir ay ekleyin
       DateTime nextPaymentDate = DateTime(
         lastPaymentDate.year,
         lastPaymentDate.month + 1,
         lastPaymentDate.day,
       );
 
-      // Eğer ay 12'yi geçerse yılı artırın
       if (nextPaymentDate.month > 12) {
         nextPaymentDate = DateTime(
           nextPaymentDate.year + 1,
@@ -212,7 +209,6 @@ class FirestoreService {
     });
   }
 
-  // Update an asset's amount
   Future<void> updateAsset(String symbol, double newAmount) async {
     await _firestore
         .collection('users')

@@ -204,8 +204,7 @@ class TotalExpense extends StatelessWidget {
                               elevation: 4,
                               child: ListTile(
                                 leading: Image.asset(
-                                  credit['imageUrl'] ??
-                                      'lib/assets/default.png',
+                                  credit['imageUrl'] ?? 'lib/assets/money.png',
                                 ),
                                 title: Text(credit['bankName'] ?? 'No Name'),
                                 subtitle:

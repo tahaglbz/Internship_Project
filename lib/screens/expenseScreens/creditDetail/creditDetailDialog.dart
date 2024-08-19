@@ -10,13 +10,11 @@ Future<void> showPaymentDialog(BuildContext context, String userId, String aim,
     double amount, VoidCallback onConfirmed) async {
   return showDialog(
     context: context,
-    barrierDismissible:
-        false, // Dialogun dışına tıklanarak kapatılmasını engeller
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Confirm Payment'),
-        content:
-            const Text('Are you sure you want to mark this payment as paid?'),
+        content: const Text('Did you paid?'),
         actions: <Widget>[
           TextButton(
             child: const Text('No'),

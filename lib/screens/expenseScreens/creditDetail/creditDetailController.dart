@@ -7,8 +7,7 @@ import 'package:my_app/auth/firestore/firestoreService.dart'; // FirestoreServic
 
 class CreditController extends GetxController {
   var credits = <DocumentSnapshot>[].obs;
-  final FirestoreService _firestoreService =
-      FirestoreService(); // FirestoreService örneği oluşturun
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void onInit() {
@@ -30,11 +29,10 @@ class CreditController extends GetxController {
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     try {
-      await _firestoreService.updateCredit(
-          userId, aim, amount); // FirestoreService'deki fonksiyonu çağırın
-      fetchCredits(); // List'i yenileyin
+      await _firestoreService.updateCredit(userId, aim, amount);
+      fetchCredits();
     } catch (e) {
-      Get.snackbar('Error', e.toString()); // Hata mesajını gösterin
+      Get.snackbar('Error', e.toString());
     }
   }
 }
