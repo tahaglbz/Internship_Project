@@ -7,7 +7,7 @@ import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 import 'package:my_app/screens/cryptoScreens/crypto.dart';
 import 'package:my_app/screens/exchangeScreens/exchange.dart';
-import 'package:my_app/screens/expenseScreens/creditDetails.dart';
+import 'package:my_app/screens/expenseScreens/creditDetail/creditDetails.dart';
 import 'package:my_app/screens/expenseScreens/expense.dart';
 import 'package:my_app/screens/homepage.dart';
 import 'package:my_app/screens/mainmenuScreens/mainmenu.dart';
@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
             transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/loandetails',
-            page: () => const CreditDetails(),
+            page: () => CreditDetails(),
             transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1)),
       ],

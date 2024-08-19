@@ -68,7 +68,7 @@ class TotalExpense extends StatelessWidget {
                         itemBuilder: (context, index) {
                           var expense = expenses[index];
                           return Dismissible(
-                            key: Key(expense['expName']),
+                            key: Key(expense['expName'] ?? 'Unnamed Expense'),
                             direction: DismissDirection.startToEnd,
                             onDismissed: (direction) async {
                               try {
@@ -101,13 +101,14 @@ class TotalExpense extends StatelessWidget {
                               elevation: 4,
                               child: ListTile(
                                 leading: Image.asset(
-                                  expense['imageUrl'],
+                                  expense['imageUrl'] ??
+                                      'lib/assets/default.png',
                                 ),
                                 title: Text(expense['expName'] ?? 'No Name'),
                                 subtitle:
                                     Text('Debt: ${expense['amount'] ?? 0}'),
                                 trailing: Text(
-                                  'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate']))}',
+                                  'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate'] ?? DateTime.now().toIso8601String()))}',
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
@@ -165,7 +166,7 @@ class TotalExpense extends StatelessWidget {
                         itemBuilder: (context, index) {
                           var credit = credits[index];
                           return Dismissible(
-                            key: Key(credit['aim']),
+                            key: Key(credit['aim'] ?? 'Unnamed Credit'),
                             direction: DismissDirection.startToEnd,
                             onDismissed: (direction) async {
                               try {
@@ -197,7 +198,8 @@ class TotalExpense extends StatelessWidget {
                               elevation: 4,
                               child: ListTile(
                                 leading: Image.asset(
-                                  credit['imageUrl'],
+                                  credit['imageUrl'] ??
+                                      'lib/assets/default.png',
                                 ),
                                 title: Text(credit['bankName'] ?? 'No Name'),
                                 subtitle:
@@ -206,7 +208,7 @@ class TotalExpense extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      'Date: ${formatDate(DateTime.parse(credit['lastPaymentDate']))}',
+                                      'Date: ${formatDate(DateTime.parse(credit['lastPaymentDate'] ?? DateTime.now().toIso8601String()))}',
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold),
@@ -217,7 +219,10 @@ class TotalExpense extends StatelessWidget {
                                     Expanded(
                                       child: ElevatedButton.icon(
                                         onPressed: () {
-                                          Get.offNamed('/loandetails');
+                                          Get.offNamed(
+                                            '/loandetails',
+                                            arguments: credit,
+                                          );
                                         },
                                         label: Text(
                                           'Details',

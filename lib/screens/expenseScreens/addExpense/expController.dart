@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../auth/firestore/firestoreService.dart';
+import '../../../auth/firestore/firestoreService.dart';
 
 class ExpenseController extends GetxController {
   final formKey = GlobalKey<FormState>();

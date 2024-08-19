@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:my_app/screens/expenseScreens/expController.dart';
+import 'package:my_app/screens/expenseScreens/addExpense/expController.dart';
 
-import '../../widgets/appColors.dart';
+import '../../../widgets/appColors.dart';
 
 class ExpenseForm extends StatefulWidget {
   @override

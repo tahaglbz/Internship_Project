@@ -67,14 +67,14 @@ class MainMenu extends StatelessWidget {
               width: 30,
             ),
             Text(
-              'Your Investments',
+              'Pages',
               style: GoogleFonts.adamina(
                   color: Colors.pink,
                   fontSize: 12,
                   fontWeight: FontWeight.w700),
             ),
             const SizedBox(
-              width: 150,
+              width: 200,
             ),
             Row(
               children: [

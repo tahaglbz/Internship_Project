@@ -169,6 +169,30 @@ class FirestoreService {
     });
   }
 
+  Future<void> updateCredit(String userId, String aim, double amount) async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Firestore'dan referans al
+    final docRef =
+        firestore.collection('users').doc(userId).collection('credit').doc(aim);
+
+    await firestore.runTransaction((transaction) async {
+      final docSnapshot = await transaction.get(docRef);
+      if (!docSnapshot.exists) {
+        throw Exception("Document does not exist!");
+      }
+
+      final data = docSnapshot.data()!;
+      final remaining = (data['remaining'] as double) - amount;
+      final instalment = (data['instalment'] as int) - 1;
+
+      transaction.update(docRef, {
+        'remaining': remaining,
+        'instalment': instalment,
+      });
+    });
+  }
+
   // Update an asset's amount
   Future<void> updateAsset(String symbol, double newAmount) async {
     await _firestore

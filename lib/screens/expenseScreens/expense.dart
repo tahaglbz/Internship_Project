@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/screens/expenseScreens/expenseForm.dart';
-import 'package:my_app/screens/expenseScreens/loandebtForm.dart';
+import 'package:my_app/screens/expenseScreens/addExpense/expenseForm.dart';
+import 'package:my_app/screens/expenseScreens/Loan/loandebtForm.dart';
 import 'package:my_app/screens/expenseScreens/totalExpense.dart';
 import '../../widgets/appColors.dart';
 

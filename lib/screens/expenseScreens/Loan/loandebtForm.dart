@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:my_app/screens/expenseScreens/loanController.dart';
+import 'package:my_app/screens/expenseScreens/Loan/loanController.dart';
 
-import '../../widgets/appColors.dart';
+import '../../../widgets/appColors.dart';
 
 class LoanDebt extends StatefulWidget {
   const LoanDebt({super.key});
