@@ -22,4 +22,6 @@
 
 <img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/loandebt.png" width="400" alt="Loan"/>
 
-<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/totalexpenses.png" width="400" alt="MainMenu"/>
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/totalexpenses.png" width="400" alt="TotalExpenses"/>
+
+<img src="https://github.com/tahaglbz/Internship_Project/blob/main/lib/screenshots/creditdetail.png" width="400" alt="CreditDetail"/>

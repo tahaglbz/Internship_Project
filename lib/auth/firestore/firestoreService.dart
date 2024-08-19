@@ -185,10 +185,29 @@ class FirestoreService {
       final data = docSnapshot.data()!;
       final remaining = (data['remaining'] as double) - amount;
       final instalment = (data['instalment'] as int) - 1;
+      final lastPaymentDateStr = data['lastPaymentDate'] as String;
+      DateTime lastPaymentDate = DateTime.parse(lastPaymentDateStr);
+
+      // Bir ay ekleyin
+      DateTime nextPaymentDate = DateTime(
+        lastPaymentDate.year,
+        lastPaymentDate.month + 1,
+        lastPaymentDate.day,
+      );
+
+      // Eğer ay 12'yi geçerse yılı artırın
+      if (nextPaymentDate.month > 12) {
+        nextPaymentDate = DateTime(
+          nextPaymentDate.year + 1,
+          1,
+          nextPaymentDate.day,
+        );
+      }
 
       transaction.update(docRef, {
         'remaining': remaining,
         'instalment': instalment,
+        'lastPaymentDate': nextPaymentDate.toIso8601String(),
       });
     });
   }

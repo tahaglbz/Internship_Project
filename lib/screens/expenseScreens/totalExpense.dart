@@ -101,8 +101,7 @@ class TotalExpense extends StatelessWidget {
                               elevation: 4,
                               child: ListTile(
                                 leading: Image.asset(
-                                  expense['imageUrl'] ??
-                                      'lib/assets/default.png',
+                                  expense['imageUrl'] ?? 'lib/assets/money.png',
                                 ),
                                 title: Text(expense['expName'] ?? 'No Name'),
                                 subtitle:
@@ -123,6 +122,11 @@ class TotalExpense extends StatelessWidget {
                 );
               },
             ),
+          ),
+          Divider(
+            color: Colors.white,
+            thickness: 1,
+            height: 20,
           ),
           // Credit Section
           Expanded(
