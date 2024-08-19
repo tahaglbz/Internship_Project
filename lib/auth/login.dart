@@ -50,35 +50,13 @@ class _LoginPageState extends State<LoginPage> {
             'lib/assets/logo.png',
           ),
           centerTitle: true,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color.fromARGB(255, 5, 9, 237),
-                  Color.fromARGB(255, 8, 1, 134),
-                  Color.fromARGB(255, 5, 0, 74),
-                ],
-              ),
-            ),
-          ),
+          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
         ),
       ),
       body: Container(
         width: deviceWidth,
         height: deviceHeight,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color.fromARGB(255, 5, 9, 237),
-              Color.fromARGB(255, 8, 1, 134),
-              Color.fromARGB(255, 5, 0, 74),
-            ],
-          ),
-        ),
+        color: const Color.fromARGB(255, 0, 9, 99),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -164,7 +142,6 @@ class _LoginPageState extends State<LoginPage> {
                             Get.find<AuthService>().passwordController.text),
                     style: ElevatedButton.styleFrom(
                         elevation: 9,
-                        shadowColor: Colors.white,
                         minimumSize: const Size(369.1, 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0))),

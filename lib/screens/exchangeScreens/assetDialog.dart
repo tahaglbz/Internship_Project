@@ -99,7 +99,7 @@ void showAssetDialog(BuildContext context) {
                         );
                         Get.snackbar('Success', 'Asset added successfully!',
                             snackPosition: SnackPosition.BOTTOM);
-                        Navigator.of(context).pop();
+                        Get.back();
                       } catch (e) {
                         Get.snackbar('Error', 'Failed to add asset: $e',
                             snackPosition: SnackPosition.BOTTOM);

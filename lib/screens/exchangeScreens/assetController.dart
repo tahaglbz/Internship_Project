@@ -26,7 +26,7 @@ class AssetController extends GetxController {
       String assetName, double amount, String assetIconPath) async {
     try {
       await firestoreService.saveExcAsset(assetName, amount, assetIconPath);
-      fetchAssets(); // Refresh the assets list after adding
+      fetchAssets();
     } catch (e) {
       Get.snackbar('Error', 'Failed to add asset: $e',
           snackPosition: SnackPosition.TOP);

@@ -33,35 +33,13 @@ class _HomepageState extends State<Homepage> {
             // AppBar yüksekliğine göre logo yüksekliği
           ),
           centerTitle: true,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft, // Aynı yönü sağlamak için
-                end: Alignment.centerRight,
-                colors: [
-                  Color.fromARGB(255, 5, 9, 237),
-                  Color.fromARGB(255, 8, 1, 134),
-                  Color.fromARGB(255, 5, 0, 74),
-                ],
-              ),
-            ),
-          ),
+          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
         ),
       ),
       body: Container(
+        color: const Color.fromARGB(255, 0, 9, 99),
         width: deviceWidth,
         height: deviceHeight,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft, // AppBar ile aynı yönü sağlamak için
-            end: Alignment.centerRight,
-            colors: [
-              Color.fromARGB(255, 5, 9, 237),
-              Color.fromARGB(255, 8, 1, 134),
-              Color.fromARGB(255, 5, 0, 74),
-            ],
-          ),
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,7 +71,6 @@ class _HomepageState extends State<Homepage> {
               )),
               style: ElevatedButton.styleFrom(
                   elevation: 13,
-                  shadowColor: Colors.white,
                   minimumSize: const Size(369.1, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0))),
@@ -119,7 +96,6 @@ class _HomepageState extends State<Homepage> {
                 },
               )),
               style: ElevatedButton.styleFrom(
-                  elevation: 13,
                   shadowColor: Colors.white,
                   minimumSize: const Size(369.1, 50),
                   shape: RoundedRectangleBorder(
@@ -141,7 +117,6 @@ class _HomepageState extends State<Homepage> {
               ),
               onPressed: () => authService.signWithGoogle(context),
               style: ElevatedButton.styleFrom(
-                  elevation: 13,
                   shadowColor: Colors.white,
                   minimumSize: const Size(337.1, 50),
                   shape: RoundedRectangleBorder(

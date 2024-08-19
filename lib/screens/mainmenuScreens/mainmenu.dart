@@ -54,11 +54,7 @@ class MainMenu extends StatelessWidget {
             'lib/assets/logo.png',
           ),
           centerTitle: true,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: AppColors.defaultColors,
-            ),
-          ),
+          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
         ),
       ),
       body: Column(children: [
