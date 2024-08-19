@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
             transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/mainmenu',
-            page: () => const MainMenu(),
+            page: () => MainMenu(),
             transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1)),
         GetPage(

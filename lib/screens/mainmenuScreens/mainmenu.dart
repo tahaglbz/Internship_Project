@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../auth/firestore/firestoreService.dart';
+import 'package:intl/intl.dart';
+import 'package:my_app/screens/mainmenuScreens/mainmenuController.dart';
 import '../../widgets/appColors.dart';
 
 class MainMenu extends StatelessWidget {
-  const MainMenu({super.key});
+  MainMenu({super.key});
 
-  Stream<List<Map<String, dynamic>>> getAssetsStream() {
-    return FirestoreService().getAssets();
-  }
-
-  Stream<List<Map<String, dynamic>>> getExcAssetsStream() {
-    return FirestoreService().getExcAssetsStream();
-  }
+  MainMenuController mainMenuController = MainMenuController();
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +119,7 @@ class MainMenu extends StatelessWidget {
                             horizontal: 8.0, vertical: 2.0),
                         child: cardData[index]['title'] == 'Crypto'
                             ? StreamBuilder<List<Map<String, dynamic>>>(
-                                stream: getAssetsStream(),
+                                stream: mainMenuController.getAssetsStream(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -227,7 +222,8 @@ class MainMenu extends StatelessWidget {
                               )
                             : cardData[index]['title'] == 'Exchange'
                                 ? StreamBuilder<List<Map<String, dynamic>>>(
-                                    stream: getExcAssetsStream(),
+                                    stream:
+                                        mainMenuController.getExcAssetsStream(),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -332,15 +328,139 @@ class MainMenu extends StatelessWidget {
                                       }
                                     },
                                   )
-                                : Center(
-                                    child: Text(
-                                      cardData[index]['title']!,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
+                                : cardData[index]['title'] == 'Expense'
+                                    ? StreamBuilder<List<Map<String, dynamic>>>(
+                                        stream:
+                                            mainMenuController.getExpendes(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else if (snapshot.hasError) {
+                                            return Center(
+                                                child: Text(
+                                                    'Error: ${snapshot.error}'));
+                                          } else if (!snapshot.hasData ||
+                                              snapshot.data!.isEmpty) {
+                                            return const Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Expense',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  'No assets found',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            final assets = snapshot.data!;
+                                            final firstOneAssets =
+                                                assets.take(2).toList();
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  'Expense',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                ...firstOneAssets.map((asset) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 4.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          asset['imageUrl'] ??
+                                                              '',
+                                                          width: 12,
+                                                          height: 12,
+                                                          errorBuilder:
+                                                              (context, error,
+                                                                  stackTrace) {
+                                                            return const Icon(
+                                                                Icons.error,
+                                                                size: 12);
+                                                          },
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 6),
+                                                        Text(
+                                                          asset['expName'] ??
+                                                              '',
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 16),
+                                                        const Text(
+                                                          'date : ',
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 4,
+                                                        ),
+                                                        Text(
+                                                          asset['lastPaymentDate'] !=
+                                                                  null
+                                                              ? DateFormat(
+                                                                      'dd/MM/yyyy')
+                                                                  .format(DateTime
+                                                                      .parse(asset[
+                                                                              'lastPaymentDate']
+                                                                          as String))
+                                                              : 'N/A',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                }),
+                                              ],
+                                            );
+                                          }
+                                        },
+                                      )
+                                    : Center(
+                                        child: Text(
+                                          cardData[index]['title']!,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                       ),
                     ),
                   ),
