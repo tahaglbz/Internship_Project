@@ -81,54 +81,53 @@ class CreditDetails extends StatelessWidget {
           gradient: AppColors.debtCardColors,
         ),
         child: Obx(() {
+          // Kullanıcının ilgili kredileri filtreleme ve ödeme tarihlerini hesaplama
+          final filteredCredits = _controller.credits.where((creditDoc) {
+            final data = creditDoc.data() as Map<String, dynamic>;
+            return data['aim'] == aim;
+          }).toList();
+
           return ListView.builder(
-            itemCount: _controller.credits.length,
+            itemCount: instalment, // Her bir taksit için kart oluşturulacak
             itemBuilder: (context, index) {
-              final creditDoc =
-                  _controller.credits[index].data() as Map<String, dynamic>;
-              if (creditDoc['aim'] == aim) {
-                DateTime paymentDate =
-                    DateTime.parse(creditDoc['lastPaymentDate'])
-                        .add(Duration(days: 30 * index));
-                return Card(
-                  margin: const EdgeInsets.all(8.0),
-                  elevation: 4,
-                  child: ListTile(
-                    leading: Image.asset(
-                      creditDoc['imageUrl'] ?? 'lib/assets/money.png',
-                    ),
-                    title: Text('Payment ${index + 1}'),
-                    subtitle: Text('Amount: ${creditDoc['monthlyPayment']}'),
-                    trailing: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Date: ${formatDate(paymentDate)}',
-                          style: const TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        ElevatedButton.icon(
+              DateTime paymentDate = DateTime.parse(lastPaymentDate)
+                  .add(Duration(days: 30 * index));
+
+              return Card(
+                margin: const EdgeInsets.all(8.0),
+                elevation: 4,
+                child: ListTile(
+                  leading: Image.asset(imageUrl),
+                  title: Text('Payment ${index + 1}'),
+                  subtitle: Text('Amount: $monthlyPayment'),
+                  trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Date: ${formatDate(paymentDate)}',
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Expanded(
+                        child: ElevatedButton.icon(
                           onPressed: () {
                             showPaymentDialog(
                               context,
                               aim,
-                              creditDoc['monthlyPayment'],
+                              monthlyPayment,
                             );
                           },
                           label: Text('Paid'),
                           icon: Icon(Icons.check),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              } else {
-                return SizedBox
-                    .shrink(); // If not the relevant card, show nothing
-              }
+                ),
+              );
             },
           );
         }),
