@@ -114,7 +114,7 @@ class TotalExpense extends StatelessWidget {
                                     Text(
                                       'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate'] ?? DateTime.now().toIso8601String()))}',
                                       style: const TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.red,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(
@@ -239,7 +239,7 @@ class TotalExpense extends StatelessWidget {
                                     Text(
                                       'Date: ${formatDate(DateTime.parse(credit['lastPaymentDate'] ?? DateTime.now().toIso8601String()))}',
                                       style: const TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.red,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(

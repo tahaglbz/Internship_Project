@@ -362,7 +362,7 @@ class MainMenu extends StatelessWidget {
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  'No expense found',
+                                                  'No expenses found',
                                                   style: TextStyle(
                                                       color: Colors.white),
                                                 ),
