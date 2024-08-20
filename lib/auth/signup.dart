@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:form_field_validator/form_field_validator.dart'; // Import form_field_validator
 import 'package:my_app/auth/authservice.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/homepage.dart';
 
 class Signup extends StatefulWidget {
@@ -27,8 +28,8 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
 
     final double appBarHeight = deviceWidth * 0.28;
     return Scaffold(

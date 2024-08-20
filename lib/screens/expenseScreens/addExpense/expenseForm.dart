@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/expenseScreens/addExpense/expController.dart';
 
 import '../../../widgets/appColors.dart';
@@ -31,9 +32,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ExpenseController());
-    double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
-
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
     return Container(
       width: deviceWidth,
       height: deviceHeight,

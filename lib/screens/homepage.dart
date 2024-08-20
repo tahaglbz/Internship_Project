@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/auth/authservice.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
+import 'package:my_app/extensions/media_query.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -15,8 +16,8 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
     final AuthService authService = Get.put(AuthService());
 
     double appBarHeight = deviceWidth * 0.28;

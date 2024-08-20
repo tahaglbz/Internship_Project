@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/auth/authservice.dart';
 import 'package:my_app/auth/widgets/reset_password.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/homepage.dart';
 import 'package:get/get.dart';
 
@@ -17,8 +18,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
 
     final double appBarHeight = deviceWidth * 0.28;
 

@@ -1,6 +1,9 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/mainmenuScreens/mainmenuController.dart';
 import '../../widgets/appColors.dart';
 
@@ -11,8 +14,8 @@ class MainMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
 
     final List<Map<String, dynamic>> cardData = [

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/cryptoScreens/CoinMarketCap.dart';
 import 'package:my_app/screens/cryptoScreens/amountUpdate.dart';
 
@@ -85,8 +86,8 @@ class _CryptoState extends State<Crypto> {
 
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
 
     return Scaffold(

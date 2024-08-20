@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/expenseScreens/creditDetail/creditDetailController.dart';
 
 import '../../../widgets/appColors.dart';
@@ -48,8 +49,8 @@ class CreditDetails extends StatelessWidget {
     int instalment = credit['instalment']?.toInt() ?? 0;
     String aim = credit['aim'] ?? 'No aim';
 
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
 
     return Scaffold(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/exchangeScreens/assetController.dart';
 import 'package:my_app/screens/exchangeScreens/assetDialog.dart';
 import 'package:my_app/screens/exchangeScreens/updateAssetDialog.dart';
@@ -14,8 +15,8 @@ class Exchange extends StatelessWidget {
   Widget build(BuildContext context) {
     final AssetController assetController = Get.put(AssetController());
 
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
 
     return Scaffold(

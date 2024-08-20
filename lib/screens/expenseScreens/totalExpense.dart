@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_app/extensions/media_query.dart';
 import '../../widgets/appColors.dart';
 import '../../auth/firestore/firestoreService.dart';
 
@@ -15,8 +16,8 @@ class TotalExpense extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
 
     final FirestoreService firestoreService = FirestoreService();
 
