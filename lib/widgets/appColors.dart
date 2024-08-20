@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AppColors {
+  static const Color defaultColor = Color.fromARGB(255, 0, 9, 99); //default
+
   static final Color color1 = HexColor("#C33764"); //expense
   static final Color color2 = HexColor("#1D2671"); //expense
   static final Color color1Crypto = HexColor("#2E3192"); //crypto
   static final Color color2Crypto = HexColor("#1BFFFF"); //crypto
+  static final Color color1Analysis = HexColor("#FF512F"); //crypto
+  static final Color color2Analysis = HexColor("#DD2476"); //crypto
 
   static LinearGradient defaultColors = LinearGradient(
     begin: Alignment.centerLeft,
@@ -43,14 +47,10 @@ class AppColors {
       Colors.teal,
     ],
   );
-
-  static const LinearGradient analyticsGradient = LinearGradient(
+// const Color.fromARGB(255, 0, 9, 99)
+  static LinearGradient analyticsGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [
-      Colors.red,
-      Colors.orange,
-      Colors.yellow,
-    ],
+    colors: [color1Analysis, color2Analysis],
   );
 }

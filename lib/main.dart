@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
+import 'package:my_app/screens/analysisAndGraphs/graph.dart';
 import 'package:my_app/screens/cryptoScreens/crypto.dart';
 import 'package:my_app/screens/exchangeScreens/exchange.dart';
 import 'package:my_app/screens/expenseScreens/creditDetail/creditDetails.dart';
@@ -81,6 +82,11 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/loandetails',
             page: () => CreditDetails(),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
+        GetPage(
+            name: '/graph',
+            page: () => const Graph(),
             transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1)),
       ],

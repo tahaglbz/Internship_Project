@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/extensions/media_query.dart';
@@ -71,9 +72,7 @@ class MainMenu extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w700),
             ),
-            const SizedBox(
-              width: 200,
-            ),
+            const Spacer(),
             Row(
               children: [
                 TextButton(
@@ -472,7 +471,27 @@ class MainMenu extends StatelessWidget {
             },
             itemCount: cardData.length,
           ),
-        )
+        ),
+        SizedBox(
+          height: deviceHeight / 50,
+        ),
+        Center(
+            child: GestureDetector(
+                onTap: () => Get.toNamed('/graph'),
+                child: Card(
+                  elevation: 9.0,
+                  shadowColor: AppColors.defaultColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  child: Container(
+                    width: deviceWidth * 0.9,
+                    height: deviceHeight * 0.35,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.defaultColor, width: 2.5),
+                        borderRadius: BorderRadius.circular(20.0)),
+                  ),
+                )))
       ]),
     );
   }
