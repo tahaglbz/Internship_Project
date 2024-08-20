@@ -9,7 +9,6 @@ class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User? currentUser = FirebaseAuth.instance.currentUser;
 
-  // Get a stream of all assets
   Stream<List<Map<String, dynamic>>> getAssets() {
     return _firestore
         .collection('users')
@@ -19,7 +18,6 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
-  // Get a single asset by symbol
   Future<Map<String, dynamic>?> getAsset(String symbol) async {
     final doc = await _firestore
         .collection('users')
@@ -80,15 +78,6 @@ class FirestoreService {
     });
   }
 
-  Future<void> deleteAsset(String symbol) async {
-    await _firestore
-        .collection('users')
-        .doc(currentUser?.uid)
-        .collection('assets')
-        .doc(symbol)
-        .delete();
-  }
-
   Future<void> saveExpense(String expName, double amount, String imageUrl,
       DateTime lastPaymentDate) async {
     await _firestore
@@ -102,18 +91,6 @@ class FirestoreService {
       'imageUrl': imageUrl,
       'lastPaymentDate': lastPaymentDate.toIso8601String(),
       'paid': false
-    });
-  }
-
-  Future<void> markAsPaidExpense(String expName) async {
-    await _firestore
-        .collection('users')
-        .doc(currentUser?.uid)
-        .collection('expense')
-        .doc(expName)
-        .update({
-      'paid': true,
-      'paymentDate': DateTime.now().toIso8601String(), // Ödeme tarihini ekle
     });
   }
 
@@ -138,7 +115,29 @@ class FirestoreService {
       'remaining': remaining,
       'monthlyPayment': monthlyPayment,
       'instalment': instalment,
+      'paid': 0
     });
+  }
+
+  Future<void> markAsPaidExpense(String expName) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('expense')
+        .doc(expName)
+        .update({
+      'paid': true,
+      'paymentDate': DateTime.now().toIso8601String(), // Ödeme tarihini ekle
+    });
+  }
+
+  Future<void> deleteAsset(String symbol) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('assets')
+        .doc(symbol)
+        .delete();
   }
 
   Future<void> deleteAssetEx(String assetName) async {
@@ -214,10 +213,13 @@ class FirestoreService {
         );
       }
 
+      final paid = (data['paid'] as int) + 1;
+
       transaction.update(docRef, {
         'remaining': remaining,
         'instalment': instalment,
         'lastPaymentDate': nextPaymentDate.toIso8601String(),
+        'paid': paid,
       });
     });
   }
