@@ -8,6 +8,7 @@ import 'package:my_app/screens/cryptoScreens/CoinMarketCap.dart';
 import 'package:my_app/screens/cryptoScreens/amountUpdate.dart';
 
 import '../../auth/firestore/firestoreService.dart';
+import '../../widgets/appColors.dart';
 
 class Crypto extends StatefulWidget {
   const Crypto({super.key});
@@ -108,15 +109,7 @@ class _CryptoState extends State<Crypto> {
           centerTitle: true,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color.fromARGB(255, 5, 9, 237),
-                  Color.fromARGB(255, 8, 1, 134),
-                  Color.fromARGB(255, 5, 0, 74),
-                ],
-              ),
+              gradient: AppColors.defaultColors,
             ),
           ),
         ),
@@ -125,15 +118,7 @@ class _CryptoState extends State<Crypto> {
         width: deviceWidth,
         height: deviceHeight,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color.fromARGB(255, 5, 9, 237),
-              Color.fromARGB(255, 8, 1, 134),
-              Color.fromARGB(255, 5, 0, 74),
-            ],
-          ),
+          gradient: AppColors.defaultColors,
         ),
         child: SingleChildScrollView(
           child: Column(
