@@ -101,6 +101,19 @@ class FirestoreService {
       'amount': amount,
       'imageUrl': imageUrl,
       'lastPaymentDate': lastPaymentDate.toIso8601String(),
+      'paid': false
+    });
+  }
+
+  Future<void> markAsPaidExpense(String expName) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('expense')
+        .doc(expName)
+        .update({
+      'paid': true,
+      'paymentDate': DateTime.now().toIso8601String(), // Ödeme tarihini ekle
     });
   }
 

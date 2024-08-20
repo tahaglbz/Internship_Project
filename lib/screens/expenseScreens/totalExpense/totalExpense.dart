@@ -1,11 +1,9 @@
-// ignore_for_file: use_build_context_synchronously, file_names
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/extensions/media_query.dart';
-import '../../widgets/appColors.dart';
-import '../../auth/firestore/firestoreService.dart';
+import '../../../widgets/appColors.dart';
+import '../../../auth/firestore/firestoreService.dart';
 
 class TotalExpense extends StatelessWidget {
   String formatDate(DateTime date) {
@@ -50,7 +48,9 @@ class TotalExpense extends StatelessWidget {
                   ));
                 }
 
-                List<Map<String, dynamic>> expenses = snapshot.data!;
+                List<Map<String, dynamic>> expenses = snapshot.data!
+                    .where((expense) => expense['paid'] == false)
+                    .toList();
 
                 return Column(
                   children: [
@@ -109,11 +109,34 @@ class TotalExpense extends StatelessWidget {
                                 title: Text(expense['expName'] ?? 'No Name'),
                                 subtitle:
                                     Text('Debt: ${expense['amount'] ?? 0}'),
-                                trailing: Text(
-                                  'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate'] ?? DateTime.now().toIso8601String()))}',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                trailing: Column(
+                                  children: [
+                                    Text(
+                                      'Date: ${formatDate(DateTime.parse(expense['lastPaymentDate'] ?? DateTime.now().toIso8601String()))}',
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () async {
+                                          await firestoreService
+                                              .markAsPaidExpense(
+                                                  expense['expName']);
+                                          // Optionally, refresh the UI if needed
+                                        },
+                                        label: Text(
+                                          'Paid',
+                                          style: TextStyle(
+                                              color: AppColors.color2),
+                                        ),
+                                        icon: const Icon(Icons.check),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
