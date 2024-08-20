@@ -4,19 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AppColors {
-  // Dinamik renkler
   static final Color color1 = HexColor("#C33764"); //expense
   static final Color color2 = HexColor("#1D2671"); //expense
+  static final Color color1Crypto = HexColor("#2E3192"); //crypto
+  static final Color color2Crypto = HexColor("#1BFFFF"); //crypto
 
-  // Sabit LinearGradient tanımları
-  static const LinearGradient defaultColors = LinearGradient(
+  static LinearGradient defaultColors = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [
-      Color.fromARGB(255, 5, 9, 237),
-      Color.fromARGB(255, 8, 1, 134),
-      Color.fromARGB(255, 5, 0, 74),
-    ],
+    colors: [color1Crypto, color2Crypto],
   );
 
   static const LinearGradient debtCardColorss = LinearGradient(

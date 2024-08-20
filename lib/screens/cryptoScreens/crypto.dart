@@ -108,7 +108,7 @@ class _CryptoState extends State<Crypto> {
           ),
           centerTitle: true,
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: AppColors.defaultColors,
             ),
           ),
@@ -117,7 +117,7 @@ class _CryptoState extends State<Crypto> {
       body: Container(
         width: deviceWidth,
         height: deviceHeight,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: AppColors.defaultColors,
         ),
         child: SingleChildScrollView(
