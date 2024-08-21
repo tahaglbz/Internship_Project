@@ -49,39 +49,69 @@ class _GraphState extends State<Graph> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Radio<String>(
-                  value: 'expenses',
-                  groupValue: selectedOption,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedOption = value;
-                      _loadExpenseData();
-                    });
-                  },
-                ),
-                const Text("Expenses"),
-                Radio<String>(
-                  value: 'credit',
-                  groupValue: selectedOption,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedOption = value;
-                      _loadCreditData();
-                    });
-                  },
-                ),
-                const Text("Credit"),
+                _buildRadioButton('expenses', 'Expenses'),
+                const SizedBox(width: 16),
+                _buildRadioButton('credit', 'Credit'),
               ],
             ),
+            const SizedBox(height: 24),
             Expanded(
-              child: selectedOption == 'expenses'
-                  ? _buildExpenseChart()
-                  : selectedOption == 'credit'
-                      ? _buildCreditChart()
-                      : const Center(child: Text('Select an option')),
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 5,
+                      blurRadius: 15,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: selectedOption == 'expenses'
+                    ? _buildExpenseChart()
+                    : selectedOption == 'credit'
+                        ? _buildCreditChart()
+                        : const Center(child: Text('Select an option')),
+              ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRadioButton(String value, String label) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedOption = value;
+          if (value == 'expenses') {
+            _loadExpenseData();
+          } else {
+            _loadCreditData();
+          }
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        decoration: BoxDecoration(
+          color: selectedOption == value
+              ? Colors.blue.shade900
+              : Colors.blue.shade100,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color:
+                selectedOption == value ? Colors.white : Colors.blue.shade900,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -111,72 +141,139 @@ class _GraphState extends State<Graph> {
   }
 
   Widget _buildExpenseChart() {
-    return PieChart(
-      PieChartData(
-        sections: [
-          PieChartSectionData(
-            value: expensePaidTotal,
-            title: 'Paid Expenses',
-            color: Colors.green,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Expenses Overview",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
           ),
-          PieChartSectionData(
-            value: expenseUnpaidTotal,
-            title: 'Unpaid Expenses',
-            color: Colors.red,
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: BarChart(
+            BarChartData(
+              barGroups: [
+                _buildBarGroup(0, expensePaidTotal, Colors.green),
+                _buildBarGroup(1, expenseUnpaidTotal, Colors.red),
+                _buildBarGroup(2, expenseTotal, Colors.blue),
+              ],
+              titlesData: FlTitlesData(
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: (value, meta) {
+                      switch (value.toInt()) {
+                        case 0:
+                          return const Text('Paid');
+                        case 1:
+                          return const Text('Unpaid');
+                        case 2:
+                          return const Text('Total');
+                        default:
+                          return const Text('');
+                      }
+                    },
+                    reservedSize: 32,
+                  ),
+                ),
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+              ),
+              borderData: FlBorderData(
+                show: false,
+              ),
+              gridData: const FlGridData(show: false),
+            ),
           ),
-          PieChartSectionData(
-              value: expenseTotal, title: 'Total Expenses', color: Colors.blue)
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildCreditChart() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Credit Overview"),
+        const Text(
+          "Credit Overview",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 16),
         Expanded(
           child: BarChart(
             BarChartData(
               barGroups: [
-                BarChartGroupData(
-                  x: 0,
-                  barRods: [
-                    BarChartRodData(
-                      toY: creditTotal,
-                      color: Colors.blue,
-                      width: 20,
-                    ),
-                  ],
-                  showingTooltipIndicators: [0],
-                ),
-                BarChartGroupData(
-                  x: 1,
-                  barRods: [
-                    BarChartRodData(
-                      toY: creditRemaining,
-                      color: Colors.orange,
-                      width: 20,
-                    ),
-                  ],
-                  showingTooltipIndicators: [0],
-                ),
-                BarChartGroupData(
-                  x: 2,
-                  barRods: [
-                    BarChartRodData(
-                      toY: creditPaid,
-                      color: Colors.green,
-                      width: 20,
-                    ),
-                  ],
-                  showingTooltipIndicators: [0],
-                ),
+                _buildBarGroup(0, creditTotal, Colors.blue),
+                _buildBarGroup(1, creditRemaining, Colors.orange),
+                _buildBarGroup(2, creditPaid, Colors.green),
               ],
+              titlesData: FlTitlesData(
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: (value, meta) {
+                      switch (value.toInt()) {
+                        case 0:
+                          return const Text('Total');
+                        case 1:
+                          return const Text('Remaining');
+                        case 2:
+                          return const Text('Paid');
+                        default:
+                          return const Text('');
+                      }
+                    },
+                    reservedSize: 32,
+                  ),
+                ),
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+              ),
+              borderData: FlBorderData(
+                show: false,
+              ),
+              gridData: const FlGridData(show: false),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  BarChartGroupData _buildBarGroup(int x, double y, Color color) {
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          toY: y,
+          color: color,
+          width: 20,
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ],
+      showingTooltipIndicators: [0],
     );
   }
 }
