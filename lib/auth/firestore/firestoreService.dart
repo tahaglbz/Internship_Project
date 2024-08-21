@@ -1,13 +1,12 @@
-// lib/services/firestore_service.dart
-
-// ignore_for_file: file_names
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_app/screens/exchangeScreens/fixerio.dart'; // `Fixerio` sınıfının yolu
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final User? currentUser = FirebaseAuth.instance.currentUser;
+  final User? currentUser =
+      FirebaseAuth.instance.currentUser; // `currentUser` doğru tanımlanmalı
+  final Fixerio fixerio = Fixerio();
 
   Stream<List<Map<String, dynamic>>> getAssets() {
     return _firestore
@@ -66,15 +65,28 @@ class FirestoreService {
 
   Future<void> saveExcAsset(
       String assetName, double amount, String assetIconPath) async {
+    double valueInUsd;
+
+    if (assetIconPath == 'lib/assets/stock.png' ||
+        assetIconPath == 'lib/assets/money.png') {
+      // Stock veya Other seçilmişse, valueInUsd amount ile aynı olacak
+      valueInUsd = amount;
+    } else {
+      // Diğer durumlarda (Altın, TL, Euro, Dolar), USD karşılığını hesaplayın
+      valueInUsd = await fixerio.calculateAssetValue(assetIconPath, amount);
+    }
+
     await _firestore
         .collection('users')
         .doc(currentUser?.uid)
-        .collection('exchangeAsset') // Make sure this is the same
+        .collection('exchangeAsset')
         .doc(assetName)
         .set({
       'amount': amount,
       'assetName': assetName,
       'assetIconPath': assetIconPath,
+      'valueInUsd': valueInUsd,
+      'updateDate': DateTime.now().toIso8601String(),
     });
   }
 
@@ -167,8 +179,21 @@ class FirestoreService {
         .delete();
   }
 
-  Future<void> updateAssetEx(String oldAssetName, String newAssetName,
-      double newAmount, String iconPath) async {
+  Future<void> updateAssetEx(
+    String oldAssetName,
+    String newAssetName,
+    double newAmount,
+    String iconPath,
+  ) async {
+    double valueInUsd;
+
+    if (iconPath == 'lib/assets/stock.png' ||
+        iconPath == 'lib/assets/money.png') {
+      valueInUsd = newAmount;
+    } else {
+      valueInUsd = await fixerio.calculateAssetValue(iconPath, newAmount);
+    }
+
     await _firestore
         .collection('users')
         .doc(currentUser?.uid)
@@ -178,6 +203,8 @@ class FirestoreService {
       'assetName': newAssetName,
       'amount': newAmount,
       'assetIconPath': iconPath,
+      'valueInUsd': valueInUsd,
+      'updateDate': DateTime.now().toIso8601String(), // Güncelleme tarihi
     });
   }
 

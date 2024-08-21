@@ -1,5 +1,3 @@
-// ignore_for_file: file_names, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/auth/firestore/firestoreService.dart';
@@ -28,9 +26,7 @@ void showAssetDialog(BuildContext context) {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             TextField(
               decoration: const InputDecoration(
                 hintText: 'Enter Asset Name',
@@ -38,9 +34,6 @@ void showAssetDialog(BuildContext context) {
               controller: assetnameCont,
             ),
             const SizedBox(height: 20),
-            const SizedBox(
-              height: 20,
-            ),
             TextField(
               decoration: const InputDecoration(hintText: 'Enter Amount'),
               keyboardType: const TextInputType.numberWithOptions(),
@@ -77,9 +70,7 @@ void showAssetDialog(BuildContext context) {
                       'Cancel',
                       style: TextStyle(color: Colors.lightGreen),
                     )),
-                const SizedBox(
-                  width: 20,
-                ),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightGreen),
