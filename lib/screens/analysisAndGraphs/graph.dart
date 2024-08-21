@@ -54,6 +54,7 @@ class _GraphState extends State<Graph> {
                 _buildRadioButton('expenses', 'Expenses'),
                 const SizedBox(width: 16),
                 _buildRadioButton('credit', 'Credit'),
+                const SizedBox(width: 16),
               ],
             ),
             const SizedBox(height: 24),
@@ -180,20 +181,20 @@ class _GraphState extends State<Graph> {
                     reservedSize: 32,
                   ),
                 ),
-                leftTitles: AxisTitles(
+                leftTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                topTitles: AxisTitles(
+                topTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                rightTitles: AxisTitles(
+                rightTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
               ),
               borderData: FlBorderData(
                 show: false,
               ),
-              gridData: const FlGridData(show: false),
+              gridData: const FlGridData(show: true),
             ),
           ),
         ),
@@ -218,9 +219,9 @@ class _GraphState extends State<Graph> {
           child: BarChart(
             BarChartData(
               barGroups: [
-                _buildBarGroup(0, creditTotal, Colors.blue),
-                _buildBarGroup(1, creditRemaining, Colors.orange),
-                _buildBarGroup(2, creditPaid, Colors.green),
+                _buildBarGroup(0, creditPaid, Colors.green),
+                _buildBarGroup(1, creditRemaining, Colors.red),
+                _buildBarGroup(2, creditTotal, Colors.blue),
               ],
               titlesData: FlTitlesData(
                 bottomTitles: AxisTitles(
@@ -229,11 +230,11 @@ class _GraphState extends State<Graph> {
                     getTitlesWidget: (value, meta) {
                       switch (value.toInt()) {
                         case 0:
-                          return const Text('Total');
+                          return const Text('Paid');
                         case 1:
                           return const Text('Remaining');
                         case 2:
-                          return const Text('Paid');
+                          return const Text('Total');
                         default:
                           return const Text('');
                       }
@@ -241,20 +242,20 @@ class _GraphState extends State<Graph> {
                     reservedSize: 32,
                   ),
                 ),
-                leftTitles: AxisTitles(
+                leftTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                topTitles: AxisTitles(
+                topTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                rightTitles: AxisTitles(
+                rightTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
               ),
               borderData: FlBorderData(
                 show: false,
               ),
-              gridData: const FlGridData(show: false),
+              gridData: const FlGridData(show: true),
             ),
           ),
         ),
@@ -269,7 +270,7 @@ class _GraphState extends State<Graph> {
         BarChartRodData(
           toY: y,
           color: color,
-          width: 20,
+          width: 30,
           borderRadius: BorderRadius.circular(4),
         ),
       ],

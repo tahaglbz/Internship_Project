@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/mainmenu',
+      initialRoute: '/graph',
       getPages: [
         GetPage(
             name: '/splashscreen',
