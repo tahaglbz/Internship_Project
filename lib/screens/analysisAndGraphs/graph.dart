@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart'; // Import fl_chart
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/analysisAndGraphs/datas.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Graph extends StatefulWidget {
   const Graph({super.key});
@@ -14,12 +16,16 @@ class Graph extends StatefulWidget {
 class _GraphState extends State<Graph> {
   String? selectedOption; // Track the selected option
   final DataService dataService = DataService();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final User? currentUser = FirebaseAuth.instance.currentUser;
+
   double expensePaidTotal = 0.0;
   double expenseUnpaidTotal = 0.0;
   double expenseTotal = 0.0;
   double creditTotal = 0.0;
   double creditRemaining = 0.0;
   double creditPaid = 0.0;
+  Widget _pieChart = const Center(child: Text('Select an option'));
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +61,7 @@ class _GraphState extends State<Graph> {
                 const SizedBox(width: 16),
                 _buildRadioButton('credit', 'Credit'),
                 const SizedBox(width: 16),
+                _buildRadioButton('coins', 'Coins'),
               ],
             ),
             const SizedBox(height: 24),
@@ -77,7 +84,9 @@ class _GraphState extends State<Graph> {
                     ? _buildExpenseChart()
                     : selectedOption == 'credit'
                         ? _buildCreditChart()
-                        : const Center(child: Text('Select an option')),
+                        : selectedOption == 'coins'
+                            ? _pieChart
+                            : const Center(child: Text('Select an option')),
               ),
             ),
           ],
@@ -93,8 +102,10 @@ class _GraphState extends State<Graph> {
           selectedOption = value;
           if (value == 'expenses') {
             _loadExpenseData();
-          } else {
+          } else if (value == 'credit') {
             _loadCreditData();
+          } else if (value == 'coins') {
+            _loadCoinData();
           }
         });
       },
@@ -114,6 +125,57 @@ class _GraphState extends State<Graph> {
             fontWeight: FontWeight.bold,
           ),
         ),
+      ),
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getCoinsData() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .doc(currentUser?.uid)
+          .collection('assets')
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        return {
+          'symbol': doc.data()['symbol'],
+          'usdValue': doc.data()['usdValue'],
+        };
+      }).toList();
+    } catch (e) {
+      print("Error fetching coin data: $e");
+      rethrow;
+    }
+  }
+
+  Widget _buildPieChart(List<Map<String, dynamic>> coinData) {
+    final List<Color> colorPalette = [
+      Colors.blue.shade900,
+      Colors.deepOrange.shade800,
+      Colors.deepPurple.shade800,
+      Colors.green.shade800,
+      Colors.yellow.shade800,
+      Colors.indigo
+    ];
+
+    return PieChart(
+      PieChartData(
+        sections: coinData.map((coin) {
+          final int index = coinData.indexOf(coin);
+          return PieChartSectionData(
+            color: colorPalette[
+                index % colorPalette.length], // Use the color palette
+            value: coin['usdValue'] as double,
+            title: coin['symbol'] as String,
+            radius: 50,
+            titleStyle:
+                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          );
+        }).toList(),
+        borderData: FlBorderData(show: false),
+        sectionsSpace: 0,
+        centerSpaceRadius: 40,
       ),
     );
   }
@@ -138,6 +200,13 @@ class _GraphState extends State<Graph> {
       creditTotal = total;
       creditRemaining = remaining;
       creditPaid = paid;
+    });
+  }
+
+  void _loadCoinData() async {
+    final coinData = await getCoinsData();
+    setState(() {
+      _pieChart = _buildPieChart(coinData);
     });
   }
 

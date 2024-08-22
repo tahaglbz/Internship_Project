@@ -497,7 +497,7 @@ class MainMenu extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 10), // Kartlar arasında boşluk
+              const SizedBox(width: 10), // Kartlar arasında boşluk
               // Yeni Eklenen Kart
               Card(
                 elevation: 9.0,
@@ -511,7 +511,7 @@ class MainMenu extends StatelessWidget {
                       border:
                           Border.all(color: AppColors.defaultColor, width: 2.5),
                       borderRadius: BorderRadius.circular(20.0)),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Yeni Kart',
                       style: TextStyle(

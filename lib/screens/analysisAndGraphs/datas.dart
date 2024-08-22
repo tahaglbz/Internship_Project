@@ -7,7 +7,6 @@ class DataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User? currentUser = FirebaseAuth.instance.currentUser;
 
-  // Get total credit from all documents
   Future<double> getTotalCredit() async {
     try {
       final querySnapshot = await _firestore
@@ -63,7 +62,6 @@ class DataService {
     }
   }
 
-  // Get total paid credit from all documents
   Future<double> getTotalPaidCredit() async {
     try {
       final querySnapshot = await _firestore
@@ -91,7 +89,6 @@ class DataService {
     }
   }
 
-  // Get total unpaid expenses
   Future<double> getUnpaidExpensesTotal() async {
     try {
       final querySnapshot = await _firestore
@@ -112,7 +109,6 @@ class DataService {
     }
   }
 
-  // Get total paid expenses
   Future<double> getPaidExpensesTotal() async {
     try {
       final querySnapshot = await _firestore
@@ -133,13 +129,31 @@ class DataService {
     }
   }
 
-  // Get total expenses
   Future<double> getTotalExpenses() async {
     try {
       final querySnapshot = await _firestore
           .collection('users')
           .doc(currentUser?.uid)
           .collection('expense')
+          .get();
+
+      double totalAmount = 0.0;
+      for (var doc in querySnapshot.docs) {
+        totalAmount += (doc.data()['amount'] as num).toDouble();
+      }
+      return totalAmount;
+    } catch (e) {
+      print("Error in getTotalExpenses: $e");
+      rethrow;
+    }
+  }
+
+  Future<double> getCoinValue() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .doc(currentUser?.uid)
+          .collection('assets')
           .get();
 
       double totalAmount = 0.0;
