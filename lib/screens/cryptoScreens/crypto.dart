@@ -23,26 +23,10 @@ class _CryptoState extends State<Crypto> {
   final FirestoreService firestoreService = FirestoreService();
   Map<String, dynamic>? coinData;
   double coinAsset = 0.0;
-  double? coinPrice;
-  double? totalValue;
 
   @override
   void initState() {
     super.initState();
-    _loadExistingAsset();
-  }
-
-  Future<void> _loadExistingAsset() async {
-    String cryptoSymbol = cryptoCont.text.trim();
-    if (cryptoSymbol.isEmpty) return;
-
-    final assetData = await firestoreService.getAsset(cryptoSymbol);
-    if (assetData != null) {
-      setState(() {
-        coinAsset = assetData['amount'] ?? 0.0;
-        amountCont.text = coinAsset.toString();
-      });
-    }
   }
 
   Future<void> _fetchData() async {
@@ -52,7 +36,6 @@ class _CryptoState extends State<Crypto> {
       setState(() {
         coinData = data['data'][cryptoCont.text.trim()];
       });
-      _loadExistingAsset();
     } catch (e) {
       showDialog(
         context: context,
@@ -70,19 +53,15 @@ class _CryptoState extends State<Crypto> {
     }
   }
 
-  void fetchAmount() {
-    setState(() {
-      coinAsset = double.tryParse(amountCont.text.trim()) ?? 0.0;
-    });
-  }
-
   Future<void> _saveAsset() async {
-    fetchAmount();
+    final coinPrice = coinData?['quote']['USD']['price'] ?? 0.0;
+    final usdValue = coinPrice * coinAsset;
     final imageUrl =
-        'https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData!['id']}.png';
+        'https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData?['id']}.png';
+    final updatedDate = DateTime.now();
+
     await firestoreService.saveAsset(
-        cryptoCont.text.trim(), coinAsset, imageUrl);
-    _loadExistingAsset();
+        cryptoCont.text.trim(), coinAsset, imageUrl, usdValue, updatedDate);
   }
 
   @override
@@ -257,7 +236,26 @@ class _CryptoState extends State<Crypto> {
                                                   BorderRadius.circular(8.0),
                                             ),
                                           ),
-                                          onPressed: _saveAsset,
+                                          onPressed: () async {
+                                            final coinPrice = coinData?['quote']
+                                                    ['USD']['price'] ??
+                                                0.0;
+                                            final newAmount = double.tryParse(
+                                                    amountCont.text.trim()) ??
+                                                0.0;
+                                            final newValueInUsd =
+                                                newAmount * coinPrice;
+                                            await firestoreService.saveAsset(
+                                                cryptoCont.text.trim(),
+                                                newAmount,
+                                                'https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData?['id']}.png',
+                                                newValueInUsd,
+                                                DateTime.now());
+                                            Get.snackbar('Success',
+                                                'Asset saved successfully!',
+                                                snackPosition:
+                                                    SnackPosition.BOTTOM);
+                                          },
                                           label: const Text(
                                             'Save asset',
                                             style: TextStyle(
@@ -346,14 +344,36 @@ class _CryptoState extends State<Crypto> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                    onPressed: () {
+                                  onPressed: () async {
+                                    final coinPrice = coinData?['quote']['USD']
+                                            ['price'] ??
+                                        0.0;
+                                    if (coinPrice != 0.0) {
                                       showAmountDialog(
-                                          context, asset['symbol']);
-                                    },
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Colors.purple,
-                                    )),
+                                          context, asset['symbol'], coinPrice);
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('Error'),
+                                          content: const Text(
+                                              'Coin data is not available. Please fetch data first.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.purple,
+                                  ),
+                                ),
                                 IconButton(
                                   icon: const Icon(
                                     Icons.delete,

@@ -37,7 +37,6 @@ class DataService {
     }
   }
 
-  // Get total remaining credit from all documents
   Future<double> getTotalRemainingCredit() async {
     try {
       final querySnapshot = await _firestore

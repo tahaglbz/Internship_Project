@@ -54,13 +54,20 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
-  Future<void> saveAsset(String symbol, double amount, String imageUrl) async {
+  Future<void> saveAsset(String symbol, double amount, String imageUrl,
+      double usdValue, DateTime updatedDate) async {
     await _firestore
         .collection('users')
         .doc(currentUser?.uid)
         .collection('assets')
         .doc(symbol)
-        .set({'symbol': symbol, 'amount': amount, 'imageUrl': imageUrl});
+        .set({
+      'symbol': symbol,
+      'amount': amount,
+      'imageUrl': imageUrl,
+      'usdValue': usdValue,
+      'updatedDate': updatedDate.toIso8601String(),
+    });
   }
 
   Future<void> saveExcAsset(
@@ -69,10 +76,8 @@ class FirestoreService {
 
     if (assetIconPath == 'lib/assets/stock.png' ||
         assetIconPath == 'lib/assets/money.png') {
-      // Stock veya Other seçilmişse, valueInUsd amount ile aynı olacak
       valueInUsd = amount;
     } else {
-      // Diğer durumlarda (Altın, TL, Euro, Dolar), USD karşılığını hesaplayın
       valueInUsd = await fixerio.calculateAssetValue(assetIconPath, amount);
     }
 
@@ -251,12 +256,66 @@ class FirestoreService {
     });
   }
 
-  Future<void> updateAsset(String symbol, double newAmount) async {
+  Future<void> updateAsset(String symbol, double newAmount, double newUsdValue,
+      DateTime updatedDate) async {
     await _firestore
         .collection('users')
         .doc(currentUser?.uid)
         .collection('assets')
         .doc(symbol)
-        .update({'amount': newAmount});
+        .update({
+      'amount': newAmount,
+      'usdValue': newUsdValue,
+      'updatedDate': updatedDate.toIso8601String(),
+    });
+  }
+
+  Future<void> updateAssetAmount(
+      String symbol, double newAmount, double newValueInUsd) async {
+    final updatedDate = DateTime.now();
+
+    final assetRef = _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('assets')
+        .doc(symbol);
+
+    // Fetch the current data
+    final assetSnapshot = await assetRef.get();
+    if (assetSnapshot.exists) {
+      final currentData = assetSnapshot.data()!;
+      final updateHistory =
+          currentData['updateHistory'] as List<dynamic>? ?? [];
+
+      // Add the new update
+      updateHistory.add({
+        'amount': newAmount,
+        'valueInUsd': newValueInUsd,
+        'updatedDate': updatedDate.toIso8601String(),
+      });
+
+      // Save the updated data back to Firestore
+      await assetRef.update({
+        'amount': newAmount,
+        'valueInUsd': newValueInUsd,
+        'updatedDate': updatedDate.toIso8601String(),
+        'updateHistory': updateHistory,
+      });
+    } else {
+      // Handle the case where the document does not exist
+      await assetRef.set({
+        'symbol': symbol,
+        'amount': newAmount,
+        'valueInUsd': newValueInUsd,
+        'updatedDate': updatedDate.toIso8601String(),
+        'updateHistory': [
+          {
+            'amount': newAmount,
+            'valueInUsd': newValueInUsd,
+            'updatedDate': updatedDate.toIso8601String(),
+          }
+        ],
+      });
+    }
   }
 }

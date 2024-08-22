@@ -91,7 +91,7 @@ void showUpdateDia(BuildContext context, String oldAssetName, double oldAmount,
                         );
                         Get.snackbar('Success', 'Asset updated successfully!',
                             snackPosition: SnackPosition.BOTTOM);
-                        Navigator.of(context).pop();
+                        Get.back();
                       } catch (e) {
                         Get.snackbar('Error', 'Failed to update asset: $e',
                             snackPosition: SnackPosition.BOTTOM);

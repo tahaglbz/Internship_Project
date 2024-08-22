@@ -36,7 +36,7 @@ class MainMenu extends StatelessWidget {
         'gradient': AppColors.debtCardColors
       },
       {
-        "title": "Analytics",
+        "title": "Portfolio",
         'page': '/analytics',
         'gradient': AppColors.analyticsGradient
       },
