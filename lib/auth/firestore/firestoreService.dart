@@ -299,14 +299,12 @@ class FirestoreService {
       final updateHistory =
           currentData['updateHistory'] as List<dynamic>? ?? [];
 
-      // Add the new update
       updateHistory.add({
         'amount': newAmount,
         'valueInUsd': newValueInUsd,
         'updatedDate': updatedDate.toIso8601String(),
       });
 
-      // Save the updated data back to Firestore
       await assetRef.update({
         'amount': newAmount,
         'valueInUsd': newValueInUsd,
@@ -314,7 +312,6 @@ class FirestoreService {
         'updateHistory': updateHistory,
       });
     } else {
-      // Handle the case where the document does not exist
       await assetRef.set({
         'symbol': symbol,
         'amount': newAmount,

@@ -162,7 +162,71 @@ class DataService {
       }
       return totalAmount;
     } catch (e) {
-      print("Error in getTotalExpenses: $e");
+      print("Error in getTotalCoin: $e");
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> getCoinData() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .doc(currentUser?.uid)
+          .collection('assets')
+          .get();
+
+      double totalValue = 0.0;
+      final List<Map<String, dynamic>> coinData = [];
+
+      for (var doc in querySnapshot.docs) {
+        final data = doc.data();
+        final symbol = data['symbol'] as String?;
+        final usdValue = data['usdValue'] as double?;
+
+        if (symbol != null && usdValue != null) {
+          totalValue += usdValue;
+          coinData.add({
+            'symbol': symbol,
+            'usdValue': usdValue,
+          });
+        }
+      }
+
+      return {'totalValue': totalValue, 'coinData': coinData};
+    } catch (e) {
+      print("Error fetching coin data: $e");
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> getExchangeData() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .doc(currentUser?.uid)
+          .collection('exchangeAsset') // Corrected the collection name
+          .get();
+
+      double totalValue = 0.0;
+      final List<Map<String, dynamic>> exchangeData = [];
+
+      for (var doc in querySnapshot.docs) {
+        final data = doc.data();
+        final assetName = data['assetName'] as String?;
+        final valueInUsd = data['valueInUsd'] as double?;
+
+        if (assetName != null && valueInUsd != null) {
+          totalValue += valueInUsd;
+          exchangeData.add({
+            'assetName': assetName,
+            'valueInUsd': valueInUsd,
+          });
+        }
+      }
+
+      return {'totalValue': totalValue, 'exchangeData': exchangeData};
+    } catch (e) {
+      print("Error fetching exchange data: $e");
       rethrow;
     }
   }

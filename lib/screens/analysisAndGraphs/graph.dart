@@ -54,15 +54,20 @@ class _GraphState extends State<Graph> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildRadioButton('expenses', 'Expenses'),
-                const SizedBox(width: 16),
-                _buildRadioButton('credit', 'Credit'),
-                const SizedBox(width: 16),
-                _buildRadioButton('coins', 'Coins'),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildRadioButton('expenses', 'Expenses'),
+                  const SizedBox(width: 16),
+                  _buildRadioButton('credit', 'Credit'),
+                  const SizedBox(width: 16),
+                  _buildRadioButton('coins', 'Coins'),
+                  const SizedBox(width: 16),
+                  _buildRadioButton('exchange', 'Exchange'),
+                ],
+              ),
             ),
             const SizedBox(height: 24),
             Expanded(
@@ -86,7 +91,9 @@ class _GraphState extends State<Graph> {
                         ? _buildCreditChart()
                         : selectedOption == 'coins'
                             ? _pieChart
-                            : const Center(child: Text('Select an option')),
+                            : selectedOption == 'exchange'
+                                ? _pieChart
+                                : const Center(child: Text('Select an option')),
               ),
             ),
           ],
@@ -106,6 +113,8 @@ class _GraphState extends State<Graph> {
             _loadCreditData();
           } else if (value == 'coins') {
             _loadCoinData();
+          } else if (value == 'exchange') {
+            _loadExchangeData();
           }
         });
       },
@@ -129,27 +138,44 @@ class _GraphState extends State<Graph> {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getCoinsData() async {
+  Future<void> _loadCoinData() async {
     try {
-      final querySnapshot = await _firestore
-          .collection('users')
-          .doc(currentUser?.uid)
-          .collection('assets')
-          .get();
+      final result = await dataService.getCoinData();
+      final double totalValue = result['totalValue'] as double;
+      final List<Map<String, dynamic>> coinData =
+          result['coinData'] as List<Map<String, dynamic>>;
 
-      return querySnapshot.docs.map((doc) {
-        return {
-          'symbol': doc.data()['symbol'],
-          'usdValue': doc.data()['usdValue'],
-        };
-      }).toList();
+      setState(() {
+        _pieChart = _buildCoinPieChart(coinData, totalValue);
+      });
     } catch (e) {
-      print("Error fetching coin data: $e");
-      rethrow;
+      print("Error loading coin data: $e");
     }
   }
 
-  Widget _buildPieChart(List<Map<String, dynamic>> coinData) {
+  Future<void> _loadExchangeData() async {
+    try {
+      final result = await dataService.getExchangeData();
+      final double totalValue = result['totalValue'] as double;
+      final List<Map<String, dynamic>> exchangeData =
+          result['exchangeData'] as List<Map<String, dynamic>>;
+
+      print('Exchange Data Loaded: $exchangeData');
+
+      setState(() {
+        if (exchangeData.isEmpty) {
+          _pieChart = const Center(child: Text('No exchange data available'));
+        } else {
+          _pieChart = _buildExchangePieChart(exchangeData, totalValue);
+        }
+      });
+    } catch (e) {
+      print("Error loading exchange data: $e");
+    }
+  }
+
+  Widget _buildCoinPieChart(
+      List<Map<String, dynamic>> data, double totalValue) {
     final List<Color> colorPalette = [
       Colors.blue.shade900,
       Colors.deepOrange.shade800,
@@ -161,16 +187,60 @@ class _GraphState extends State<Graph> {
 
     return PieChart(
       PieChartData(
-        sections: coinData.map((coin) {
-          final int index = coinData.indexOf(coin);
+        sections: data.map((item) {
+          final int index = data.indexOf(item);
+          final double value = item['usdValue'] as double;
+          final double percentage = (value / totalValue) * 100;
+          final String title = item['symbol']; // For coins, use symbol
+
           return PieChartSectionData(
-            color: colorPalette[
-                index % colorPalette.length], // Use the color palette
-            value: coin['usdValue'] as double,
-            title: coin['symbol'] as String,
+            color: colorPalette[index % colorPalette.length],
+            value: value,
+            title: '$title (${percentage.toStringAsFixed(1)}%)',
             radius: 50,
-            titleStyle:
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            titleStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          );
+        }).toList(),
+        borderData: FlBorderData(show: false),
+        sectionsSpace: 0,
+        centerSpaceRadius: 40,
+      ),
+    );
+  }
+
+  Widget _buildExchangePieChart(
+      List<Map<String, dynamic>> data, double totalValue) {
+    final List<Color> colorPalette = [
+      Colors.blue.shade900,
+      Colors.deepOrange.shade800,
+      Colors.deepPurple.shade800,
+      Colors.green.shade800,
+      Colors.yellow.shade800,
+      Colors.indigo
+    ];
+
+    return PieChart(
+      PieChartData(
+        sections: data.map((item) {
+          final int index = data.indexOf(item);
+          final double value = item['valueInUsd'] as double;
+          final double percentage = (value / totalValue) * 100;
+          final String title = item['assetName'];
+
+          return PieChartSectionData(
+            color: colorPalette[index % colorPalette.length],
+            value: value,
+            title: '$title (${percentage.toStringAsFixed(1)}%)',
+            radius: 50,
+            titleStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           );
         }).toList(),
         borderData: FlBorderData(show: false),
@@ -203,13 +273,6 @@ class _GraphState extends State<Graph> {
     });
   }
 
-  void _loadCoinData() async {
-    final coinData = await getCoinsData();
-    setState(() {
-      _pieChart = _buildPieChart(coinData);
-    });
-  }
-
   Widget _buildExpenseChart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,38 +295,32 @@ class _GraphState extends State<Graph> {
                 _buildBarGroup(2, expenseTotal, Colors.blue),
               ],
               titlesData: FlTitlesData(
+                leftTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      switch (value.toInt()) {
-                        case 0:
-                          return const Text('Paid');
-                        case 1:
-                          return const Text('Unpaid');
-                        case 2:
-                          return const Text('Total');
-                        default:
-                          return const Text('');
-                      }
-                    },
-                    reservedSize: 32,
-                  ),
-                ),
-                leftTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
+                    sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, meta) {
+                    switch (value.toInt()) {
+                      case 0:
+                        return const Text('paid');
+                      case 1:
+                        return const Text('unpaid');
+                      case 2:
+                        return const Text('total');
+                      default:
+                        return const Text('');
+                    }
+                  },
+                )),
               ),
-              borderData: FlBorderData(
-                show: false,
-              ),
-              gridData: const FlGridData(show: true),
+              borderData: FlBorderData(show: true),
+              gridData: FlGridData(show: true),
+              alignment: BarChartAlignment.spaceEvenly,
             ),
           ),
         ),
@@ -288,43 +345,37 @@ class _GraphState extends State<Graph> {
           child: BarChart(
             BarChartData(
               barGroups: [
-                _buildBarGroup(0, creditPaid, Colors.green),
-                _buildBarGroup(1, creditRemaining, Colors.red),
-                _buildBarGroup(2, creditTotal, Colors.blue),
+                _buildBarGroup(0, creditTotal, Colors.blue),
+                _buildBarGroup(1, creditRemaining, Colors.orange),
+                _buildBarGroup(2, creditPaid, Colors.green),
               ],
               titlesData: FlTitlesData(
+                leftTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      switch (value.toInt()) {
-                        case 0:
-                          return const Text('Paid');
-                        case 1:
-                          return const Text('Remaining');
-                        case 2:
-                          return const Text('Total');
-                        default:
-                          return const Text('');
-                      }
-                    },
-                    reservedSize: 32,
-                  ),
-                ),
-                leftTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
+                    sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, meta) {
+                    switch (value.toInt()) {
+                      case 0:
+                        return const Text('Total');
+                      case 1:
+                        return const Text('Remaining');
+                      case 2:
+                        return const Text('Paid');
+                      default:
+                        return const Text('');
+                    }
+                  },
+                )),
+                rightTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
-              borderData: FlBorderData(
-                show: false,
-              ),
-              gridData: const FlGridData(show: true),
+              borderData: FlBorderData(show: true),
+              gridData: FlGridData(show: true),
+              alignment: BarChartAlignment.spaceAround,
             ),
           ),
         ),
@@ -339,11 +390,14 @@ class _GraphState extends State<Graph> {
         BarChartRodData(
           toY: y,
           color: color,
-          width: 30,
-          borderRadius: BorderRadius.circular(4),
+          width: 22,
+          backDrawRodData: BackgroundBarChartRodData(
+            show: true,
+            toY: 0,
+            color: Colors.grey.withOpacity(0.2),
+          ),
         ),
       ],
-      showingTooltipIndicators: [0],
     );
   }
 }

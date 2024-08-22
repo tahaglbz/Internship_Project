@@ -68,7 +68,7 @@ class MainMenu extends StatelessWidget {
             Text(
               'Pages',
               style: GoogleFonts.adamina(
-                  color: Colors.pink,
+                  color: const Color.fromARGB(255, 0, 9, 99),
                   fontSize: 12,
                   fontWeight: FontWeight.w700),
             ),
@@ -80,13 +80,13 @@ class MainMenu extends StatelessWidget {
                     child: Text(
                       'View All',
                       style: GoogleFonts.adamina(
-                          color: Colors.pink,
+                          color: const Color.fromARGB(255, 0, 9, 99),
                           fontSize: 12,
                           fontWeight: FontWeight.w700),
                     )),
                 const Icon(
                   Icons.keyboard_double_arrow_right_rounded,
-                  color: Colors.pink,
+                  color: const Color.fromARGB(255, 0, 9, 99),
                 )
               ],
             ),
