@@ -22,4 +22,8 @@ class MainMenuController extends GetxController {
   Stream<List<Map<String, dynamic>>> getCredits() {
     return firestoreService.getCreditStream();
   }
+
+  Stream<List<Map<String, dynamic>>> getPaidExpendes() {
+    return firestoreService.getPaidExpendes();
+  }
 }

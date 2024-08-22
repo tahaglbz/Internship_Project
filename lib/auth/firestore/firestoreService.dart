@@ -45,6 +45,18 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
+  Stream<List<Map<String, dynamic>>> getPaidExpendes() {
+    return _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('expense')
+        .where('paid', isEqualTo: false)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList());
+  }
+
   Stream<List<Map<String, dynamic>>> getCreditStream() {
     return _firestore
         .collection('users')

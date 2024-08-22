@@ -44,7 +44,7 @@ class _CryptoState extends State<Crypto> {
           content: const Text('Could not fetch data, please try again.'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Get.back(),
               child: const Text('OK'),
             ),
           ],
@@ -360,8 +360,7 @@ class _CryptoState extends State<Crypto> {
                                               'Coin data is not available. Please fetch data first.'),
                                           actions: [
                                             TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
+                                              onPressed: () => Get.back(),
                                               child: const Text('OK'),
                                             ),
                                           ],

@@ -332,8 +332,8 @@ class MainMenu extends StatelessWidget {
                                   )
                                 : cardData[index]['title'] == 'Expense'
                                     ? StreamBuilder<List<Map<String, dynamic>>>(
-                                        stream:
-                                            mainMenuController.getExpendes(),
+                                        stream: mainMenuController
+                                            .getPaidExpendes(),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
                                               ConnectionState.waiting) {
@@ -475,8 +475,12 @@ class MainMenu extends StatelessWidget {
         SizedBox(
           height: deviceHeight / 50,
         ),
-        Center(
-            child: GestureDetector(
+        SizedBox(
+          height: 200,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              GestureDetector(
                 onTap: () => Get.toNamed('/graph'),
                 child: Card(
                   elevation: 9.0,
@@ -491,7 +495,36 @@ class MainMenu extends StatelessWidget {
                             color: AppColors.defaultColor, width: 2.5),
                         borderRadius: BorderRadius.circular(20.0)),
                   ),
-                )))
+                ),
+              ),
+              SizedBox(width: 10), // Kartlar arasında boşluk
+              // Yeni Eklenen Kart
+              Card(
+                elevation: 9.0,
+                shadowColor: AppColors.defaultColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                child: Container(
+                  width: deviceWidth * 0.9,
+                  height: deviceHeight * 0.35,
+                  decoration: BoxDecoration(
+                      border:
+                          Border.all(color: AppColors.defaultColor, width: 2.5),
+                      borderRadius: BorderRadius.circular(20.0)),
+                  child: Center(
+                    child: Text(
+                      'Yeni Kart',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ]),
     );
   }

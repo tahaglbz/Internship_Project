@@ -26,7 +26,7 @@ Future<void> showAmountDialog(
           TextButton(
             child: const Text('Cancel'),
             onPressed: () {
-              Navigator.of(context).pop();
+              Get.back();
             },
           ),
           ElevatedButton(
@@ -42,7 +42,7 @@ Future<void> showAmountDialog(
                   newAmount,
                   newValueInUsd,
                 );
-                Navigator.of(context).pop();
+                Get.back();
               } catch (e) {
                 // Handle any errors that may occur
                 print('Error updating asset amount: $e');
