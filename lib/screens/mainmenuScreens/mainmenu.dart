@@ -333,7 +333,7 @@ class MainMenu extends StatelessWidget {
                                 : cardData[index]['title'] == 'Expense'
                                     ? StreamBuilder<List<Map<String, dynamic>>>(
                                         stream: mainMenuController
-                                            .getPaidExpendes(),
+                                            .getUnPaidExpendes(),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
                                               ConnectionState.waiting) {

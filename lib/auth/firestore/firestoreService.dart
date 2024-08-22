@@ -45,7 +45,7 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
-  Stream<List<Map<String, dynamic>>> getPaidExpendes() {
+  Stream<List<Map<String, dynamic>>> getUnPaidExpendes() {
     return _firestore
         .collection('users')
         .doc(currentUser?.uid)
