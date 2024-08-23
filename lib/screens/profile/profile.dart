@@ -4,13 +4,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/auth/widgets/reset_password.dart';
 import 'package:my_app/extensions/media_query.dart';
+import 'package:my_app/screens/profile/incomeBottomSheet.dart';
 import 'package:my_app/screens/profile/profileController.dart';
-
 import '../../widgets/appColors.dart';
+import '../../auth/firestore/firestoreService.dart'; // Ensure correct import
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Ensure FirestoreService is registered
+    Get.put(FirestoreService());
+
     final ProfileController controller = Get.put(ProfileController());
     final double deviceWidth = context.deviceWidth;
     final double deviceHeight = context.deviceHeight;
@@ -50,27 +54,27 @@ class ProfilePage extends StatelessWidget {
                             ? NetworkImage(controller.profilePictureUrl.value)
                             : null,
                     child: controller.profilePictureUrl.value.isEmpty
-                        ? Icon(Icons.person, size: 50)
+                        ? const Icon(Icons.person, size: 50)
                         : null,
                   ),
                 ),
-                SizedBox(height: 26),
+                const SizedBox(height: 26),
                 Text(
                   'Username: ${controller.username.value}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.defaultColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 26),
+                const SizedBox(height: 26),
                 Text(
                   'Registration Date: ${DateFormat('dd/MM/yyyy').format(controller.registrationDate.value)}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.defaultColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 26),
+                const SizedBox(height: 26),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.defaultColor),
@@ -81,20 +85,32 @@ class ProfilePage extends StatelessWidget {
                       controller.updateUserProfile(newUsername);
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Change Username',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                SizedBox(height: 26),
+                const SizedBox(height: 26),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.defaultColor),
                   onPressed: () async {
                     showResetPasswordBottomSheet(context);
                   },
-                  child: Text(
+                  child: const Text(
                     'Change Password',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 26),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.defaultColor),
+                  onPressed: () async {
+                    showIncomeBottomSheet(context);
+                  },
+                  child: const Text(
+                    'Add Your Income',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -120,15 +136,15 @@ class ProfilePage extends StatelessWidget {
                 'Edit Username',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: textController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'New Username',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -136,14 +152,14 @@ class ProfilePage extends StatelessWidget {
                     onPressed: () {
                       Get.back();
                     },
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(textController.text);
                     },
-                    child: Text('OK'),
+                    child: const Text('OK'),
                   ),
                 ],
               ),

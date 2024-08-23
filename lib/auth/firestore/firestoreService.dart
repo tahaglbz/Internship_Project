@@ -52,9 +52,7 @@ class FirestoreService {
         .collection('expense')
         .where('paid', isEqualTo: false)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>)
-            .toList());
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
   Stream<List<Map<String, dynamic>>> getCreditStream() {
@@ -80,6 +78,24 @@ class FirestoreService {
       'usdValue': usdValue,
       'updatedDate': updatedDate.toIso8601String(),
     });
+  }
+
+  Future<void> saveIncome(
+      String incomeName, double amount, DateTime updatedDate) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(currentUser?.uid)
+          .collection('incomes')
+          .doc(incomeName)
+          .set({
+        'incomeName': incomeName,
+        'amount': amount,
+        'updatedDate': updatedDate.toIso8601String(),
+      });
+    } catch (e) {
+      print("Error saving income: $e");
+    }
   }
 
   Future<void> saveExcAsset(
