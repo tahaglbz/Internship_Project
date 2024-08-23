@@ -55,7 +55,7 @@ class ProfilePage extends StatelessWidget {
                         : null,
                   ),
                 ),
-                const SizedBox(height: 26),
+                const SizedBox(height: 16),
                 Text(
                   'Username: ${controller.username.value}',
                   style: const TextStyle(
@@ -63,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 26),
+                const SizedBox(height: 16),
                 Text(
                   'Registration Date: ${DateFormat('dd/MM/yyyy').format(controller.registrationDate.value)}',
                   style: const TextStyle(
@@ -71,7 +71,7 @@ class ProfilePage extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 26),
+                const SizedBox(height: 16),
                 Row(
                   children: [
                     ElevatedButton(
@@ -89,7 +89,7 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 24),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.defaultColor),
@@ -103,7 +103,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 26),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.defaultColor),
@@ -114,6 +114,14 @@ class ProfilePage extends StatelessWidget {
                     'Enter Your Income',
                     style: TextStyle(color: Colors.white),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(
+                  color: AppColors.defaultColor,
+                  height: 2,
+                  thickness: 3,
                 ),
               ],
             ),
