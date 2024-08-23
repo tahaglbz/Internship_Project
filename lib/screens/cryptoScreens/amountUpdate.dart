@@ -44,6 +44,7 @@ Future<void> showAmountDialog(
                 );
                 Get.back();
               } catch (e) {
+                // Handle any errors that may occur
                 print('Error updating asset amount: $e');
               }
             },
