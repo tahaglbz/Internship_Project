@@ -7,6 +7,7 @@ import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/profile/incomeBottomSheet.dart';
 import 'package:my_app/screens/profile/profileController.dart';
 
+import '../../auth/firestore/firestoreService.dart';
 import '../../widgets/appColors.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -16,6 +17,7 @@ class ProfilePage extends StatelessWidget {
     final double deviceWidth = context.deviceWidth;
     final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
+    Get.lazyPut(() => FirestoreService());
 
     return Scaffold(
       appBar: PreferredSize(
