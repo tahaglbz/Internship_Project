@@ -12,6 +12,7 @@ import 'package:my_app/screens/expenseScreens/creditDetail/creditDetails.dart';
 import 'package:my_app/screens/expenseScreens/expense.dart';
 import 'package:my_app/screens/homepage.dart';
 import 'package:my_app/screens/mainmenuScreens/mainmenu.dart';
+import 'package:my_app/screens/profile/profile.dart';
 import 'package:my_app/splashscreen.dart';
 
 import 'firebase_options.dart';
@@ -87,6 +88,11 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/graph',
             page: () => const Graph(),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
+        GetPage(
+            name: '/profile',
+            page: () => ProfilePage(),
             transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1)),
       ],

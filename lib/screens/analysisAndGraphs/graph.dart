@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart'; // Import fl_chart
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/analysisAndGraphs/datas.dart';
 
@@ -43,8 +44,10 @@ class _GraphState extends State<Graph> {
               icon: const Icon(Icons.arrow_back_ios_new_sharp)),
           automaticallyImplyLeading: false,
           elevation: 0,
-          title: Image.asset(
-            'lib/assets/logo.png',
+          title: Text(
+            'Graphics',
+            style: GoogleFonts.adamina(
+                color: Colors.white, fontSize: 35, fontWeight: FontWeight.w700),
           ),
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 0, 9, 99),

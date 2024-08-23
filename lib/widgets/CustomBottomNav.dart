@@ -35,7 +35,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             label: 'Exchange',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.currency_bitcoin_sharp),
+            icon: Icon(Icons.person_2_sharp),
             label: 'Profile',
           ),
         ],

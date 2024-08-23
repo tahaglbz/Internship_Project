@@ -81,7 +81,7 @@ class AuthService extends GetxController {
               'registrationDate': DateTime.now()
             });
             Get.snackbar('Success', 'Signing Up...');
-            Get.offAllNamed('/login'); // Navigate to the login page
+            Get.offAllNamed('/login');
           }
         } on FirebaseAuthException catch (e) {
           Get.snackbar('Error', e.message ?? 'An error occurred');

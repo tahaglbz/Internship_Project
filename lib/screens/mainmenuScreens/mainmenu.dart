@@ -6,12 +6,40 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/mainmenuScreens/mainmenuController.dart';
+import '../../widgets/CustomBottomNav.dart';
 import '../../widgets/appColors.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget {
   MainMenu({super.key});
 
+  @override
+  State<MainMenu> createState() => _MainMenuState();
+}
+
+class _MainMenuState extends State<MainMenu> {
   MainMenuController mainMenuController = MainMenuController();
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (_selectedIndex) {
+      case 0:
+        Get.offAllNamed('/mainmenu');
+        break;
+      case 1:
+        Get.offAllNamed('/crypto');
+
+        break;
+      case 2:
+        Get.offAllNamed('/expense');
+        break;
+      case 3:
+        Get.offAllNamed('/profile');
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -526,6 +554,8 @@ class MainMenu extends StatelessWidget {
           ),
         ),
       ]),
+      bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
     );
   }
 }
