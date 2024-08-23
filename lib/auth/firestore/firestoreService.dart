@@ -292,7 +292,6 @@ class FirestoreService {
         .collection('assets')
         .doc(symbol);
 
-    // Fetch the current data
     final assetSnapshot = await assetRef.get();
     if (assetSnapshot.exists) {
       final currentData = assetSnapshot.data()!;

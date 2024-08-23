@@ -1,10 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart'; // Import fl_chart
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/analysisAndGraphs/datas.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Graph extends StatefulWidget {
   const Graph({super.key});
@@ -16,7 +17,6 @@ class Graph extends StatefulWidget {
 class _GraphState extends State<Graph> {
   String? selectedOption; // Track the selected option
   final DataService dataService = DataService();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User? currentUser = FirebaseAuth.instance.currentUser;
 
   double expensePaidTotal = 0.0;
@@ -30,7 +30,7 @@ class _GraphState extends State<Graph> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = context.deviceWidth;
-    final double deviceHeight = context.deviceHeight;
+    // final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
 
     return Scaffold(
@@ -296,11 +296,11 @@ class _GraphState extends State<Graph> {
               ],
               titlesData: FlTitlesData(
                 leftTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 rightTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 topTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                   showTitles: true,
@@ -319,7 +319,7 @@ class _GraphState extends State<Graph> {
                 )),
               ),
               borderData: FlBorderData(show: true),
-              gridData: FlGridData(show: true),
+              gridData: const FlGridData(show: true),
               alignment: BarChartAlignment.spaceEvenly,
             ),
           ),
@@ -351,7 +351,7 @@ class _GraphState extends State<Graph> {
               ],
               titlesData: FlTitlesData(
                 leftTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                   showTitles: true,
@@ -369,12 +369,12 @@ class _GraphState extends State<Graph> {
                   },
                 )),
                 rightTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 topTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
               borderData: FlBorderData(show: true),
-              gridData: FlGridData(show: true),
+              gridData: const FlGridData(show: true),
               alignment: BarChartAlignment.spaceAround,
             ),
           ),
