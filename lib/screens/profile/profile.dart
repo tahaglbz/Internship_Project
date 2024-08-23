@@ -1,81 +1,154 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:my_app/auth/widgets/reset_password.dart';
+import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/profile/profileController.dart';
+
+import '../../widgets/appColors.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController controller = Get.put(ProfileController());
+    final double deviceWidth = context.deviceWidth;
+    final double deviceHeight = context.deviceHeight;
+    double appBarHeight = deviceWidth * 0.28;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(appBarHeight),
+        child: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+          leading: IconButton(
+              onPressed: () => Get.offAllNamed('/mainmenu'),
+              icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          title: Text(
+            'Profile',
+            style: GoogleFonts.adamina(
+                color: Colors.white, fontSize: 35, fontWeight: FontWeight.w700),
+          ),
+          centerTitle: true,
+          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+        ),
       ),
       body: Obx(() {
         return Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () => controller.uploadProfilePhoto(),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: controller.profilePictureUrl.value.isNotEmpty
-                      ? NetworkImage(controller.profilePictureUrl.value)
-                      : null,
-                  child: controller.profilePictureUrl.value.isEmpty
-                      ? Icon(Icons.person, size: 50)
-                      : null,
+          child: Center(
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () => controller.uploadProfilePhoto(),
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage:
+                        controller.profilePictureUrl.value.isNotEmpty
+                            ? NetworkImage(controller.profilePictureUrl.value)
+                            : null,
+                    child: controller.profilePictureUrl.value.isEmpty
+                        ? Icon(Icons.person, size: 50)
+                        : null,
+                  ),
                 ),
-              ),
-              SizedBox(height: 16),
-              Text('Username: ${controller.username.value}'),
-              SizedBox(height: 8),
-              Text(
-                  'Registration Date: ${DateFormat('dd/MM/yyyy').format(controller.registrationDate.value)}'),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  String? newUsername = await _showEditUsernameDialog(context);
-                  if (newUsername != null) {
-                    controller.updateUserProfile(newUsername);
-                  }
-                },
-                child: Text('Change Username'),
-              ),
-            ],
+                SizedBox(height: 26),
+                Text(
+                  'Username: ${controller.username.value}',
+                  style: TextStyle(
+                      color: AppColors.defaultColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 26),
+                Text(
+                  'Registration Date: ${DateFormat('dd/MM/yyyy').format(controller.registrationDate.value)}',
+                  style: TextStyle(
+                      color: AppColors.defaultColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 26),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.defaultColor),
+                  onPressed: () async {
+                    String? newUsername =
+                        await _showEditUsernameBottomSheet(context);
+                    if (newUsername != null && newUsername.isNotEmpty) {
+                      controller.updateUserProfile(newUsername);
+                    }
+                  },
+                  child: Text(
+                    'Change Username',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(height: 26),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.defaultColor),
+                  onPressed: () async {
+                    showResetPasswordBottomSheet(context);
+                  },
+                  child: Text(
+                    'Change Password',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       }),
     );
   }
 
-  Future<String?> _showEditUsernameDialog(BuildContext context) async {
+  Future<String?> _showEditUsernameBottomSheet(BuildContext context) async {
     TextEditingController textController = TextEditingController();
-    return showDialog<String>(
+    return await showModalBottomSheet<String>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Username'),
-          content: TextField(
-            controller: textController,
-            decoration: InputDecoration(hintText: 'New Username'),
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                'Edit Username',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              SizedBox(height: 16),
+              TextField(
+                controller: textController,
+                decoration: InputDecoration(
+                  hintText: 'New Username',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  SizedBox(width: 8),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(textController.text);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(textController.text);
-              },
-              child: Text('OK'),
-            ),
-          ],
         );
       },
     );

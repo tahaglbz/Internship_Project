@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 25,
                   ),
                   TextButton(
-                    onPressed: () => showResetPassDia(context),
+                    onPressed: () => showResetPasswordBottomSheet(context),
                     child: const Text(
                       'Forgot Password',
                       style: TextStyle(
