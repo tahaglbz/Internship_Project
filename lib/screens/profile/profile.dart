@@ -6,15 +6,12 @@ import 'package:my_app/auth/widgets/reset_password.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/profile/incomeBottomSheet.dart';
 import 'package:my_app/screens/profile/profileController.dart';
+
 import '../../widgets/appColors.dart';
-import '../../auth/firestore/firestoreService.dart'; // Ensure correct import
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Ensure FirestoreService is registered
-    Get.put(FirestoreService());
-
     final ProfileController controller = Get.put(ProfileController());
     final double deviceWidth = context.deviceWidth;
     final double deviceHeight = context.deviceHeight;
@@ -75,32 +72,36 @@ class ProfilePage extends StatelessWidget {
                       fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 26),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.defaultColor),
-                  onPressed: () async {
-                    String? newUsername =
-                        await _showEditUsernameBottomSheet(context);
-                    if (newUsername != null && newUsername.isNotEmpty) {
-                      controller.updateUserProfile(newUsername);
-                    }
-                  },
-                  child: const Text(
-                    'Change Username',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 26),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.defaultColor),
-                  onPressed: () async {
-                    showResetPasswordBottomSheet(context);
-                  },
-                  child: const Text(
-                    'Change Password',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.defaultColor),
+                      onPressed: () async {
+                        String? newUsername =
+                            await _showEditUsernameBottomSheet(context);
+                        if (newUsername != null && newUsername.isNotEmpty) {
+                          controller.updateUserProfile(newUsername);
+                        }
+                      },
+                      child: const Text(
+                        'Change Username',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.defaultColor),
+                      onPressed: () async {
+                        showResetPasswordBottomSheet(context);
+                      },
+                      child: const Text(
+                        'Change Password',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 26),
                 ElevatedButton(
@@ -110,7 +111,7 @@ class ProfilePage extends StatelessWidget {
                     showIncomeBottomSheet(context);
                   },
                   child: const Text(
-                    'Add Your Income',
+                    'Enter Your Income',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
