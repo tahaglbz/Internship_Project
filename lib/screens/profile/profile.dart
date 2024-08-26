@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:my_app/screens/profile/profileController.dart';
+import 'package:my_app/auth/widgets/reset_password.dart';
+import 'package:my_app/extensions/media_query.dart';
+import 'package:my_app/screens/expenseScreens/creditDetail/creditDetailDialog.dart';
 import 'package:my_app/screens/profile/incomeBottomSheet.dart';
 import 'package:my_app/screens/profile/incomeUpdateBottomSheet.dart';
-import 'package:my_app/widgets/appColors.dart';
+import 'package:my_app/screens/profile/profileController.dart';
 
-import '../../auth/widgets/reset_password.dart';
-import '../expenseScreens/creditDetail/creditDetailDialog.dart';
+import '../../auth/firestore/firestoreService.dart';
+import '../../widgets/appColors.dart';
 
 class ProfilePage extends StatelessWidget {
   String formatDate(DateTime date) {
@@ -17,9 +19,11 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController controller = Get.find();
-    final double deviceWidth = MediaQuery.of(context).size.width;
+    final ProfileController controller = Get.put(ProfileController());
+    final double deviceWidth = context.deviceWidth;
+    // final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
+    Get.lazyPut(() => FirestoreService());
 
     return Scaffold(
       appBar: PreferredSize(
