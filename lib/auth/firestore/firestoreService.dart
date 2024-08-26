@@ -352,8 +352,6 @@ class FirestoreService {
       });
 
       await assetRef.update({
-        'amount': newAmount,
-        'valueInUsd': newValueInUsd,
         'updatedDate': updatedDate.toIso8601String(),
         'updateHistory': updateHistory,
       });
