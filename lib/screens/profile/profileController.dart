@@ -27,7 +27,7 @@ class ProfileController extends GetxController {
       history.sort((a, b) {
         DateTime dateA = DateTime.parse(a['date']);
         DateTime dateB = DateTime.parse(b['date']);
-        return dateB.compareTo(dateA); // Azalan sıraya göre
+        return dateB.compareTo(dateA);
       });
       return history.first['amount'];
     } else {
@@ -63,7 +63,6 @@ class ProfileController extends GetxController {
         try {
           final storageRef =
               _storage.ref().child('profile_pictures').child('${user.uid}.jpg');
-
           final uploadTask = storageRef.putFile(file);
           await uploadTask.whenComplete(() async {
             final downloadUrl = await storageRef.getDownloadURL();
