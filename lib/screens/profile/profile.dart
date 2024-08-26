@@ -236,6 +236,7 @@ class ProfilePage extends StatelessWidget {
                                     }
                                   }
                                 }
+                                return null;
                               },
                               child: Card(
                                 margin: const EdgeInsets.all(8.0),
@@ -245,8 +246,8 @@ class ProfilePage extends StatelessWidget {
                                       Image.asset('lib/assets/revenue.png'),
                                   title:
                                       Text(income['incomeName'] ?? 'no name'),
-                                  subtitle:
-                                      Text('Budget : ${income['amount'] ?? 0}'),
+                                  subtitle: Text(
+                                      'Budget : ${controller.getDisplayAmount(income)}'),
                                   trailing: Text(
                                     'Date: ${formatDate(DateTime.parse(income['updatedDate'] ?? DateTime.now().toIso8601String()))}',
                                     style: const TextStyle(

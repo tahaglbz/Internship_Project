@@ -20,6 +20,23 @@ class ProfileController extends GetxController {
     loadUserData();
   }
 
+  double getDisplayAmount(Map<String, dynamic> income) {
+    if (income['updatedHistory'] != null &&
+        income['updatedHistory'].isNotEmpty) {
+      List<dynamic> history = income['updatedHistory'];
+
+      history.sort((a, b) {
+        DateTime dateA = DateTime.parse(a['date']);
+        DateTime dateB = DateTime.parse(b['date']);
+        return dateB.compareTo(dateA); // Azalan sıraya göre
+      });
+
+      return history.first['amount'];
+    } else {
+      return income['amount'] ?? 0.0;
+    }
+  }
+
   Future<void> loadUserData() async {
     final user = _auth.currentUser;
     if (user != null) {
