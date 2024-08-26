@@ -24,13 +24,11 @@ class ProfileController extends GetxController {
     if (income['updatedHistory'] != null &&
         income['updatedHistory'].isNotEmpty) {
       List<dynamic> history = income['updatedHistory'];
-
       history.sort((a, b) {
         DateTime dateA = DateTime.parse(a['date']);
         DateTime dateB = DateTime.parse(b['date']);
         return dateB.compareTo(dateA); // Azalan sıraya göre
       });
-
       return history.first['amount'];
     } else {
       return income['amount'] ?? 0.0;
@@ -66,7 +64,6 @@ class ProfileController extends GetxController {
           final storageRef =
               _storage.ref().child('profile_pictures').child('${user.uid}.jpg');
 
-          // Dosya yükleme işlemi
           final uploadTask = storageRef.putFile(file);
           await uploadTask.whenComplete(() async {
             final downloadUrl = await storageRef.getDownloadURL();
