@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/extensions/media_query.dart';
+import 'package:my_app/screens/analysisAndGraphs/IncExpChart.dart';
 import 'package:my_app/screens/mainmenuScreens/mainmenuController.dart';
 import '../../widgets/CustomBottomNav.dart';
 import '../../widgets/appColors.dart';
+import '../analysisAndGraphs/datas.dart';
 
 class MainMenu extends StatefulWidget {
   MainMenu({super.key});
@@ -19,6 +21,30 @@ class MainMenu extends StatefulWidget {
 class _MainMenuState extends State<MainMenu> {
   MainMenuController mainMenuController = MainMenuController();
   int _selectedIndex = 0;
+  double incomeTotal = 0.0;
+  double expenseTotal = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final dataService = DataService();
+
+    try {
+      final income = await dataService.getTotalIncome();
+      final expenses = await dataService.getTotalExpenses();
+
+      setState(() {
+        incomeTotal = income;
+        expenseTotal = expenses;
+      });
+    } catch (e) {
+      print("Error loading data: $e");
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -504,55 +530,96 @@ class _MainMenuState extends State<MainMenu> {
           height: deviceHeight / 50,
         ),
         SizedBox(
-          height: 200,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              GestureDetector(
-                onTap: () => Get.toNamed('/graph'),
-                child: Card(
+            height: 200,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                GestureDetector(
+                  onTap: () => Get.toNamed('/graph'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                        16.0), // Adjust the padding as needed
+                    child: Stack(
+                      children: [
+                        Card(
+                          elevation: 9.0,
+                          shadowColor: AppColors.defaultColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Container(
+                            width: deviceWidth * 0.9,
+                            height: deviceHeight * 0.35,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.defaultColor,
+                                width: 2.5,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: incomeTotal > 0 && expenseTotal > 0
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: IncomeExpenseChart(
+                                      incomeTotal: incomeTotal,
+                                      expenseTotal: expenseTotal,
+                                    ),
+                                  )
+                                : const Center(child: Text('Loading...')),
+                          ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          left: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 4.0),
+                            child: const Text(
+                              'Graphics',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 10), // Kartlar arasında boşluk
+
+                Card(
                   elevation: 9.0,
                   shadowColor: AppColors.defaultColor,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   child: Container(
                     width: deviceWidth * 0.9,
                     height: deviceHeight * 0.35,
                     decoration: BoxDecoration(
-                        border: Border.all(
-                            color: AppColors.defaultColor, width: 2.5),
-                        borderRadius: BorderRadius.circular(20.0)),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10), // Kartlar arasında boşluk
-              // Yeni Eklenen Kart
-              Card(
-                elevation: 9.0,
-                shadowColor: AppColors.defaultColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                child: Container(
-                  width: deviceWidth * 0.9,
-                  height: deviceHeight * 0.35,
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: AppColors.defaultColor, width: 2.5),
-                      borderRadius: BorderRadius.circular(20.0)),
-                  child: const Center(
-                    child: Text(
-                      'Yeni Kart',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+                      border: Border.all(
+                        color: AppColors.defaultColor,
+                        width: 2.5,
+                      ),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Yeni Kart',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            )),
       ]),
       bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
