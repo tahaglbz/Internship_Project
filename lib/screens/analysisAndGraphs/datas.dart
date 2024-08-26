@@ -5,6 +5,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../profile/profileController.dart';
+
 class DataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User? currentUser = FirebaseAuth.instance.currentUser;
@@ -60,6 +62,31 @@ class DataService {
       return totalRemaining;
     } catch (e) {
       print("Error in getTotalRemainingCredit: $e");
+      rethrow;
+    }
+  }
+
+  Future<double> getTotalIncome() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .doc(currentUser?.uid)
+          .collection('incomes')
+          .get();
+
+      double totalIncome = 0.0;
+
+      for (var doc in querySnapshot.docs) {
+        final data = doc.data();
+        final newAmount = data['newAmount'] as double?;
+
+        if (newAmount != null) {
+          totalIncome += newAmount;
+        }
+      }
+      return totalIncome;
+    } catch (e) {
+      print("Error in getTotalIncome: $e");
       rethrow;
     }
   }

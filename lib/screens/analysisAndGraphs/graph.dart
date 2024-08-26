@@ -26,7 +26,10 @@ class _GraphState extends State<Graph> {
   double creditTotal = 0.0;
   double creditRemaining = 0.0;
   double creditPaid = 0.0;
+  double incomeTotal = 0.0;
+
   Widget _pieChart = const Center(child: Text('Select an option'));
+  Widget _chart = const Center(child: Text('Select an option'));
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,10 @@ class _GraphState extends State<Graph> {
                   _buildRadioButton('coins', 'Coins'),
                   const SizedBox(width: 16),
                   _buildRadioButton('exchange', 'Exchange'),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  _buildRadioButton('inc-exp', 'Income-Expense')
                 ],
               ),
             ),
@@ -96,7 +103,10 @@ class _GraphState extends State<Graph> {
                             ? _pieChart
                             : selectedOption == 'exchange'
                                 ? _pieChart
-                                : const Center(child: Text('Select an option')),
+                                : selectedOption == 'inc-exp'
+                                    ? _buildIncomeChart()
+                                    : const Center(
+                                        child: Text('Select an option')),
               ),
             ),
           ],
@@ -118,6 +128,9 @@ class _GraphState extends State<Graph> {
             _loadCoinData();
           } else if (value == 'exchange') {
             _loadExchangeData();
+          } else if (value == 'inc-exp') {
+            _loadTotalIncome();
+            _loadExpenseData();
           }
         });
       },
@@ -153,6 +166,18 @@ class _GraphState extends State<Graph> {
       });
     } catch (e) {
       print("Error loading coin data: $e");
+    }
+  }
+
+  Future<void> _loadTotalIncome() async {
+    try {
+      final totalIncome = await dataService.getTotalIncome();
+      setState(() {
+        incomeTotal = totalIncome;
+        _chart = _buildIncomeChart();
+      });
+    } catch (e) {
+      print("Error loading total income: $e");
     }
   }
 
@@ -383,6 +408,42 @@ class _GraphState extends State<Graph> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildIncomeChart() {
+    return BarChart(
+      BarChartData(
+        barGroups: [
+          _buildBarGroup(0, incomeTotal, Colors.green),
+          _buildBarGroup(1, expenseTotal, Colors.orange),
+        ],
+        titlesData: FlTitlesData(
+          leftTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, meta) {
+              switch (value.toInt()) {
+                case 0:
+                  return const Text('Total Income');
+                case 1:
+                  return const Text('Total Expense');
+                default:
+                  return const Text('');
+              }
+            },
+          )),
+        ),
+        borderData: FlBorderData(show: true),
+        gridData: const FlGridData(show: true),
+        alignment: BarChartAlignment.spaceEvenly,
+      ),
     );
   }
 
