@@ -45,6 +45,15 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
+  Stream<List<Map<String, dynamic>>> getIncomeStream() {
+    return _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('incomes')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
   Stream<List<Map<String, dynamic>>> getUnPaidExpendes() {
     return _firestore
         .collection('users')
@@ -209,6 +218,15 @@ class FirestoreService {
         .doc(currentUser?.uid)
         .collection('credit')
         .doc(aim)
+        .delete();
+  }
+
+  Future<void> deleteIncomes(String incomeName) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('incomes')
+        .doc(incomeName)
         .delete();
   }
 

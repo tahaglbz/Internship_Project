@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/auth/widgets/reset_password.dart';
 import 'package:my_app/extensions/media_query.dart';
+import 'package:my_app/screens/expenseScreens/creditDetail/creditDetailDialog.dart';
 import 'package:my_app/screens/profile/incomeBottomSheet.dart';
 import 'package:my_app/screens/profile/profileController.dart';
 
@@ -11,11 +12,15 @@ import '../../auth/firestore/firestoreService.dart';
 import '../../widgets/appColors.dart';
 
 class ProfilePage extends StatelessWidget {
+  String formatDate(DateTime date) {
+    return DateFormat('dd MMMM yyyy').format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ProfileController controller = Get.put(ProfileController());
     final double deviceWidth = context.deviceWidth;
-    final double deviceHeight = context.deviceHeight;
+    // final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
     Get.lazyPut(() => FirestoreService());
 
@@ -125,6 +130,96 @@ class ProfilePage extends StatelessWidget {
                   height: 2,
                   thickness: 3,
                 ),
+                Expanded(
+                    child: StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: firestoreService.getIncomeStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                          child: Text(
+                        'No income found.',
+                        style: TextStyle(color: Colors.grey),
+                      ));
+                    }
+
+                    List<Map<String, dynamic>> incomes = snapshot.data!;
+
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Incomes',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.defaultColor,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                            child: ListView.builder(
+                          itemCount: incomes.length,
+                          itemBuilder: (context, index) {
+                            var income = incomes[index];
+                            return Dismissible(
+                              key: Key(income['id'].toString()),
+                              background: Container(
+                                color: Colors.blue,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 16.0),
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              secondaryBackground: Container(
+                                color: Colors.red,
+                                alignment: Alignment.centerRight,
+                                padding: EdgeInsets.only(right: 16.0),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onDismissed: (direction) {
+                                if (direction == DismissDirection.startToEnd) {
+                                } else if (direction ==
+                                    DismissDirection.endToStart) {}
+                              },
+                              child: Card(
+                                margin: const EdgeInsets.all(8.0),
+                                elevation: 4,
+                                child: ListTile(
+                                  leading:
+                                      Image.asset('lib/assets/revenue.png'),
+                                  title:
+                                      Text(income['incomeName'] ?? 'no name'),
+                                  subtitle:
+                                      Text('Budget : ${income['amount'] ?? 0}'),
+                                  trailing: Text(
+                                    'Date: ${formatDate(DateTime.parse(income['updatedDate'] ?? DateTime.now().toIso8601String()))}',
+                                    style: const TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ))
+                      ],
+                    );
+                  },
+                ))
               ],
             ),
           ),

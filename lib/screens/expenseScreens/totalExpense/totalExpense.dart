@@ -204,7 +204,7 @@ class TotalExpense extends StatelessWidget {
                                     .deleteCredit(credit['aim']);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('${credit['aim']} silindi'),
+                                    content: Text('${credit['aim']} deleted'),
                                   ),
                                 );
                               } catch (e) {
