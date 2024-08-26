@@ -190,10 +190,19 @@ class ProfilePage extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
-                              onDismissed: (direction) {
+                              onDismissed: (direction) async {
                                 if (direction == DismissDirection.startToEnd) {
                                 } else if (direction ==
-                                    DismissDirection.endToStart) {}
+                                    DismissDirection.endToStart) {
+                                  try {
+                                    await firestoreService
+                                        .deleteIncomes(income['incomeName']);
+                                    Get.snackbar('succes',
+                                        '${income['incomeName']},deleted');
+                                  } catch (e) {
+                                    Get.snackbar('error', ' ${e.toString()}');
+                                  }
+                                }
                               },
                               child: Card(
                                 margin: const EdgeInsets.all(8.0),

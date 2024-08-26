@@ -77,18 +77,11 @@ class TotalExpense extends StatelessWidget {
                               try {
                                 await firestoreService
                                     .deleteExpense(expense['expName']);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text('${expense['expName']} silindi'),
-                                  ),
-                                );
+
+                                Get.snackbar(
+                                    'succes', '${expense['expName']} deleted');
                               } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Hata: ${e.toString()}'),
-                                  ),
-                                );
+                                Get.snackbar('error', '${e.toString()}');
                               }
                             },
                             background: Container(
@@ -202,17 +195,11 @@ class TotalExpense extends StatelessWidget {
                               try {
                                 await firestoreService
                                     .deleteCredit(credit['aim']);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('${credit['aim']} deleted'),
-                                  ),
-                                );
+
+                                Get.snackbar(
+                                    'succes', '${credit['aim']} deleted');
                               } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Hata: ${e.toString()}'),
-                                  ),
-                                );
+                                Get.snackbar('error', '${e.toString()}');
                               }
                             },
                             background: Container(
