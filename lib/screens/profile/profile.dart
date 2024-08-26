@@ -6,6 +6,7 @@ import 'package:my_app/auth/widgets/reset_password.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/expenseScreens/creditDetail/creditDetailDialog.dart';
 import 'package:my_app/screens/profile/incomeBottomSheet.dart';
+import 'package:my_app/screens/profile/incomeUpdateBottomSheet.dart';
 import 'package:my_app/screens/profile/profileController.dart';
 
 import '../../auth/firestore/firestoreService.dart';
@@ -173,7 +174,7 @@ class ProfilePage extends StatelessWidget {
                             return Dismissible(
                               key: Key(income['id'].toString()),
                               background: Container(
-                                color: Colors.blue,
+                                color: AppColors.defaultColor,
                                 alignment: Alignment.centerLeft,
                                 padding: EdgeInsets.only(left: 16.0),
                                 child: Icon(
@@ -190,17 +191,49 @@ class ProfilePage extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
-                              onDismissed: (direction) async {
+                              confirmDismiss: (direction) async {
                                 if (direction == DismissDirection.startToEnd) {
+                                  showAmountBottomSheet(
+                                    context,
+                                    (newAmount) {
+                                      firestoreService.updateIncome(
+                                          income['incomeName'].toString(),
+                                          double.parse(newAmount));
+                                    },
+                                  );
+                                  return false;
                                 } else if (direction ==
                                     DismissDirection.endToStart) {
-                                  try {
-                                    await firestoreService
-                                        .deleteIncomes(income['incomeName']);
-                                    Get.snackbar('succes',
-                                        '${income['incomeName']},deleted');
-                                  } catch (e) {
-                                    Get.snackbar('error', ' ${e.toString()}');
+                                  bool? confirmDeletion = await showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text('Confirm Deletion'),
+                                      content: Text(
+                                          'Are you sure you want to delete this income?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(true),
+                                          child: Text('Delete'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+
+                                  if (confirmDeletion == true) {
+                                    try {
+                                      await firestoreService
+                                          .deleteIncomes(income['incomeName']);
+                                      Get.snackbar('Success',
+                                          '${income['incomeName']} deleted');
+                                    } catch (e) {
+                                      Get.snackbar('Error', ' ${e.toString()}');
+                                    }
                                   }
                                 }
                               },

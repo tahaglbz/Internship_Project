@@ -302,6 +302,19 @@ class FirestoreService {
     });
   }
 
+  Future<void> updateIncome(String incomeName, double newAmount) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('incomes')
+        .doc(incomeName)
+        .update({
+      'updatedHistory': FieldValue.arrayUnion([
+        {'date': DateTime.now().toIso8601String(), 'amount': newAmount}
+      ])
+    });
+  }
+
   Future<void> updateAsset(String symbol, double newAmount, double newUsdValue,
       DateTime updatedDate) async {
     await _firestore

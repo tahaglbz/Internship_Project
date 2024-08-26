@@ -197,7 +197,7 @@ class TotalExpense extends StatelessWidget {
                                     .deleteCredit(credit['aim']);
 
                                 Get.snackbar(
-                                    'succes', '${credit['aim']} deleted');
+                                    'success', '${credit['aim']} deleted');
                               } catch (e) {
                                 Get.snackbar('error', '${e.toString()}');
                               }
