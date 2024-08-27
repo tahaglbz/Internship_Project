@@ -88,6 +88,24 @@ class FirestoreService {
     });
   }
 
+  Future<void> saveAimPlan(
+      String aim, double price, DateTime updatedDate) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(currentUser?.uid)
+          .collection('savePlan')
+          .doc(aim)
+          .set({
+        'aim': aim,
+        'price': price,
+        'updatedDate': updatedDate.toIso8601String(),
+      });
+    } catch (e) {
+      print("Error saving income: $e");
+    }
+  }
+
   Future<void> saveIncome(
       String incomeName, double amount, DateTime updatedDate) async {
     try {

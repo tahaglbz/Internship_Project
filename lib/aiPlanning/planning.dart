@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/extensions/media_query.dart';
+import '../auth/firestore/firestoreService.dart';
+import '../widgets/appColors.dart';
 
 class Planning extends StatefulWidget {
   const Planning({super.key});
@@ -11,11 +13,15 @@ class Planning extends StatefulWidget {
 }
 
 class _PlanningState extends State<Planning> {
+  final TextEditingController planAimController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = context.deviceWidth;
-    // final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(appBarHeight),
@@ -34,6 +40,97 @@ class _PlanningState extends State<Planning> {
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 0, 9, 99),
         ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Save Planning',
+              style: GoogleFonts.adamina(
+                  color: AppColors.defaultColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900),
+            ),
+          ),
+          Divider(
+            color: AppColors.defaultColor,
+            thickness: 2,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: TextField(
+                      controller: planAimController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: AppColors.defaultColor)),
+                        labelText: 'Plan Aim',
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: TextField(
+                      controller: priceController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Price',
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                String aim = planAimController.text.trim();
+                double price =
+                    double.tryParse(priceController.text.trim()) ?? 0.0;
+
+                if (aim.isNotEmpty && price > 0) {
+                  await firestoreService.saveAimPlan(
+                      aim, price, DateTime.now());
+                  Get.snackbar('Success', 'Plan saved successfully!',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.green,
+                      colorText: Colors.white);
+                } else {
+                  Get.snackbar('Error', 'Please enter valid inputs.',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  backgroundColor: AppColors.defaultColor),
+              child: Text(
+                'Save Plan',
+                style: GoogleFonts.adamina(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

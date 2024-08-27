@@ -63,4 +63,20 @@ class UserInputs {
   Future<double> getTotalOtherAmount() async {
     return await getTotalAmountByImageUrl('lib/assets/debt.png');
   }
+
+  Future<double> getTotalIncomesAmount() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('incomes')
+        .get();
+
+    double totalIncome = 0.0;
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      totalIncome += (data['amount'] as num).toDouble();
+    }
+
+    return totalIncome;
+  }
 }
