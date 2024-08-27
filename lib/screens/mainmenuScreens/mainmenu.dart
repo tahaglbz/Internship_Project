@@ -588,31 +588,34 @@ class _MainMenuState extends State<MainMenu> {
                     ),
                   ),
                 ),
-
-                const SizedBox(width: 10), // Kartlar arasında boşluk
-
-                Card(
-                  elevation: 9.0,
-                  shadowColor: AppColors.defaultColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: Container(
-                    width: deviceWidth * 0.9,
-                    height: deviceHeight * 0.35,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.defaultColor,
-                        width: 2.5,
+                GestureDetector(
+                  onTap: () => Get.toNamed('/planning'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      elevation: 9.0,
+                      shadowColor: AppColors.defaultColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Yeni Kart',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
+                      child: Container(
+                        width: deviceWidth * 0.9,
+                        height: deviceHeight * 0.35,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.defaultColor,
+                            width: 2.5,
+                          ),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Planning',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: AppColors.defaultColor,
+                            ),
+                          ),
                         ),
                       ),
                     ),

@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_app/aiPlanning/planning.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 import 'package:my_app/screens/analysisAndGraphs/graph.dart';
@@ -93,6 +94,11 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/profile',
             page: () => ProfilePage(),
+            transition: Transition.cupertinoDialog,
+            transitionDuration: const Duration(seconds: 1)),
+        GetPage(
+            name: '/planning',
+            page: () => Planning(),
             transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1)),
       ],
