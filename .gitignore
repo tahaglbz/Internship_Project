@@ -41,4 +41,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-lib/aiTest/opeanai.dart
+
+# Other ignored files
+/lib/aiPlanning/opeanai.dart
