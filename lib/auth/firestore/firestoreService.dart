@@ -252,9 +252,9 @@ class FirestoreService {
         .doc(oldAssetName)
         .update({
       'assetName': newAssetName,
-      'amount': newAmount,
+      'newAmount': newAmount,
       'assetIconPath': iconPath,
-      'valueInUsd': valueInUsd,
+      'newValueInUsd': valueInUsd,
       'updateDate': DateTime.now().toIso8601String(), // Güncelleme tarihi
     });
   }
@@ -310,6 +310,7 @@ class FirestoreService {
         .doc(incomeName)
         .update({
       'newAmount': newAmount,
+      'newDate': DateTime.now().toIso8601String(),
       'updatedHistory': FieldValue.arrayUnion([
         {'date': DateTime.now().toIso8601String(), 'amount': newAmount}
       ])
@@ -353,7 +354,9 @@ class FirestoreService {
       });
 
       await assetRef.update({
-        'updatedDate': updatedDate.toIso8601String(),
+        'newUpdatedDate': updatedDate.toIso8601String(),
+        'newAmount': newAmount,
+        'newValueInUsd': newValueInUsd,
         'updateHistory': updateHistory,
       });
     } else {
@@ -362,6 +365,8 @@ class FirestoreService {
         'amount': newAmount,
         'valueInUsd': newValueInUsd,
         'updatedDate': updatedDate.toIso8601String(),
+        'lastAmount': newAmount,
+        'lastUpdate': updatedDate.toIso8601String(),
         'updateHistory': [
           {
             'amount': newAmount,
