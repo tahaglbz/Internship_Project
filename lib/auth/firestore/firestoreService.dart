@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_app/screens/exchangeScreens/fixerio.dart'; // `Fixerio` sınıfının yolu
+import 'package:my_app/screens/exchangeScreens/fixerio.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final User? currentUser =
-      FirebaseAuth.instance.currentUser; // `currentUser` doğru tanımlanmalı
+  final User? currentUser = FirebaseAuth.instance.currentUser;
   final Fixerio fixerio = Fixerio();
 
   Stream<List<Map<String, dynamic>>> getAssets() {

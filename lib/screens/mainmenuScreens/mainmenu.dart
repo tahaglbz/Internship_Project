@@ -577,7 +577,7 @@ class _MainMenuState extends State<MainMenu> {
                             child: const Text(
                               'Graphics',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.defaultColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
