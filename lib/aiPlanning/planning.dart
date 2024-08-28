@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_app/aiPlanning/userData.dart';
 import 'package:my_app/extensions/media_query.dart';
 import '../auth/firestore/firestoreService.dart';
 import '../widgets/appColors.dart';
@@ -16,6 +18,9 @@ class _PlanningState extends State<Planning> {
   final TextEditingController planAimController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final FirestoreService firestoreService = FirestoreService();
+  UserInputs userinp = UserInputs();
+
+  String? financialPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +111,7 @@ class _PlanningState extends State<Planning> {
                 if (aim.isNotEmpty && price > 0) {
                   await firestoreService.saveAimPlan(
                       aim, price, DateTime.now());
+
                   Get.snackbar('Success', 'Plan saved successfully!',
                       snackPosition: SnackPosition.BOTTOM,
                       backgroundColor: Colors.green,
@@ -131,6 +137,18 @@ class _PlanningState extends State<Planning> {
               ),
             ),
           ),
+          const SizedBox(height: 20),
+          if (financialPlan != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                financialPlan!,
+                style: GoogleFonts.adamina(
+                  color: AppColors.defaultColor,
+                  fontSize: 16,
+                ),
+              ),
+            ),
         ],
       ),
     );

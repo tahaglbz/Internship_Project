@@ -74,7 +74,7 @@ class UserInputs {
     double totalIncome = 0.0;
     for (var doc in snapshot.docs) {
       final data = doc.data();
-      totalIncome += (data['amount'] as num).toDouble();
+      totalIncome += (data['newAmount'] as num).toDouble();
     }
 
     return totalIncome;
