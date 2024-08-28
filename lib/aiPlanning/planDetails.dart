@@ -1,61 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/aiPlanning/userData.dart';
 import 'package:my_app/extensions/media_query.dart';
+import 'package:my_app/widgets/appColors.dart';
+import 'detailController.dart';
 
-import '../widgets/appColors.dart';
-
-class PlanDetails extends StatefulWidget {
-  @override
-  _PlanDetailsState createState() => _PlanDetailsState();
-}
-
-class _PlanDetailsState extends State<PlanDetails> {
-  final UserInputs _userInputs = UserInputs();
-  Map<String, double?> _expenses = {};
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchExpenses();
-  }
-
-  Future<void> _fetchExpenses() async {
-    try {
-      final electricity = await _userInputs.getTotalElectricityAmount();
-      final water = await _userInputs.getTotalWaterAmount();
-      final nGas = await _userInputs.getTotalNaturalGasAmount();
-      final net = await _userInputs.getTotalInternetAmount();
-      final rent = await _userInputs.getTotalRentAmount();
-      final edu = await _userInputs.getTotalEducationAmount();
-      final tport = await _userInputs.getTotalTransportAmount();
-      final shop = await _userInputs.getTotalShoppingAmount();
-      final health = await _userInputs.getTotalHealthAmount();
-      final ent = await _userInputs.getTotalEntertainmentAmount();
-      final other = await _userInputs.getTotalOtherAmount();
-      final income = await _userInputs.getTotalIncomesAmount();
-
-      setState(() {
-        _expenses = {
-          'Electricity': electricity,
-          'Water': water,
-          'N Gas': nGas,
-          'Internet': net,
-          'Rent': rent,
-          'Education': edu,
-          'Transport': tport,
-          'Shopping': shop,
-          'Health': health,
-          'Fun': ent,
-          'Other': other,
-          'Income': income
-        };
-      });
-    } catch (e) {
-      print('Error fetching expenses: $e');
-    }
-  }
+class PlanDetails extends StatelessWidget {
+  final DetailController detailController = Get.put(DetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -86,21 +37,25 @@ class _PlanDetailsState extends State<PlanDetails> {
         children: [
           SizedBox(
             height: context.deviceHeight * 0.18,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, // Her satıra 4 kart
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 4.0,
-                childAspectRatio: 2, // Kartların yüksekliği ve genişliği oranı
-              ),
-              itemCount: _expenses.length, // Kart sayısı
-              itemBuilder: (context, index) {
-                final category = _expenses.keys.elementAt(index);
-                final amount = _expenses[category] ?? 0.0;
-                return _buildCategoryCard(
-                    category, '\$${amount.toStringAsFixed(2)}');
-              },
-            ),
+            child: Obx(() {
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, // Her satıra 4 kart
+                  crossAxisSpacing: 4.0,
+                  mainAxisSpacing: 4.0,
+                  childAspectRatio:
+                      2, // Kartların yüksekliği ve genişliği oranı
+                ),
+                itemCount: detailController.expenses.length, // Kart sayısı
+                itemBuilder: (context, index) {
+                  final category =
+                      detailController.expenses.keys.elementAt(index);
+                  final amount = detailController.expenses[category] ?? 0.0;
+                  return _buildCategoryCard(
+                      category, '\$${amount.toStringAsFixed(2)}');
+                },
+              );
+            }),
           ),
           const SizedBox(height: 8.0),
           Divider(
