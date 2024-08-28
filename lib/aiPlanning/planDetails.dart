@@ -29,7 +29,7 @@ class PlanDetails extends StatelessWidget {
         child: AppBar(
           iconTheme: const IconThemeData(color: Colors.white),
           leading: IconButton(
-            onPressed: () => Get.toNamed('/mainmenu'),
+            onPressed: () => Get.toNamed('/planning'),
             icon: const Icon(Icons.arrow_back_ios_new_sharp),
           ),
           automaticallyImplyLeading: false,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,8 +22,8 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProfileController controller = Get.put(ProfileController());
     final double deviceWidth = context.deviceWidth;
-    // final double deviceHeight = context.deviceHeight;
     double appBarHeight = deviceWidth * 0.28;
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     Get.lazyPut(() => FirestoreService());
 
     return Scaffold(
@@ -33,6 +34,16 @@ class ProfilePage extends StatelessWidget {
           leading: IconButton(
               onPressed: () => Get.offAllNamed('/mainmenu'),
               icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+          actions: [
+            Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                );
+              },
+            ),
+          ],
           automaticallyImplyLeading: false,
           elevation: 0,
           title: Text(
@@ -42,6 +53,40 @@ class ProfilePage extends StatelessWidget {
           ),
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+        ),
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: AppColors.defaultColor,
+                ),
+                child: Image.asset('lib/assets/logo.png')),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Get.toNamed('/settings');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.privacy_tip),
+              title: const Text('Privacy'),
+              onTap: () {
+                Get.toNamed('/privacy');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Log Out'),
+              onTap: () {
+                firebaseAuth.signOut();
+                Get.offAllNamed('/homepage');
+              },
+            ),
+          ],
         ),
       ),
       body: Obx(() {
@@ -242,27 +287,17 @@ class ProfilePage extends StatelessWidget {
                                 margin: const EdgeInsets.all(8.0),
                                 elevation: 4,
                                 child: ListTile(
-                                  leading:
-                                      Image.asset('lib/assets/revenue.png'),
-                                  title:
-                                      Text(income['incomeName'] ?? 'no name'),
-                                  subtitle: Text(
-                                      'Budget : ${controller.getDisplayAmount(income)}'),
-                                  trailing: Text(
-                                    'Date: ${formatDate(DateTime.parse(income['updatedDate'] ?? DateTime.now().toIso8601String()))}',
-                                    style: const TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  title: Text(income['incomeName']),
+                                  subtitle: Text('${income['newAmount']} \$'),
                                 ),
                               ),
                             );
                           },
-                        ))
+                        )),
                       ],
                     );
                   },
-                ))
+                )),
               ],
             ),
           ),
@@ -271,46 +306,29 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Future<String?> _showEditUsernameBottomSheet(BuildContext context) async {
-    TextEditingController textController = TextEditingController();
-    return await showModalBottomSheet<String>(
+  Future<String?> _showEditUsernameBottomSheet(BuildContext context) {
+    final TextEditingController _usernameController = TextEditingController();
+
+    return showModalBottomSheet<String>(
       context: context,
       builder: (BuildContext context) {
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(
-                'Edit Username',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 16),
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
               TextField(
-                controller: textController,
+                controller: _usernameController,
                 decoration: const InputDecoration(
-                  hintText: 'New Username',
-                  border: OutlineInputBorder(),
+                  labelText: 'Enter new username',
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                  const SizedBox(width: 8),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(textController.text);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, _usernameController.text);
+                },
+                child: const Text('Submit'),
               ),
             ],
           ),
