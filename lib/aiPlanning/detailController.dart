@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:my_app/aiPlanning/userData.dart';
 
 class DetailController extends GetxController {
   final UserInputs _userInputs = UserInputs();
   RxMap<String, double?> expenses = <String, double?>{}.obs;
+  var plans = <DocumentSnapshot>[].obs;
 
   @override
   void onInit() {
@@ -43,5 +46,24 @@ class DetailController extends GetxController {
     } catch (e) {
       print('Error fetching expenses: $e');
     }
+  }
+
+  List<Map<String, dynamic>> get expensesList {
+    return expenses.entries.map((e) {
+      return {
+        'category': e.key,
+        'amount': e.value,
+      };
+    }).toList();
+  }
+
+  void fetchCredits() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('savePlan')
+        .get();
+    plans.assignAll(snapshot.docs);
   }
 }

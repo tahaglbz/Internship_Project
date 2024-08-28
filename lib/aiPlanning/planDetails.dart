@@ -13,6 +13,12 @@ class PlanDetails extends StatelessWidget {
     final double deviceWidth = context.deviceWidth;
     double appBarHeight = deviceWidth * 0.28;
 
+    // Use a null check to handle cases where Get.arguments might be null
+    final Map<String, dynamic> plan = Get.arguments ?? {};
+
+    String aim = plan['aim'] ?? 'No Aim';
+    double price = plan['price'] ?? 0.0;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(appBarHeight),
@@ -25,7 +31,7 @@ class PlanDetails extends StatelessWidget {
           automaticallyImplyLeading: false,
           elevation: 0,
           title: Text(
-            'Plan Details',
+            aim,
             style: GoogleFonts.adamina(
                 color: Colors.white, fontSize: 35, fontWeight: FontWeight.w700),
           ),
@@ -34,19 +40,30 @@ class PlanDetails extends StatelessWidget {
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const SizedBox(height: 16.0),
+          Text(
+            'Price: \$${price.toStringAsFixed(2)}',
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16.0),
+          Divider(
+            color: AppColors.defaultColor,
+            thickness: 2,
+          ),
+          const SizedBox(height: 8.0),
           SizedBox(
             height: context.deviceHeight * 0.18,
             child: Obx(() {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, // Her satıra 4 kart
+                  crossAxisCount: 4,
                   crossAxisSpacing: 4.0,
                   mainAxisSpacing: 4.0,
-                  childAspectRatio:
-                      2, // Kartların yüksekliği ve genişliği oranı
+                  childAspectRatio: 2,
                 ),
-                itemCount: detailController.expenses.length, // Kart sayısı
+                itemCount: detailController.expenses.length,
                 itemBuilder: (context, index) {
                   final category =
                       detailController.expenses.keys.elementAt(index);
@@ -58,13 +75,13 @@ class PlanDetails extends StatelessWidget {
             }),
           ),
           const SizedBox(height: 8.0),
-          Divider(
+          const Divider(
             color: AppColors.defaultColor,
             thickness: 2,
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
+            child: const Text(
               'Plan',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
