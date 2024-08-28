@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/aiPlanning/userData.dart';
 import 'package:my_app/extensions/media_query.dart';
 
+import '../widgets/appColors.dart';
+
 class PlanDetails extends StatefulWidget {
   @override
   _PlanDetailsState createState() => _PlanDetailsState();
@@ -80,57 +82,69 @@ class _PlanDetailsState extends State<PlanDetails> {
           backgroundColor: const Color.fromARGB(255, 0, 9, 99),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height *
-                    0.75, // Yüksekliği ayarlayabilirsiniz
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, // Her satıra 4 kart
-                    crossAxisSpacing: 4.0,
-                    mainAxisSpacing: 4.0,
-                    childAspectRatio:
-                        2, // Kartların yüksekliği ve genişliği oranı
-                  ),
-                  itemCount: _expenses.length,
-                  itemBuilder: (context, index) {
-                    final category = _expenses.keys.elementAt(index);
-                    final amount = _expenses[category] ?? 0.0;
-                    return _buildCategoryCard(
-                        category, '\$${amount.toStringAsFixed(2)}');
-                  },
-                ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: context.deviceHeight * 0.18,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, // Her satıra 4 kart
+                crossAxisSpacing: 4.0,
+                mainAxisSpacing: 4.0,
+                childAspectRatio: 2, // Kartların yüksekliği ve genişliği oranı
               ),
-            ],
+              itemCount: _expenses.length, // Kart sayısı
+              itemBuilder: (context, index) {
+                final category = _expenses.keys.elementAt(index);
+                final amount = _expenses[category] ?? 0.0;
+                return _buildCategoryCard(
+                    category, '\$${amount.toStringAsFixed(2)}');
+              },
+            ),
           ),
-        ),
+          const SizedBox(height: 8.0),
+          Divider(
+            color: AppColors.defaultColor,
+            thickness: 2,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              'Plan',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildCategoryCard(String category, String value) {
+    Color background;
+    if (category == 'Income') {
+      background = Colors.green[700]!;
+    } else {
+      background = Colors.red[700]!;
+    }
     return Container(
       padding: const EdgeInsets.all(4.0),
       child: Card(
+        color: background,
         elevation: 4.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               category,
-              style: GoogleFonts.adamina(
-                  color: Colors.black,
+              style: const TextStyle(
+                  color: Colors.white,
                   fontSize: 10,
                   fontWeight: FontWeight.w600),
             ),
-            SizedBox(height: 1.0),
+            const SizedBox(height: 1.0),
             Text(
               value,
-              style: GoogleFonts.adamina(color: Colors.black87, fontSize: 10),
+              style: const TextStyle(color: Colors.white, fontSize: 10),
             ),
           ],
         ),
