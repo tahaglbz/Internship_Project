@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_app/aiPlanning/planDetails.dart';
 import 'package:my_app/aiPlanning/planning.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/mainmenu',
+      initialRoute: '/planDetail',
       getPages: [
         GetPage(
             name: '/splashscreen',
@@ -98,9 +99,15 @@ class MyApp extends StatelessWidget {
             transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/planning',
-            page: () => Planning(),
+            page: () => const Planning(),
             transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1)),
+        GetPage(
+          name: '/planDetail',
+          page: () => PlanDetails(),
+          transition: Transition.cupertinoDialog,
+          transitionDuration: const Duration(seconds: 1),
+        )
       ],
       debugShowCheckedModeBanner: false,
     );

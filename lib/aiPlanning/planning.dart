@@ -185,7 +185,7 @@ class _PlanningState extends State<Planning> {
                               ),
                             ),
                             Text(
-                              'Updated: ${updatedDate.toLocal().toShortDateString()}',
+                              'Date: ${updatedDate.toLocal().toShortDateString()}',
                               style: GoogleFonts.adamina(
                                 color: Colors.grey,
                                 fontSize: 14,
