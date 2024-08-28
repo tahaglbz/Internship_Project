@@ -74,6 +74,15 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
+  Stream<List<Map<String, dynamic>>> getSavePlan() {
+    return _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('savePlan')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
   Future<void> saveAsset(String symbol, double amount, String imageUrl,
       double usdValue, DateTime updatedDate) async {
     await _firestore

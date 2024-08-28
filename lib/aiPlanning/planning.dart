@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,8 +18,6 @@ class _PlanningState extends State<Planning> {
   final TextEditingController priceController = TextEditingController();
   final FirestoreService firestoreService = FirestoreService();
   UserInputs userinp = UserInputs();
-
-  String? financialPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +60,7 @@ class _PlanningState extends State<Planning> {
             color: AppColors.defaultColor,
             thickness: 2,
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          const SizedBox(height: 15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
@@ -131,26 +126,103 @@ class _PlanningState extends State<Planning> {
                 'Save Plan',
                 style: GoogleFonts.adamina(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          if (financialPlan != null)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                financialPlan!,
-                style: GoogleFonts.adamina(
-                  color: AppColors.defaultColor,
-                  fontSize: 16,
-                ),
-              ),
+          const Divider(
+            color: AppColors.defaultColor,
+            thickness: 2,
+          ),
+          Expanded(
+            child: StreamBuilder<List<Map<String, dynamic>>>(
+              stream: firestoreService.getSavePlan(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No plans available.'));
+                }
+
+                final plans = snapshot.data!;
+
+                return ListView.builder(
+                  itemCount: plans.length,
+                  itemBuilder: (context, index) {
+                    final plan = plans[index];
+                    final aim = plan['aim'] ?? 'No Aim';
+                    final price = plan['price'] ?? 0.0;
+                    final updatedDateString =
+                        plan['updatedDate'] ?? DateTime.now().toIso8601String();
+                    final updatedDate =
+                        DateTime.tryParse(updatedDateString) ?? DateTime.now();
+
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
+                      elevation: 4,
+                      child: ListTile(
+                        title: Text(
+                          aim,
+                          style: GoogleFonts.adamina(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Price: \$${price.toStringAsFixed(2)}',
+                              style: GoogleFonts.adamina(
+                                color: Colors.black87,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              'Updated: ${updatedDate.toLocal().toShortDateString()}',
+                              style: GoogleFonts.adamina(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        trailing: ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed('/planDetails', arguments: plan);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.defaultColor,
+                          ),
+                          child: Text(
+                            'See Plan',
+                            style: GoogleFonts.adamina(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
+          ),
         ],
       ),
     );
+  }
+}
+
+extension DateTimeFormatting on DateTime {
+  String toShortDateString() {
+    return '${this.day}/${this.month}/${this.year}';
   }
 }
