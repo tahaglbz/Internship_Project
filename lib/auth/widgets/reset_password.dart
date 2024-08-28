@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +17,7 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text(
+            const Text(
               'Reset Password',
               style: TextStyle(
                 color: Color.fromARGB(255, 8, 1, 134),
@@ -24,8 +26,8 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 15),
-            Text(
+            const SizedBox(height: 15),
+            const Text(
               'Please enter your email address',
               style: TextStyle(
                 color: Colors.black54,
@@ -33,10 +35,10 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               controller: _authService.emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Email',
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -45,7 +47,7 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -53,14 +55,14 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text(
+                  child: const Text(
                     'Cancel',
                     style: TextStyle(
                       color: Color.fromARGB(255, 8, 1, 134),
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () async {
                     final String email =
@@ -79,10 +81,10 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 8, 1, 134),
+                    backgroundColor: const Color.fromARGB(255, 8, 1, 134),
                     foregroundColor: Colors.white,
                   ),
-                  child: Text('Reset Password'),
+                  child: const Text('Reset Password'),
                 ),
               ],
             ),

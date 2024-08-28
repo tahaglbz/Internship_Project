@@ -11,7 +11,7 @@ void showAmountBottomSheet(BuildContext context, Function(String) onSubmit) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               'Enter New Amount',
               style: TextStyle(
                 fontSize: 18,
@@ -21,9 +21,9 @@ void showAmountBottomSheet(BuildContext context, Function(String) onSubmit) {
             TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Amount'),
+              decoration: const InputDecoration(labelText: 'Amount'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 String newAmount = amountController.text;
@@ -32,7 +32,7 @@ void showAmountBottomSheet(BuildContext context, Function(String) onSubmit) {
                   Navigator.of(context).pop(); // BottomSheet'i kapat
                 }
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         ),

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -81,7 +83,7 @@ class TotalExpense extends StatelessWidget {
                                 Get.snackbar(
                                     'succes', '${expense['expName']} deleted');
                               } catch (e) {
-                                Get.snackbar('error', '${e.toString()}');
+                                Get.snackbar('error', e.toString());
                               }
                             },
                             background: Container(
@@ -199,7 +201,7 @@ class TotalExpense extends StatelessWidget {
                                 Get.snackbar(
                                     'success', '${credit['aim']} deleted');
                               } catch (e) {
-                                Get.snackbar('error', '${e.toString()}');
+                                Get.snackbar('error', e.toString());
                               }
                             },
                             background: Container(

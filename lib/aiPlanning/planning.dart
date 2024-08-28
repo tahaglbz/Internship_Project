@@ -54,11 +54,11 @@ class _PlanningState extends State<Planning> {
                   fontWeight: FontWeight.w900),
             ),
           ),
-          Divider(
+          const Divider(
             color: AppColors.defaultColor,
             thickness: 2,
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Padding(
@@ -70,7 +70,7 @@ class _PlanningState extends State<Planning> {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: TextField(
                       controller: planAimController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: AppColors.defaultColor)),
@@ -84,7 +84,7 @@ class _PlanningState extends State<Planning> {
                     padding: const EdgeInsets.only(left: 8.0),
                     child: TextField(
                       controller: priceController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Price',
                       ),
@@ -95,7 +95,7 @@ class _PlanningState extends State<Planning> {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Center(
             child: ElevatedButton(
               onPressed: () async {
@@ -118,7 +118,8 @@ class _PlanningState extends State<Planning> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   backgroundColor: AppColors.defaultColor),
               child: Text(
                 'Save Plan',

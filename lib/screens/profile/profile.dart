@@ -123,10 +123,10 @@ class ProfilePage extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Divider(
+                const Divider(
                   color: AppColors.defaultColor,
                   height: 2,
                   thickness: 3,
@@ -155,7 +155,7 @@ class ProfilePage extends StatelessWidget {
 
                     return Column(
                       children: [
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Incomes',
@@ -176,8 +176,8 @@ class ProfilePage extends StatelessWidget {
                               background: Container(
                                 color: AppColors.defaultColor,
                                 alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 16.0),
-                                child: Icon(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: const Icon(
                                   Icons.edit,
                                   color: Colors.white,
                                 ),
@@ -185,8 +185,8 @@ class ProfilePage extends StatelessWidget {
                               secondaryBackground: Container(
                                 color: Colors.red,
                                 alignment: Alignment.centerRight,
-                                padding: EdgeInsets.only(right: 16.0),
-                                child: Icon(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: const Icon(
                                   Icons.delete,
                                   color: Colors.white,
                                 ),
@@ -207,19 +207,19 @@ class ProfilePage extends StatelessWidget {
                                   bool? confirmDeletion = await showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      title: Text('Confirm Deletion'),
-                                      content: Text(
+                                      title: const Text('Confirm Deletion'),
+                                      content: const Text(
                                           'Are you sure you want to delete this income?'),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.of(context).pop(false),
-                                          child: Text('Cancel'),
+                                          child: const Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.of(context).pop(true),
-                                          child: Text('Delete'),
+                                          child: const Text('Delete'),
                                         ),
                                       ],
                                     ),
