@@ -195,7 +195,7 @@ class _PlanningState extends State<Planning> {
                         ),
                         trailing: ElevatedButton(
                           onPressed: () {
-                            Get.toNamed('/planDetails', arguments: plan);
+                            Get.offAllNamed('/planDetail', arguments: plan);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.defaultColor,

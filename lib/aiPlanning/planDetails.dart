@@ -13,11 +13,15 @@ class PlanDetails extends StatelessWidget {
     final double deviceWidth = context.deviceWidth;
     double appBarHeight = deviceWidth * 0.28;
 
-    // Use a null check to handle cases where Get.arguments might be null
-    final Map<String, dynamic> plan = Get.arguments ?? {};
+    final Map<String, dynamic>? plan = Get.arguments as Map<String, dynamic>?;
 
-    String aim = plan['aim'] ?? 'No Aim';
-    double price = plan['price'] ?? 0.0;
+    String aim = plan?['aim'] ?? 'No Aim';
+    double price = plan?['price'] ?? 0.0;
+    if (plan == null) {
+      return Scaffold(
+        body: Center(child: Text('No plan details available.')),
+      );
+    }
 
     return Scaffold(
       appBar: PreferredSize(
