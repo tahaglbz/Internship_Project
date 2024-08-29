@@ -55,7 +55,7 @@ class _MainMenuState extends State<MainMenu> {
         Get.offAllNamed('/mainmenu');
         break;
       case 1:
-        Get.offAllNamed('/crypto');
+        Get.offAllNamed('/education');
 
         break;
       case 2:

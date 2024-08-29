@@ -9,6 +9,7 @@ import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 import 'package:my_app/screens/analysisAndGraphs/graph.dart';
 import 'package:my_app/screens/cryptoScreens/crypto.dart';
+import 'package:my_app/screens/education/education.dart';
 import 'package:my_app/screens/exchangeScreens/exchange.dart';
 import 'package:my_app/screens/expenseScreens/creditDetail/creditDetails.dart';
 import 'package:my_app/screens/expenseScreens/expense.dart';
@@ -107,7 +108,13 @@ class MyApp extends StatelessWidget {
           page: () => PlanDetails(),
           transition: Transition.cupertinoDialog,
           transitionDuration: const Duration(seconds: 1),
-        )
+        ),
+        GetPage(
+          name: '/education',
+          page: () => const Education(),
+          transition: Transition.cupertinoDialog,
+          transitionDuration: const Duration(seconds: 1),
+        ),
       ],
       debugShowCheckedModeBanner: false,
     );

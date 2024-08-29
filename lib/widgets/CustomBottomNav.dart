@@ -27,8 +27,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.currency_bitcoin_rounded),
-            label: 'Crypto',
+            icon: Icon(Icons.cast_for_education_sharp),
+            label: 'Education',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.currency_exchange),
