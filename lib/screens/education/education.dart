@@ -82,6 +82,7 @@ class _EducationState extends State<Education> {
                       var videoUrl = videoData['url'];
                       var videoTitle = videoData['title'];
                       var videoDescription = videoData['description'];
+                      var videoChannel = videoData['channel'];
 
                       return GestureDetector(
                         onTap: () {
@@ -135,6 +136,16 @@ class _EducationState extends State<Education> {
                                       style: GoogleFonts.adamina(
                                         fontSize: 14,
                                         color: Colors.blueAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Text(
+                                      videoChannel,
+                                      style: GoogleFonts.adamina(
+                                        fontSize: 14,
+                                        color: Colors.red,
                                       ),
                                     ),
                                   ),
@@ -197,14 +208,15 @@ class _EducationState extends State<Education> {
                       child: Card(
                         margin: const EdgeInsets.symmetric(
                             vertical: 8, horizontal: 16),
-                        elevation: 4,
+                        color: Colors.black87,
+                        elevation: 5,
                         child: ListTile(
                           title: Text(
                             articleTitle,
                             style: GoogleFonts.adamina(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                           subtitle: Text(
@@ -217,9 +229,9 @@ class _EducationState extends State<Education> {
                           trailing: Text(
                             articleDescription,
                             style: GoogleFonts.adamina(
-                              fontSize: 12,
-                              color: Colors.blueAccent,
-                            ),
+                                fontSize: 12,
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),

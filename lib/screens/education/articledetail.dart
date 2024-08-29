@@ -7,12 +7,16 @@ class ArticleDetailPage extends StatelessWidget {
   final String author;
 
   const ArticleDetailPage(
-      {required this.title, required this.content, required this.author});
+      {super.key,
+      required this.title,
+      required this.content,
+      required this.author});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           title,
           style: GoogleFonts.adamina(
@@ -33,9 +37,9 @@ class ArticleDetailPage extends StatelessWidget {
                 child: Text(
                   content,
                   style: GoogleFonts.adamina(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
