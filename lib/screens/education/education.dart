@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_app/extensions/media_query.dart';
+import 'package:my_app/screens/education/articledetail.dart';
 import 'package:my_app/screens/education/fullscreen.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Education extends StatefulWidget {
   const Education({super.key});
@@ -17,7 +18,7 @@ class _EducationState extends State<Education> {
   final CollectionReference eduCollection =
       FirebaseFirestore.instance.collection('edu');
 
-  final CollectionReference article =
+  final CollectionReference articleCollection =
       FirebaseFirestore.instance.collection('eduArticles');
 
   @override
@@ -49,6 +50,7 @@ class _EducationState extends State<Education> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Video Section
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -152,24 +154,80 @@ class _EducationState extends State<Education> {
               color: Colors.black,
               thickness: 2,
             ),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Articles',
-                      style: GoogleFonts.adamina(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
+            // Articles Section
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Articles',
+                style: GoogleFonts.adamina(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
               ),
-            )
+            ),
+            StreamBuilder<QuerySnapshot>(
+              stream: articleCollection.snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                List<DocumentSnapshot> articles = snapshot.data!.docs;
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: articles.length,
+                  itemBuilder: (context, index) {
+                    var articleData =
+                        articles[index].data() as Map<String, dynamic>;
+                    var articleTitle = articleData['title'];
+                    var articleAuthor = articleData['author'];
+                    var articleDescription = articleData['description'];
+                    var articleContent = articleData['content'];
+
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => ArticleDetailPage(
+                            title: articleTitle,
+                            content: articleContent,
+                            author: articleAuthor));
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        elevation: 4,
+                        child: ListTile(
+                          title: Text(
+                            articleTitle,
+                            style: GoogleFonts.adamina(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                          subtitle: Text(
+                            'By $articleAuthor',
+                            style: GoogleFonts.adamina(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          trailing: Text(
+                            articleDescription,
+                            style: GoogleFonts.adamina(
+                              fontSize: 12,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),

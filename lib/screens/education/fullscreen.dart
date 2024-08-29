@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../../widgets/appColors.dart';
-
 class FullScreenVideo extends StatelessWidget {
   final String videoUrl;
 
