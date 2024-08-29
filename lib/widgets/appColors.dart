@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 class AppColors {
   static const Color defaultColor = Color.fromARGB(255, 0, 9, 99); //default
+  // static const Color defaultColor = Colors.black; //default
 
   static final Color color1 = HexColor("#C33764"); //expense
   static final Color color2 = HexColor("#1D2671"); //expense
