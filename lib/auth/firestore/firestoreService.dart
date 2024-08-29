@@ -222,6 +222,15 @@ class FirestoreService {
         .delete();
   }
 
+  Future<void> deleteAim(String aim) async {
+    await _firestore
+        .collection('users')
+        .doc(currentUser?.uid)
+        .collection('savePlan')
+        .doc(aim)
+        .delete();
+  }
+
   Future<void> deleteAssetEx(String assetName) async {
     await _firestore
         .collection('users')

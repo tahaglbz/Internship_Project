@@ -160,51 +160,97 @@ class _PlanningState extends State<Planning> {
                         plan['updatedDate'] ?? DateTime.now().toIso8601String();
                     final updatedDate =
                         DateTime.tryParse(updatedDateString) ?? DateTime.now();
+                    final planId = plan['id'] ?? '';
 
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
-                      elevation: 4,
-                      child: ListTile(
-                        title: Text(
-                          aim,
-                          style: GoogleFonts.adamina(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Price: \$${price.toStringAsFixed(2)}',
-                              style: GoogleFonts.adamina(
-                                color: Colors.black87,
-                                fontSize: 16,
-                              ),
+                    return Dismissible(
+                      key: Key(planId),
+                      direction: DismissDirection.endToStart,
+                      confirmDismiss: (direction) async {
+                        return await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Confirm'),
+                              content: const Text(
+                                  'Are you sure you want to delete this plan?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
+                                  child: const Text('No'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child: const Text('Yes'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      onDismissed: (direction) {
+                        setState(() {
+                          plans.removeAt(index);
+                        });
+
+                        firestoreService.deleteAim(aim);
+                        Get.snackbar('Deleted', 'Plan deleted successfully.',
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white);
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        elevation: 4,
+                        child: ListTile(
+                          title: Text(
+                            aim,
+                            style: GoogleFonts.adamina(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
                             ),
-                            Text(
-                              'Date: ${updatedDate.toLocal().toShortDateString()}',
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Price: \$${price.toStringAsFixed(2)}',
+                                style: GoogleFonts.adamina(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                'Date: ${updatedDate.toLocal().toShortDateString()}',
+                                style: GoogleFonts.adamina(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          trailing: ElevatedButton(
+                            onPressed: () {
+                              Get.offAllNamed('/planDetail', arguments: plan);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.defaultColor,
+                            ),
+                            child: Text(
+                              'See Plan',
                               style: GoogleFonts.adamina(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 fontSize: 14,
                               ),
-                            ),
-                          ],
-                        ),
-                        trailing: ElevatedButton(
-                          onPressed: () {
-                            Get.offAllNamed('/planDetail', arguments: plan);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.defaultColor,
-                          ),
-                          child: Text(
-                            'See Plan',
-                            style: GoogleFonts.adamina(
-                              color: Colors.white,
-                              fontSize: 14,
                             ),
                           ),
                         ),
