@@ -52,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                 color: Colors.white, fontSize: 35, fontWeight: FontWeight.w700),
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: AppColors.defaultColor,
         ),
       ),
       endDrawer: Drawer(

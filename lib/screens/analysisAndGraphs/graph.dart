@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/analysisAndGraphs/datas.dart';
 
+import '../../widgets/appColors.dart';
+
 class Graph extends StatefulWidget {
   const Graph({super.key});
 
@@ -53,7 +55,7 @@ class _GraphState extends State<Graph> {
                 color: Colors.white, fontSize: 35, fontWeight: FontWeight.w700),
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: AppColors.defaultColor,
         ),
       ),
       body: Padding(
@@ -137,16 +139,14 @@ class _GraphState extends State<Graph> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         decoration: BoxDecoration(
-          color: selectedOption == value
-              ? Colors.blue.shade900
-              : Colors.blue.shade100,
+          color:
+              selectedOption == value ? AppColors.defaultColor : Colors.black87,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color:
-                selectedOption == value ? Colors.white : Colors.blue.shade900,
+            color: selectedOption == value ? Colors.white : Colors.grey,
             fontWeight: FontWeight.bold,
           ),
         ),

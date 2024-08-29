@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/widgets/appColors.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -15,8 +16,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return Theme(
       data: ThemeData(
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          selectedItemColor: Color.fromARGB(255, 8, 1, 134),
-          unselectedItemColor: Colors.black,
+          selectedItemColor: AppColors.defaultColor,
+          unselectedItemColor: Colors.orange,
           backgroundColor: Colors.white,
         ),
       ),

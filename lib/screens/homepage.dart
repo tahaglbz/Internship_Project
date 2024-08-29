@@ -6,6 +6,8 @@ import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 import 'package:my_app/extensions/media_query.dart';
 
+import '../widgets/appColors.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -34,11 +36,11 @@ class _HomepageState extends State<Homepage> {
             // AppBar yüksekliğine göre logo yüksekliği
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: AppColors.defaultColor,
         ),
       ),
       body: Container(
-        color: const Color.fromARGB(255, 0, 9, 99),
+        color: AppColors.defaultColor,
         width: deviceWidth,
         height: deviceHeight,
         child: Column(
@@ -77,7 +79,7 @@ class _HomepageState extends State<Homepage> {
                       borderRadius: BorderRadius.circular(8.0))),
               label: Text('Log In',
                   style: GoogleFonts.zillaSlab(
-                      color: const Color.fromARGB(255, 8, 1, 134),
+                      color: AppColors.defaultColor,
                       fontSize: 30,
                       fontWeight: FontWeight.w700)),
             ),
@@ -103,7 +105,7 @@ class _HomepageState extends State<Homepage> {
                       borderRadius: BorderRadius.circular(8.0))),
               label: Text('Sign Up',
                   style: GoogleFonts.zillaSlab(
-                      color: const Color.fromARGB(255, 8, 1, 134),
+                      color: AppColors.defaultColor,
                       fontSize: 30,
                       fontWeight: FontWeight.w700)),
             ),
@@ -124,7 +126,7 @@ class _HomepageState extends State<Homepage> {
                       borderRadius: BorderRadius.circular(8.0))),
               label: Text('Continue with Google',
                   style: GoogleFonts.zillaSlab(
-                      color: const Color.fromARGB(255, 8, 1, 134),
+                      color: AppColors.defaultColor,
                       fontSize: 30,
                       fontWeight: FontWeight.w700)),
             ),

@@ -8,6 +8,8 @@ import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/homepage.dart';
 import 'package:get/get.dart';
 
+import '../widgets/appColors.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -51,13 +53,13 @@ class _LoginPageState extends State<LoginPage> {
             'lib/assets/logo.png',
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: AppColors.defaultColor,
         ),
       ),
       body: Container(
         width: deviceWidth,
         height: deviceHeight,
-        color: const Color.fromARGB(255, 0, 9, 99),
+        color: AppColors.defaultColor,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -93,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       labelStyle: TextStyle(
-                        color: Color.fromARGB(255, 8, 1, 134),
+                        color: AppColors.defaultColor,
                       ),
                     ),
                   ),
@@ -114,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           labelStyle: const TextStyle(
-                            color: Color.fromARGB(255, 8, 1, 134),
+                            color: AppColors.defaultColor,
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -148,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(8.0))),
                     label: Text('Log In',
                         style: GoogleFonts.zillaSlab(
-                            color: const Color.fromARGB(255, 8, 1, 134),
+                            color: AppColors.defaultColor,
                             fontSize: 30,
                             fontWeight: FontWeight.w700)),
                   ),

@@ -107,7 +107,7 @@ class _MainMenuState extends State<MainMenu> {
             'lib/assets/logo.png',
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: AppColors.defaultColor,
         ),
       ),
       body: Column(children: [
@@ -122,7 +122,7 @@ class _MainMenuState extends State<MainMenu> {
             Text(
               'Pages',
               style: GoogleFonts.adamina(
-                  color: const Color.fromARGB(255, 0, 9, 99),
+                  color: AppColors.defaultColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w700),
             ),
@@ -134,13 +134,13 @@ class _MainMenuState extends State<MainMenu> {
                     child: Text(
                       'View All',
                       style: GoogleFonts.adamina(
-                          color: const Color.fromARGB(255, 0, 9, 99),
+                          color: AppColors.defaultColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w700),
                     )),
                 const Icon(
                   Icons.keyboard_double_arrow_right_rounded,
-                  color: const Color.fromARGB(255, 0, 9, 99),
+                  color: AppColors.defaultColor,
                 )
               ],
             ),

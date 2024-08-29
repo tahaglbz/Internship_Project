@@ -6,6 +6,8 @@ import 'package:my_app/auth/authservice.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/homepage.dart';
 
+import '../widgets/appColors.dart';
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -50,13 +52,13 @@ class _SignupState extends State<Signup> {
             'lib/assets/logo.png',
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: AppColors.defaultColor,
         ),
       ),
       body: Container(
         width: deviceWidth,
         height: deviceHeight,
-        color: const Color.fromARGB(255, 0, 9, 99),
+        color: AppColors.defaultColor,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -93,7 +95,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(255, 8, 1, 134),
+                          color: AppColors.defaultColor,
                         ),
                         errorStyle: TextStyle(color: Colors.white)),
                     validator: MultiValidator([
@@ -117,7 +119,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(255, 8, 1, 134),
+                          color: AppColors.defaultColor,
                         ),
                         errorStyle: TextStyle(color: Colors.white)),
                     validator: MultiValidator([
@@ -144,7 +146,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(255, 8, 1, 134),
+                          color: AppColors.defaultColor,
                         ),
                         errorStyle: TextStyle(color: Colors.white)),
                     validator: MultiValidator([
@@ -171,7 +173,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(255, 8, 1, 134),
+                          color: AppColors.defaultColor,
                         ),
                         errorStyle: TextStyle(color: Colors.white)),
                     validator: (value) {
@@ -202,7 +204,7 @@ class _SignupState extends State<Signup> {
                             borderRadius: BorderRadius.circular(8.0))),
                     label: Text('Sign Up',
                         style: GoogleFonts.zillaSlab(
-                            color: const Color.fromARGB(255, 8, 1, 134),
+                            color: AppColors.defaultColor,
                             fontSize: 30,
                             fontWeight: FontWeight.w700)),
                   ),
