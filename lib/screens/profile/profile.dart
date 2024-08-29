@@ -11,6 +11,7 @@ import 'package:my_app/screens/profile/incomeUpdateBottomSheet.dart';
 import 'package:my_app/screens/profile/profileController.dart';
 
 import '../../auth/firestore/firestoreService.dart';
+import '../../widgets/ThemeController.dart';
 import '../../widgets/appColors.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -25,6 +26,7 @@ class ProfilePage extends StatelessWidget {
     double appBarHeight = deviceWidth * 0.28;
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     Get.lazyPut(() => FirestoreService());
+    final ThemeController themeController = Get.find();
 
     return Scaffold(
       appBar: PreferredSize(
@@ -70,6 +72,19 @@ class ProfilePage extends StatelessWidget {
               onTap: () {
                 Get.toNamed('/settings');
               },
+            ),
+            Obx(
+              () => ListTile(
+                leading: Icon(Icons.brightness_6_sharp),
+                title: Text('Dark Mode'),
+                trailing: Switch(
+                  activeTrackColor: Colors.orange,
+                  value: themeController.isDarkMode.value,
+                  onChanged: (value) {
+                    themeController.toggleTheme();
+                  },
+                ),
+              ),
             ),
             ListTile(
               leading: const Icon(Icons.privacy_tip),

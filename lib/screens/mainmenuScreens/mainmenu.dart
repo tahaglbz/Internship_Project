@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,9 +21,25 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> {
   MainMenuController mainMenuController = MainMenuController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   int _selectedIndex = 0;
   double incomeTotal = 0.0;
   double expenseTotal = 0.0;
+
+  Stream<List<Map<String, dynamic>>> getArticles() {
+    return _firestore.collection('eduArticles').snapshots().map((snapshot) =>
+        snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList());
+  }
+
+  Stream<List<Map<String, dynamic>>> getVideos() {
+    return _firestore.collection('edu').snapshots().map((snapshot) => snapshot
+        .docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList());
+  }
 
   @override
   void initState() {
@@ -112,7 +129,7 @@ class _MainMenuState extends State<MainMenu> {
       ),
       body: Column(children: [
         SizedBox(
-          height: deviceHeight / 1400,
+          height: deviceHeight / 50,
         ),
         Row(
           children: [
@@ -129,15 +146,13 @@ class _MainMenuState extends State<MainMenu> {
             const Spacer(),
             Row(
               children: [
-                TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'View All',
-                      style: GoogleFonts.adamina(
-                          color: AppColors.defaultColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700),
-                    )),
+                Text(
+                  'View All',
+                  style: GoogleFonts.adamina(
+                      color: AppColors.defaultColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700),
+                ),
                 const Icon(
                   Icons.keyboard_double_arrow_right_rounded,
                   color: AppColors.defaultColor,
@@ -530,99 +545,100 @@ class _MainMenuState extends State<MainMenu> {
           height: deviceHeight / 50,
         ),
         SizedBox(
-            height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                GestureDetector(
-                  onTap: () => Get.toNamed('/graph'),
-                  child: Padding(
-                    padding: const EdgeInsets.all(
-                        16.0), // Adjust the padding as needed
-                    child: Stack(
-                      children: [
-                        Card(
-                          elevation: 9.0,
-                          shadowColor: AppColors.defaultColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: Container(
-                            width: deviceWidth * 0.9,
-                            height: deviceHeight * 0.35,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.defaultColor,
-                                width: 2.5,
-                              ),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: incomeTotal > 0 && expenseTotal > 0
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: IncomeExpenseChart(
-                                      incomeTotal: incomeTotal,
-                                      expenseTotal: expenseTotal,
-                                    ),
-                                  )
-                                : const Center(child: Text('Loading...')),
-                          ),
-                        ),
-                        Positioned(
-                          top: 10,
-                          left: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4.0),
-                            child: const Text(
-                              'Graphics',
-                              style: TextStyle(
-                                color: AppColors.defaultColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => Get.toNamed('/planning'),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Card(
-                      elevation: 9.0,
-                      shadowColor: AppColors.defaultColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Container(
-                        width: deviceWidth * 0.9,
-                        height: deviceHeight * 0.35,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.defaultColor,
-                            width: 2.5,
-                          ),
+          height: 200,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              GestureDetector(
+                onTap: () => Get.toNamed('/graph'),
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                      16.0), // Adjust the padding as needed
+                  child: Stack(
+                    children: [
+                      Card(
+                        elevation: 9.0,
+                        shadowColor: AppColors.defaultColor,
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        child: const Center(
-                          child: Text(
-                            'Planning',
-                            style: TextStyle(
-                              fontSize: 20,
+                        child: Container(
+                          width: deviceWidth * 0.9,
+                          height: deviceHeight * 0.35,
+                          decoration: BoxDecoration(
+                            border: Border.all(
                               color: AppColors.defaultColor,
+                              width: 2.5,
                             ),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: incomeTotal > 0 && expenseTotal > 0
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: IncomeExpenseChart(
+                                    incomeTotal: incomeTotal,
+                                    expenseTotal: expenseTotal,
+                                  ),
+                                )
+                              : const Center(child: Text('Loading...')),
+                        ),
+                      ),
+                      const Positioned(
+                        top: 10,
+                        left: 10,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          child: Text(
+                            'Graphics',
+                            style: TextStyle(
+                              color: AppColors.defaultColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => Get.toNamed('/planning'),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Card(
+                    elevation: 9.0,
+                    shadowColor: AppColors.defaultColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Container(
+                      width: deviceWidth * 0.9,
+                      height: deviceHeight * 0.35,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppColors.defaultColor,
+                          width: 2.5,
+                        ),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Planning',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppColors.defaultColor,
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
       ]),
       bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),

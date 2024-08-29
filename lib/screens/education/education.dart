@@ -67,8 +67,16 @@ class _EducationState extends State<Education> {
               child: StreamBuilder<QuerySnapshot>(
                 stream: eduCollection.snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('No videos available.'));
                   }
 
                   List<DocumentSnapshot> videos = snapshot.data!.docs;
@@ -83,6 +91,12 @@ class _EducationState extends State<Education> {
                       var videoTitle = videoData['title'];
                       var videoDescription = videoData['description'];
                       var videoChannel = videoData['channel'];
+
+                      String? videoId = YoutubePlayer.convertUrlToId(videoUrl);
+
+                      if (videoId == null) {
+                        return const Center(child: Text('Invalid video URL.'));
+                      }
 
                       return GestureDetector(
                         onTap: () {
@@ -103,9 +117,7 @@ class _EducationState extends State<Education> {
                                     aspectRatio: 16 / 9,
                                     child: YoutubePlayer(
                                       controller: YoutubePlayerController(
-                                        initialVideoId:
-                                            YoutubePlayer.convertUrlToId(
-                                                videoUrl)!,
+                                        initialVideoId: videoId,
                                         flags: const YoutubePlayerFlags(
                                           autoPlay: false,
                                           mute: false,
@@ -180,15 +192,23 @@ class _EducationState extends State<Education> {
             StreamBuilder<QuerySnapshot>(
               stream: articleCollection.snapshots(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text('No articles available.'));
                 }
 
                 List<DocumentSnapshot> articles = snapshot.data!.docs;
 
                 return ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: articles.length,
                   itemBuilder: (context, index) {
                     var articleData =
@@ -223,7 +243,7 @@ class _EducationState extends State<Education> {
                             'By $articleAuthor',
                             style: GoogleFonts.adamina(
                               fontSize: 14,
-                              color: Colors.grey,
+                              color: Colors.red,
                             ),
                           ),
                           trailing: Text(

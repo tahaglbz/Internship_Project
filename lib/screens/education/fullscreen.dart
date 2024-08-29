@@ -12,13 +12,7 @@ class FullScreenVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     final double deviceWidth = context.deviceWidth;
     double appBarHeight = deviceWidth * 0.28;
-    YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
-        mute: false,
-      ),
-    );
+    String videoId = YoutubePlayer.convertUrlToId(videoUrl) ?? '';
 
     return Scaffold(
       appBar: PreferredSize(
@@ -41,7 +35,13 @@ class FullScreenVideo extends StatelessWidget {
         children: [
           Expanded(
             child: YoutubePlayer(
-              controller: _controller,
+              controller: YoutubePlayerController(
+                initialVideoId: videoId,
+                flags: const YoutubePlayerFlags(
+                  autoPlay: true,
+                  mute: false,
+                ),
+              ),
               showVideoProgressIndicator: true,
               progressColors: const ProgressBarColors(
                 playedColor: Colors.red,

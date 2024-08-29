@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/aiPlanning/userData.dart';
+import 'package:my_app/screens/aiPlanning/userData.dart';
 import 'package:my_app/extensions/media_query.dart';
-import '../auth/firestore/firestoreService.dart';
-import '../widgets/appColors.dart';
+import '../../auth/firestore/firestoreService.dart';
+import '../../widgets/appColors.dart';
 
 class Planning extends StatefulWidget {
   const Planning({super.key});
@@ -40,7 +40,7 @@ class _PlanningState extends State<Planning> {
                 color: Colors.white, fontSize: 35, fontWeight: FontWeight.w700),
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: AppColors.defaultColor,
         ),
       ),
       body: Column(

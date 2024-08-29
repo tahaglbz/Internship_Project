@@ -3,8 +3,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_app/aiPlanning/planDetails.dart';
-import 'package:my_app/aiPlanning/planning.dart';
+import 'package:my_app/screens/aiPlanning/planDetails.dart';
+import 'package:my_app/screens/aiPlanning/planning.dart';
 import 'package:my_app/auth/login.dart';
 import 'package:my_app/auth/signup.dart';
 import 'package:my_app/screens/analysisAndGraphs/graph.dart';
@@ -19,6 +19,7 @@ import 'package:my_app/screens/profile/profile.dart';
 import 'package:my_app/splashscreen.dart';
 
 import 'firebase_options.dart';
+import 'widgets/ThemeController.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,15 +34,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeController themeController = Get.put(ThemeController());
+
     return GetMaterialApp(
       title: 'Stinginess',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.white,
-        ),
-        useMaterial3: true,
-      ),
-      initialRoute: '/education',
+      themeMode: themeController.theme,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      initialRoute: '/mainmenu',
       getPages: [
         GetPage(
             name: '/splashscreen',
