@@ -17,6 +17,9 @@ class _EducationState extends State<Education> {
   final CollectionReference eduCollection =
       FirebaseFirestore.instance.collection('edu');
 
+  final CollectionReference article =
+      FirebaseFirestore.instance.collection('eduArticles');
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = context.deviceWidth;
@@ -39,7 +42,7 @@ class _EducationState extends State<Education> {
             ),
           ),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 9, 99),
+          backgroundColor: Colors.black,
         ),
       ),
       body: SingleChildScrollView(
@@ -144,6 +147,29 @@ class _EducationState extends State<Education> {
                 },
               ),
             ),
+            const Divider(
+              height: 30,
+              color: Colors.black,
+              thickness: 2,
+            ),
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Articles',
+                      style: GoogleFonts.adamina(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

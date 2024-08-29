@@ -26,10 +26,14 @@ class FullScreenVideo extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(appBarHeight),
         child: AppBar(
-          title: const Text('Video'),
-          backgroundColor: AppColors.defaultColor,
+          title: const Text(
+            'Video',
+            style: TextStyle(color: Colors.white, fontSize: 25),
+          ),
+          backgroundColor: Colors.black,
+          iconTheme: IconThemeData(color: Colors.white),
           leading: IconButton(
-            onPressed: () => Get.offAllNamed('/mainmenu'),
+            onPressed: () => Get.offAllNamed('/education'),
             icon: const Icon(Icons.arrow_back_ios_new_sharp),
           ),
           automaticallyImplyLeading: false,
