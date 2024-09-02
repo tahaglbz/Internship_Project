@@ -140,7 +140,7 @@ class _MainMenuState extends State<MainMenu> {
               'Pages',
               style: GoogleFonts.adamina(
                   color: AppColors.defaultColor,
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700),
             ),
             const Spacer(),
@@ -150,7 +150,7 @@ class _MainMenuState extends State<MainMenu> {
                   'View All',
                   style: GoogleFonts.adamina(
                       color: AppColors.defaultColor,
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700),
                 ),
                 const Icon(
@@ -651,17 +651,88 @@ class _MainMenuState extends State<MainMenu> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
-              final videos = snapshot.data![0];
-              final articles = snapshot.data![1];
-              return SizedBox(
-                height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ...videos.map((e) => buildVideoCard(e)),
-                    ...articles.map((e) => buildArticlesCard(e)),
-                  ],
-                ),
+              // final videos = snapshot.data![0];
+              // final articles = snapshot.data![1];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.arrow_back_ios, color: Colors.black),
+                            const SizedBox(width: 8.0),
+                            Text(
+                              'Newest Videos',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.defaultColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Newest Articles',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.defaultColor,
+                              ),
+                            ),
+                            const SizedBox(width: 8.0),
+                            Icon(Icons.arrow_forward_ios, color: Colors.black),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 200,
+                    child: FutureBuilder(
+                      future: Future.wait([
+                        mainMenuController.getLastTwoVideos(),
+                        mainMenuController.getLastTwoArticles(),
+                      ]),
+                      builder: (context,
+                          AsyncSnapshot<List<List<Map<String, dynamic>>>>
+                              snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          final videos = snapshot.data![0];
+                          final articles = snapshot.data![1];
+                          return ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ...videos.map((e) => buildVideoCard(e)).toList(),
+                              const VerticalDivider(
+                                color: Colors.black,
+                                thickness: 2,
+                              ),
+                              ...articles
+                                  .map((e) => buildArticlesCard(e))
+                                  .toList(),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
               );
             }
           },
@@ -675,6 +746,7 @@ class _MainMenuState extends State<MainMenu> {
 
 Widget buildVideoCard(Map<String, dynamic> video) {
   return Card(
+    color: Colors.black87,
     margin: const EdgeInsets.all(16.0),
     elevation: 5.0,
     child: Container(
@@ -685,16 +757,23 @@ Widget buildVideoCard(Map<String, dynamic> video) {
         children: [
           Text(
             video['title'] ?? '',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(
             height: 8.0,
           ),
-          Text(video['description'] ?? ''),
+          Text(
+            video['description'] ?? '',
+            style: TextStyle(color: Colors.blueAccent),
+          ),
           const SizedBox(
             height: 8.0,
           ),
-          Text(video['channel'])
+          Text(
+            video['channel'],
+            style: TextStyle(color: Colors.red),
+          )
         ],
       ),
     ),
@@ -703,6 +782,7 @@ Widget buildVideoCard(Map<String, dynamic> video) {
 
 Widget buildArticlesCard(Map<String, dynamic> article) {
   return Card(
+    color: Colors.black87,
     margin: const EdgeInsets.all(16.0),
     elevation: 5.0,
     child: Container(
@@ -713,14 +793,23 @@ Widget buildArticlesCard(Map<String, dynamic> article) {
         children: [
           Text(
             article['title'] ?? '',
-            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
           ),
           const SizedBox(
             height: 8.0,
           ),
-          Text(article['description'] ?? ''),
+          Text(
+            article['description'] ?? '',
+            style: TextStyle(color: Colors.blueAccent),
+          ),
           const SizedBox(height: 8.0),
-          Text('Author: ${article['author'] ?? ''}'),
+          Text(
+            'Author: ${article['author'] ?? ''}',
+            style: TextStyle(color: Colors.red),
+          ),
         ],
       ),
     ),
