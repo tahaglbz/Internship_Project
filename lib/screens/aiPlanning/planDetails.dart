@@ -18,7 +18,7 @@ class PlanDetails extends StatelessWidget {
     String aim = plan?['aim'] ?? 'No Aim';
     double price = plan?['price'] ?? 0.0;
     if (plan == null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(child: Text('No plan details available.')),
       );
     }
@@ -52,7 +52,7 @@ class PlanDetails extends StatelessWidget {
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16.0),
-          Divider(
+          const Divider(
             color: AppColors.defaultColor,
             thickness: 2,
           ),

@@ -23,7 +23,7 @@ class FullScreenVideo extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 25),
           ),
           backgroundColor: Colors.black,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           leading: IconButton(
             onPressed: () => Get.offAllNamed('/education'),
             icon: const Icon(Icons.arrow_back_ios_new_sharp),

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class SortDatas {
   List<Map<String, dynamic>> sortArticlesByDate(
       List<Map<String, dynamic>> articles) {

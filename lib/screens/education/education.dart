@@ -62,7 +62,7 @@ class _EducationState extends State<Education> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: 300,
               child: StreamBuilder<QuerySnapshot>(
                 stream: eduCollection.snapshots(),

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,10 +57,6 @@ Future<void> showIncomeBottomSheet(BuildContext context) async {
                     double amount =
                         double.tryParse(amountController.text.trim()) ?? 0.0;
                     DateTime updatedDate = DateTime.now();
-
-                    print("Income Name: $incomeName");
-                    print("Amount: $amount");
-                    print("Updated Date: $updatedDate");
 
                     if (incomeName.isNotEmpty && amount > 0) {
                       await firestoreService.saveIncome(

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class Fixerio {
   Future<Map<String, double>> fetchExchangeRates() async {
-    final url =
+    const url =
         'http://data.fixer.io/api/latest?access_key=48f5c6f32ffaabb610b74a5b7d4b0aec';
     final response = await http.get(Uri.parse(url));
 

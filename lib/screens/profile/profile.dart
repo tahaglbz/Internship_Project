@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -75,8 +77,8 @@ class ProfilePage extends StatelessWidget {
             ),
             Obx(
               () => ListTile(
-                leading: Icon(Icons.brightness_6_sharp),
-                title: Text('Dark Mode'),
+                leading: const Icon(Icons.brightness_6_sharp),
+                title: const Text('Dark Mode'),
                 trailing: Switch(
                   activeTrackColor: Colors.orange,
                   value: themeController.isDarkMode.value,

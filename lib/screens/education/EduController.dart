@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart'; // Import RxDart
 import 'package:my_app/screens/education/sortEducationMaterials.dart';
@@ -6,7 +8,6 @@ class EduController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final SortDatas sortDatas = SortDatas();
 
-  // Belirli bir video dokümanını almak için
   Future<Map<String, dynamic>?> getVideoById(String docId) async {
     DocumentSnapshot doc = await _firestore.collection('edu').doc(docId).get();
     if (doc.exists) {
@@ -46,16 +47,16 @@ class EduController {
   }
 
   Stream<List<Map<String, dynamic>>> getVideos() {
-    return _firestore.collection('edu').snapshots().map((snapshot) => snapshot
-        .docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList());
+    return _firestore
+        .collection('edu')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
   Stream<List<Map<String, dynamic>>> getArticles() {
-    return _firestore.collection('eduArticles').snapshots().map((snapshot) =>
-        snapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>)
-            .toList());
+    return _firestore
+        .collection('eduArticles')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -28,17 +28,17 @@ class _MainMenuState extends State<MainMenu> {
   double expenseTotal = 0.0;
 
   Stream<List<Map<String, dynamic>>> getArticles() {
-    return _firestore.collection('eduArticles').snapshots().map((snapshot) =>
-        snapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>)
-            .toList());
+    return _firestore
+        .collection('eduArticles')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
   Stream<List<Map<String, dynamic>>> getVideos() {
-    return _firestore.collection('edu').snapshots().map((snapshot) => snapshot
-        .docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList());
+    return _firestore
+        .collection('edu')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
   @override
@@ -639,9 +639,90 @@ class _MainMenuState extends State<MainMenu> {
             ],
           ),
         ),
+        FutureBuilder(
+          future: Future.wait([
+            mainMenuController.getLastTwoVideos(),
+            mainMenuController.getLastTwoArticles(),
+          ]),
+          builder: (context,
+              AsyncSnapshot<List<List<Map<String, dynamic>>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              final videos = snapshot.data![0];
+              final articles = snapshot.data![1];
+              return SizedBox(
+                height: 200,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    ...videos.map((e) => buildVideoCard(e)),
+                    ...articles.map((e) => buildArticlesCard(e)),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ]),
       bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
     );
   }
+}
+
+Widget buildVideoCard(Map<String, dynamic> video) {
+  return Card(
+    margin: const EdgeInsets.all(16.0),
+    elevation: 5.0,
+    child: Container(
+      width: 300.0,
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            video['title'] ?? '',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 8.0,
+          ),
+          Text(video['description'] ?? ''),
+          const SizedBox(
+            height: 8.0,
+          ),
+          Text(video['channel'])
+        ],
+      ),
+    ),
+  );
+}
+
+Widget buildArticlesCard(Map<String, dynamic> article) {
+  return Card(
+    margin: const EdgeInsets.all(16.0),
+    elevation: 5.0,
+    child: Container(
+      width: 300,
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            article['title'] ?? '',
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 8.0,
+          ),
+          Text(article['description'] ?? ''),
+          const SizedBox(height: 8.0),
+          Text('Author: ${article['author'] ?? ''}'),
+        ],
+      ),
+    ),
+  );
 }

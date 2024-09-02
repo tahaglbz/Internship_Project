@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors
+// ignore_for_file: use_key_in_widget_constructors, file_names
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';

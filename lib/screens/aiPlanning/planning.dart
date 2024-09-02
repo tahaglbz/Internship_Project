@@ -141,11 +141,11 @@ class _PlanningState extends State<Planning> {
               stream: firestoreService.getSavePlan(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No plans available.'));
+                  return const Center(child: Text('No plans available.'));
                 }
 
                 final plans = snapshot.data!;
@@ -269,6 +269,6 @@ class _PlanningState extends State<Planning> {
 
 extension DateTimeFormatting on DateTime {
   String toShortDateString() {
-    return '${this.day}/${this.month}/${this.year}';
+    return '$day/$month/$year';
   }
 }
