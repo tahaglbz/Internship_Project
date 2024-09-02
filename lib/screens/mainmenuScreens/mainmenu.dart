@@ -656,15 +656,15 @@ class _MainMenuState extends State<MainMenu> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
+                        padding: EdgeInsets.only(left: 16.0),
                         child: Row(
                           children: [
                             Icon(Icons.arrow_back_ios, color: Colors.black),
-                            const SizedBox(width: 8.0),
+                            SizedBox(width: 8.0),
                             Text(
                               'Newest Videos',
                               style: TextStyle(
@@ -677,7 +677,7 @@ class _MainMenuState extends State<MainMenu> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
+                        padding: EdgeInsets.only(right: 16.0),
                         child: Row(
                           children: [
                             Text(
@@ -688,7 +688,7 @@ class _MainMenuState extends State<MainMenu> {
                                 color: AppColors.defaultColor,
                               ),
                             ),
-                            const SizedBox(width: 8.0),
+                            SizedBox(width: 8.0),
                             Icon(Icons.arrow_forward_ios, color: Colors.black),
                           ],
                         ),
@@ -718,14 +718,12 @@ class _MainMenuState extends State<MainMenu> {
                           return ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              ...videos.map((e) => buildVideoCard(e)).toList(),
+                              ...videos.map((e) => buildVideoCard(e)),
                               const VerticalDivider(
                                 color: Colors.black,
                                 thickness: 2,
                               ),
-                              ...articles
-                                  .map((e) => buildArticlesCard(e))
-                                  .toList(),
+                              ...articles.map((e) => buildArticlesCard(e)),
                             ],
                           );
                         }
@@ -765,14 +763,14 @@ Widget buildVideoCard(Map<String, dynamic> video) {
           ),
           Text(
             video['description'] ?? '',
-            style: TextStyle(color: Colors.blueAccent),
+            style: const TextStyle(color: Colors.blueAccent),
           ),
           const SizedBox(
             height: 8.0,
           ),
           Text(
             video['channel'],
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           )
         ],
       ),
@@ -803,12 +801,12 @@ Widget buildArticlesCard(Map<String, dynamic> article) {
           ),
           Text(
             article['description'] ?? '',
-            style: TextStyle(color: Colors.blueAccent),
+            style: const TextStyle(color: Colors.blueAccent),
           ),
           const SizedBox(height: 8.0),
           Text(
             'Author: ${article['author'] ?? ''}',
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           ),
         ],
       ),

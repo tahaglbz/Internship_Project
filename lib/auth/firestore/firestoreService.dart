@@ -346,11 +346,8 @@ class FirestoreService {
         .collection('incomes')
         .doc(incomeName)
         .update({
-      'newAmount': newAmount,
+      'amount': newAmount,
       'newDate': DateTime.now().toIso8601String(),
-      'updatedHistory': FieldValue.arrayUnion([
-        {'date': DateTime.now().toIso8601String(), 'amount': newAmount}
-      ])
     });
   }
 

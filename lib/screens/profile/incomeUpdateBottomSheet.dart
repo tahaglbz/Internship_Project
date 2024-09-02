@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void showAmountBottomSheet(BuildContext context, Function(String) onSubmit) {
   TextEditingController amountController = TextEditingController();
@@ -31,7 +32,7 @@ void showAmountBottomSheet(BuildContext context, Function(String) onSubmit) {
                 String newAmount = amountController.text;
                 if (newAmount.isNotEmpty) {
                   onSubmit(newAmount);
-                  Navigator.of(context).pop(); // BottomSheet'i kapat
+                  Get.back();
                 }
               },
               child: const Text('Update'),

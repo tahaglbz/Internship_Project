@@ -305,7 +305,7 @@ class ProfilePage extends StatelessWidget {
                                 elevation: 4,
                                 child: ListTile(
                                   title: Text(income['incomeName']),
-                                  subtitle: Text('${income['newAmount']} \$'),
+                                  subtitle: Text('${income['amount']} \$'),
                                 ),
                               ),
                             );
