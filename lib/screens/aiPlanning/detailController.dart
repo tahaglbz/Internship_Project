@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -27,45 +25,42 @@ class DetailController extends GetxController {
       final tport = await _userInputs.getTotalTransportAmount();
       final shop = await _userInputs.getTotalShoppingAmount();
       final health = await _userInputs.getTotalHealthAmount();
-      final ent = await _userInputs.getTotalEntertainmentAmount();
-      final other = await _userInputs.getTotalOtherAmount();
-      final income = await _userInputs.getTotalIncomesAmount();
 
       expenses.value = {
         'Electricity': electricity,
         'Water': water,
-        'N Gas': nGas,
+        'Natural Gas': nGas,
         'Internet': net,
         'Rent': rent,
         'Education': edu,
         'Transport': tport,
         'Shopping': shop,
         'Health': health,
-        'Fun': ent,
-        'Other': other,
-        'Income': income
+        'Income': null
       };
     } catch (e) {
       print('Error fetching expenses: $e');
     }
   }
 
-  List<Map<String, dynamic>> get expensesList {
-    return expenses.entries.map((e) {
-      return {
-        'category': e.key,
-        'amount': e.value,
-      };
-    }).toList();
+  Map<String, double?> calculateSavings(
+      double targetSavingsPercentage, String category, double amount) {
+    double? amount = expenses[category];
+    if (amount == null) {
+      return {'savings': 0.0};
+    }
+
+    double savings = amount * (targetSavingsPercentage / 100);
+    return {'savings': savings};
   }
 
-  void fetchCredits() async {
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    final snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('savePlan')
-        .get();
-    plans.assignAll(snapshot.docs);
+  double totalExpenses() {
+    double total = 0.0;
+    expenses.forEach((category, amount) {
+      if (amount != null && category != 'Income') {
+        total += amount;
+      }
+    });
+    return total;
   }
 }
