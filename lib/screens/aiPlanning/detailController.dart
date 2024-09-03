@@ -25,7 +25,9 @@ class DetailController extends GetxController {
       final tport = await _userInputs.getTotalTransportAmount();
       final shop = await _userInputs.getTotalShoppingAmount();
       final health = await _userInputs.getTotalHealthAmount();
-
+      final income = await _userInputs.getTotalIncomesAmount();
+      final ent = await _userInputs.getTotalEntertainmentAmount();
+      final oth = await _userInputs.getTotalOtherAmount();
       expenses.value = {
         'Electricity': electricity,
         'Water': water,
@@ -36,7 +38,9 @@ class DetailController extends GetxController {
         'Transport': tport,
         'Shopping': shop,
         'Health': health,
-        'Income': null
+        'Entertainment': ent,
+        'Other': oth,
+        'Income': income
       };
     } catch (e) {
       print('Error fetching expenses: $e');
