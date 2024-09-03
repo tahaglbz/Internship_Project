@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:my_app/screens/aiPlanning/userData.dart';
 import 'detailController.dart';
 
 class PlanDetailsController extends GetxController {

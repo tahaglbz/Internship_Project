@@ -119,7 +119,7 @@ class PlanDetails extends StatelessWidget {
             );
 
             final savings = savingsData['savings'] ?? 0.0;
-            final monthsToGoal = savingsData['monthsToGoal'] ?? 0.0;
+            final monthsToGoal = price / savings;
 
             return Padding(
               padding: const EdgeInsets.all(16.0),

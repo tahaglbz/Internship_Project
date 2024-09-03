@@ -15,14 +15,16 @@ class SavingsService extends GetxService {
     double savings = (highestSpending * (targetPercentage / 100));
     double adjustedTotalExpenses = totalExpenses - highestSpending + savings;
 
+    // Assume a savings goal
+    double savingsGoal = 1000.0; // Replace with the actual savings goal
+    double currentSavings = totalExpenses - adjustedTotalExpenses;
+
     // Calculate the number of months to reach the savings goal
-    double monthsToGoal = (adjustedTotalExpenses > 0 && savings > 0)
-        ? (savings / (highestSpending * (targetPercentage / 100)))
-        : 0.0;
+    double monthsToGoal = (savingsGoal - currentSavings) / savings;
 
     return {
       'savings': savings,
-      'monthsToGoal': monthsToGoal,
+      'monthsToGoal': monthsToGoal > 0 ? monthsToGoal : 0.0,
     };
   }
 
