@@ -30,8 +30,8 @@ class SavingsService extends GetxService {
 
   String findHighestSpendingCategory(Map<String, double> expenses) {
     return expenses.entries
-        .where((entry) => entry.key != 'Income' && entry.value != null)
-        .reduce((a, b) => a.value! > b.value! ? a : b)
+        .where((entry) => entry.key != 'Income')
+        .reduce((a, b) => a.value > b.value ? a : b)
         .key;
   }
 }
