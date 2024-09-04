@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -119,12 +121,19 @@ class PlanDetails extends StatelessWidget {
             final monthsToGoal =
                 savings > 0 ? price / savings : double.infinity;
 
+            final savingsMessage = savingsService.getSavingsMessage(
+              highestCategory,
+              highestSpending,
+              totalExpenses,
+              targetPercentage,
+              savings,
+              monthsToGoal,
+            );
+
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Your $highestCategory spending is ${(highestSpending / totalExpenses * 100).toStringAsFixed(1)}% of your total expenses. '
-                'By reducing it by ${targetPercentage.toStringAsFixed(1)}%, you can save an extra \$${savings.toStringAsFixed(2)} per month. '
-                'With this change, you will reach your savings goal in ${monthsToGoal.isFinite ? monthsToGoal.toStringAsFixed(0) : '∞'} months.',
+                savingsMessage,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
