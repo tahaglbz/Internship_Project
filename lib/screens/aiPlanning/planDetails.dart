@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/extensions/media_query.dart';
-import 'package:my_app/screens/aiPlanning/SavingService.dart';
 import 'package:my_app/widgets/appColors.dart';
 import 'detailController.dart';
+import 'package:my_app/screens/aiPlanning/SavingService.dart';
 
 class PlanDetails extends StatelessWidget {
   final DetailController detailController = Get.put(DetailController());
@@ -108,25 +108,23 @@ class PlanDetails extends StatelessWidget {
             final double highestSpending =
                 nonNullableExpenses[highestCategory] ?? 0.0;
 
-            final double targetPercentage =
-                10.0; // Or get this value from a dynamic source
+            const double targetPercentage = 10.0;
 
             final savingsData = savingsService.calculateSavings(
               targetPercentage,
-              highestCategory,
               highestSpending,
-              totalExpenses,
             );
 
             final savings = savingsData['savings'] ?? 0.0;
-            final monthsToGoal = price / savings;
+            final monthsToGoal =
+                savings > 0 ? price / savings : double.infinity;
 
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Your $highestCategory spending is ${(highestSpending / totalExpenses * 100).toStringAsFixed(1)}% of your total expenses. '
                 'By reducing it by ${targetPercentage.toStringAsFixed(1)}%, you can save an extra \$${savings.toStringAsFixed(2)} per month. '
-                'With this change, you will reach your savings goal in ${monthsToGoal.toStringAsFixed(0)} months.',
+                'With this change, you will reach your savings goal in ${monthsToGoal.isFinite ? monthsToGoal.toStringAsFixed(0) : '∞'} months.',
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
