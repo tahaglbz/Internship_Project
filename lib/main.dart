@@ -1,8 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_app/Lang/LocalizationController.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:my_app/screens/aiPlanning/planDetails.dart';
 import 'package:my_app/screens/aiPlanning/planning.dart';
 import 'package:my_app/auth/login.dart';
@@ -17,7 +17,7 @@ import 'package:my_app/screens/homepage.dart';
 import 'package:my_app/screens/mainmenuScreens/mainmenu.dart';
 import 'package:my_app/screens/profile/profile.dart';
 import 'package:my_app/splashscreen.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart'; // BU SATIRI EKLEYİN
 import 'firebase_options.dart';
 import 'widgets/ThemeController.dart';
 
@@ -35,12 +35,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.put(ThemeController());
+    final LocalizationController localizationController =
+        Get.put(LocalizationController());
 
     return GetMaterialApp(
       title: 'Stinginess',
       themeMode: themeController.theme,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
+      locale: localizationController.locale, // Dinamik dil ayarı
+      fallbackLocale:
+          const Locale('en'), // Dil seçimi yapılamazsa varsayılan İngilizce
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate, // MaterialLocalizations
+        GlobalWidgetsLocalizations.delegate, // WidgetsLocalizations
+        GlobalCupertinoLocalizations.delegate, // CupertinoLocalizations
+      ],
+      supportedLocales: S.delegate.supportedLocales, // Desteklenen diller
       initialRoute: '/mainmenu',
       getPages: [
         GetPage(

@@ -12,6 +12,7 @@ import 'package:my_app/screens/profile/incomeBottomSheet.dart';
 import 'package:my_app/screens/profile/incomeUpdateBottomSheet.dart';
 import 'package:my_app/screens/profile/profileController.dart';
 
+import '../../Lang/LocalizationController.dart';
 import '../../auth/firestore/firestoreService.dart';
 import '../../widgets/ThemeController.dart';
 import '../../widgets/appColors.dart';
@@ -79,7 +80,7 @@ class ProfilePage extends StatelessWidget {
               leading: const Icon(Icons.language),
               title: const Text('Change Language'),
               onTap: () {
-                showLanguageBottomSheet(context);
+                showLanguageSelection(context);
               },
             ),
             Obx(
@@ -362,38 +363,31 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-void showLanguageBottomSheet(BuildContext context) {
+void showLanguageSelection(BuildContext context) {
   Get.bottomSheet(
     Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      padding: const EdgeInsets.all(16),
+      child: Wrap(
         children: [
-          const Text('Select Language', style: TextStyle(fontSize: 18)),
-          const SizedBox(height: 16),
           ListTile(
+            leading: Image.asset('lib/assets/united-kingdom.png'),
             title: const Text('English'),
-            trailing: Image.asset('lib/assets/united-kingdom.png'),
             onTap: () {
-              Get.updateLocale(const Locale('en', 'US'));
+              Get.find<LocalizationController>().changeLocale('en');
               Get.back();
             },
           ),
           ListTile(
+            leading: Image.asset('lib/assets/turkey.png'),
             title: const Text('Türkçe'),
-            trailing: Image.asset('lib/assets/turkey.png'),
             onTap: () {
-              Get.updateLocale(const Locale('tr', 'TR'));
+              Get.find<LocalizationController>().changeLocale('tr');
               Get.back();
             },
           ),
         ],
       ),
     ),
+    backgroundColor: Colors.white,
   );
 }
