@@ -378,6 +378,7 @@ void showLanguageBottomSheet(BuildContext context) {
           const SizedBox(height: 16),
           ListTile(
             title: const Text('English'),
+            trailing: Image.asset('lib/assets/united-kingdom.png'),
             onTap: () {
               Get.updateLocale(const Locale('en', 'US'));
               Get.back();
@@ -385,6 +386,7 @@ void showLanguageBottomSheet(BuildContext context) {
           ),
           ListTile(
             title: const Text('Türkçe'),
+            trailing: Image.asset('lib/assets/turkey.png'),
             onTap: () {
               Get.updateLocale(const Locale('tr', 'TR'));
               Get.back();
