@@ -75,6 +75,13 @@ class ProfilePage extends StatelessWidget {
                 Get.toNamed('/settings');
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.language),
+              title: const Text('Change Language'),
+              onTap: () {
+                showLanguageBottomSheet(context);
+              },
+            ),
             Obx(
               () => ListTile(
                 leading: const Icon(Icons.brightness_6_sharp),
@@ -353,4 +360,38 @@ class ProfilePage extends StatelessWidget {
       },
     );
   }
+}
+
+void showLanguageBottomSheet(BuildContext context) {
+  Get.bottomSheet(
+    Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('Select Language', style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 16),
+          ListTile(
+            title: const Text('English'),
+            onTap: () {
+              Get.updateLocale(const Locale('en', 'US'));
+              Get.back();
+            },
+          ),
+          ListTile(
+            title: const Text('Türkçe'),
+            onTap: () {
+              Get.updateLocale(const Locale('tr', 'TR'));
+              Get.back();
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 }
