@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,7 @@ class MainMenu extends StatefulWidget {
 class _MainMenuState extends State<MainMenu> {
   MainMenuController mainMenuController = MainMenuController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final User? currentUser = FirebaseAuth.instance.currentUser;
 
   int _selectedIndex = 0;
   double incomeTotal = 0.0;
@@ -607,35 +609,129 @@ class _MainMenuState extends State<MainMenu> {
                 onTap: () => Get.toNamed('/planning'),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Card(
-                    elevation: 9.0,
-                    shadowColor: AppColors.defaultColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Container(
-                      width: deviceWidth * 0.9,
-                      height: deviceHeight * 0.35,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.defaultColor,
-                          width: 2.5,
+                  child: Stack(
+                    children: [
+                      Card(
+                        elevation: 9.0,
+                        shadowColor: AppColors.defaultColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
-                        borderRadius: BorderRadius.circular(20.0),
+                        child: FutureBuilder<QuerySnapshot>(
+                          future: _firestore
+                              .collection('users')
+                              .doc(currentUser?.uid)
+                              .collection('savePlan')
+                              .limit(2) // Limit to 2 aims
+                              .get(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text('Error fetching data'));
+                            } else if (!snapshot.hasData ||
+                                snapshot.data!.docs.isEmpty) {
+                              return const Center(
+                                  child: Text('No data available'));
+                            } else {
+                              var docs = snapshot.data!.docs;
+                              return Container(
+                                width: deviceWidth * 0.9,
+                                height: deviceHeight * 0.35,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.defaultColor,
+                                    width: 2.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: docs.map((doc) {
+                                      var aim = doc['aim'];
+                                      var price = doc['price'].toString();
+                                      var updatedDate =
+                                          DateTime.parse(doc['updatedDate']);
+                                      var formattedDate =
+                                          DateFormat('dd-MM-yyyy')
+                                              .format(updatedDate);
+
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            aim,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.defaultColor,
+                                            ),
+                                          ),
+                                          Text(
+                                            '\$${price}',
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: AppColors.defaultColor,
+                                            ),
+                                          ),
+                                          Text(
+                                            formattedDate,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.defaultColor,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
-                      child: const Center(
-                        child: Text(
-                          'Planning',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: AppColors.defaultColor,
+                      Positioned(
+                        top: 10,
+                        left: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Planning',
+                                style: TextStyle(
+                                  color: AppColors.defaultColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8.0, // Space between text and icon
+                              ),
+                              Image.asset(
+                                'lib/assets/target.png',
+                                width: 20.0, // Image width
+                                height: 20.0, // Image height
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),

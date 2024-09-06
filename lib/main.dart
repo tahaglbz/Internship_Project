@@ -43,16 +43,15 @@ class MyApp extends StatelessWidget {
       themeMode: themeController.theme,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      locale: localizationController.locale, // Dinamik dil ayarı
-      fallbackLocale:
-          const Locale('en'), // Dil seçimi yapılamazsa varsayılan İngilizce
+      locale: localizationController.locale,
+      fallbackLocale: const Locale('en'),
       localizationsDelegates: const [
         S.delegate,
-        GlobalMaterialLocalizations.delegate, // MaterialLocalizations
-        GlobalWidgetsLocalizations.delegate, // WidgetsLocalizations
-        GlobalCupertinoLocalizations.delegate, // CupertinoLocalizations
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: S.delegate.supportedLocales, // Desteklenen diller
+      supportedLocales: S.delegate.supportedLocales,
       initialRoute: '/mainmenu',
       getPages: [
         GetPage(
