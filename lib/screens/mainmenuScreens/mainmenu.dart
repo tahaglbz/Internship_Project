@@ -78,9 +78,11 @@ class _MainMenuState extends State<MainMenu> {
 
         break;
       case 2:
+        Get.offAllNamed('/forum');
+      case 3:
         Get.offAllNamed('/expense');
         break;
-      case 3:
+      case 4:
         Get.offAllNamed('/profile');
         break;
     }

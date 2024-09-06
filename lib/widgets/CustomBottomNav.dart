@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_app/widgets/appColors.dart'; // Import your custom color class
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -24,28 +25,30 @@ class CustomBottomNavigationBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               color:
                   selectedIndex == 0 ? AppColors.defaultColor : Colors.orange,
               onPressed: () => onItemTapped(0),
             ),
             IconButton(
-              icon: Icon(Icons.cast_for_education_sharp),
+              icon: const Icon(Icons.cast_for_education_sharp),
               color:
                   selectedIndex == 1 ? AppColors.defaultColor : Colors.orange,
               onPressed: () => onItemTapped(1),
             ),
             CircularImageButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.offAllNamed('/forum');
+              },
             ),
             IconButton(
-              icon: Icon(Icons.currency_exchange),
+              icon: const Icon(Icons.currency_exchange),
               color:
                   selectedIndex == 2 ? AppColors.defaultColor : Colors.orange,
               onPressed: () => onItemTapped(2),
             ),
             IconButton(
-              icon: Icon(Icons.person_2_sharp),
+              icon: const Icon(Icons.person_2_sharp),
               color:
                   selectedIndex == 3 ? AppColors.defaultColor : Colors.orange,
               onPressed: () => onItemTapped(3),

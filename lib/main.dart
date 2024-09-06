@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/Lang/LocalizationController.dart';
 import 'package:my_app/generated/l10n.dart';
+import 'package:my_app/screens/Forum/forum.dart';
 import 'package:my_app/screens/aiPlanning/planDetails.dart';
 import 'package:my_app/screens/aiPlanning/planning.dart';
 import 'package:my_app/auth/login.dart';
@@ -123,6 +124,12 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/education',
           page: () => const Education(),
+          transition: Transition.cupertinoDialog,
+          transitionDuration: const Duration(seconds: 1),
+        ),
+        GetPage(
+          name: '/forum',
+          page: () => const Forum(),
           transition: Transition.cupertinoDialog,
           transitionDuration: const Duration(seconds: 1),
         ),
