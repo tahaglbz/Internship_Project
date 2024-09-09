@@ -1,3 +1,6 @@
+// ignore_for_file: depend_on_referenced_packages, avoid_print
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/extensions/media_query.dart';
@@ -18,7 +21,12 @@ class Forum extends StatefulWidget {
 
 class _ForumState extends State<Forum> {
   int _selectedIndex = 4;
+  final TextEditingController textController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final ImagePicker picker = ImagePicker();
+  final User? currentUser = FirebaseAuth.instance.currentUser;
 
+  XFile? selectedImage;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -44,12 +52,6 @@ class _ForumState extends State<Forum> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
       builder: (context) {
-        final TextEditingController textController = TextEditingController();
-        final TextEditingController titleController = TextEditingController();
-
-        final ImagePicker picker = ImagePicker();
-        XFile? selectedImage;
-
         final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
         return Padding(
@@ -83,6 +85,14 @@ class _ForumState extends State<Forum> {
                           borderSide: BorderSide(color: Colors.orange))),
                 ),
                 const SizedBox(height: 20),
+                selectedImage != null
+                    ? Image.file(
+                        File(selectedImage!.path),
+                        height: 150,
+                      )
+                    : const SizedBox(
+                        height: 150), // Placeholder if no image is selected
+                const SizedBox(height: 20),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                       shape: const BeveledRectangleBorder(
@@ -102,6 +112,8 @@ class _ForumState extends State<Forum> {
                       selectedImage =
                           await picker.pickImage(source: ImageSource.gallery);
                       if (selectedImage != null) {
+                        setState(
+                            () {}); // Refresh the bottom sheet to show the selected image
                         print('Selected image path: ${selectedImage!.path}');
                       } else {
                         print('No image selected.');
@@ -153,22 +165,29 @@ class _ForumState extends State<Forum> {
 
   Future<void> _createPost(
       XFile image, String postText, String titleText) async {
+    if (postText.isEmpty || titleText.isEmpty) {
+      Get.snackbar('Error', 'Please provide all required fields.');
+      return;
+    }
+
     try {
-      // Resmi Firebase Storage'a yükle
       String fileName = path.basename(image.path);
       File imageFile = File(image.path);
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref = storage.ref().child('posts/$fileName');
 
       UploadTask uploadTask = ref.putFile(imageFile);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      TaskSnapshot taskSnapshot = await uploadTask;
 
-      // Resmin URL'ini al
+      // Resmin URL'ini alın
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
-      // Postu Firestore'a kaydet
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      await firestore.collection('posts').add({
+      await firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('posts')
+          .add({
         'title': titleText,
         'text': postText,
         'imageUrl': downloadUrl,
