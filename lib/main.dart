@@ -42,7 +42,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Stinginess',
       themeMode: themeController.theme,
-      theme: ThemeData.light(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.orange,
+        ),
+        useMaterial3: true,
+      ),
       darkTheme: ThemeData.dark(),
       locale: localizationController.locale,
       fallbackLocale: const Locale('en'),

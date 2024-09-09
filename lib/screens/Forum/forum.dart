@@ -64,26 +64,39 @@ class _ForumState extends State<Forum> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text('Create a Post', style: TextStyle(fontSize: 20)),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 TextField(
                   controller: titleController,
                   decoration: const InputDecoration(
-                    labelText: 'Post Title',
-                    border: OutlineInputBorder(),
-                  ),
+                      labelText: 'Post Title',
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange))),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 TextField(
                   controller: textController,
                   decoration: const InputDecoration(
-                    labelText: 'Post Text',
-                    border: OutlineInputBorder(),
-                  ),
+                      labelText: 'Post Text',
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange))),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 ElevatedButton.icon(
-                  icon: const Icon(Icons.photo),
-                  label: const Text('Select Image'),
+                  style: ElevatedButton.styleFrom(
+                      shape: const BeveledRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.elliptical(3, 2))),
+                      backgroundColor: AppColors.defaultColor),
+                  icon: const Icon(
+                    Icons.photo,
+                    color: Colors.orange,
+                  ),
+                  label: const Text(
+                    'Select Image',
+                    style: TextStyle(color: Colors.orange),
+                  ),
                   onPressed: () async {
                     try {
                       selectedImage =
@@ -99,7 +112,11 @@ class _ForumState extends State<Forum> {
                   },
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(
+                ElevatedButton.icon(
+                  icon: const Icon(
+                    Icons.send_rounded,
+                    color: Colors.orange,
+                  ),
                   onPressed: () async {
                     if (selectedImage != null &&
                         textController.text.isNotEmpty) {
@@ -115,7 +132,16 @@ class _ForumState extends State<Forum> {
                           'Please select an image and enter some text.');
                     }
                   },
-                  child: const Text('Post'),
+                  style: ElevatedButton.styleFrom(
+                      shape: const BeveledRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.elliptical(3, 2))),
+                      backgroundColor: AppColors.defaultColor),
+                  label: const Text(
+                    'Post',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.orange),
+                  ),
                 ),
               ],
             ),
@@ -166,10 +192,6 @@ class _ForumState extends State<Forum> {
         child: AppBar(
           iconTheme: const IconThemeData(color: Colors.white),
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () => Get.offAllNamed('/mainmenu'),
-            icon: const Icon(Icons.arrow_back_ios_new_sharp),
-          ),
           elevation: 0,
           title: Image.asset('lib/assets/logo.png'),
           centerTitle: true,

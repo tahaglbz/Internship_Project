@@ -17,6 +17,7 @@ class ForumBottom extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
+      color: Colors.black,
       notchMargin: 8.0,
       child: Container(
         height: 60,
@@ -31,9 +32,7 @@ class ForumBottom extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.add_box),
-              color: selectedIndex == 1
-                  ? AppColors.defaultColor
-                  : AppColors.defaultColor,
+              color: selectedIndex == 1 ? Colors.orange : Colors.orange,
 
               onPressed: () => onItemTapped(1), // Correctly pass the index 1
             ),
