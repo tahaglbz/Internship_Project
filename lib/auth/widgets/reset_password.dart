@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/appColors.dart';
 import '../authservice.dart';
 
 Future<void> showResetPasswordBottomSheet(BuildContext context) async {
@@ -20,7 +21,7 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
             const Text(
               'Reset Password',
               style: TextStyle(
-                color: Color.fromARGB(255, 8, 1, 134),
+                color: AppColors.defaultColor,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -42,7 +43,7 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
                 hintText: 'Email',
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Color.fromARGB(255, 8, 1, 134),
+                    color: AppColors.defaultColor,
                   ),
                 ),
               ),
@@ -58,7 +59,7 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
                   child: const Text(
                     'Cancel',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 8, 1, 134),
+                      color: AppColors.defaultColor,
                     ),
                   ),
                 ),
@@ -81,7 +82,7 @@ Future<void> showResetPasswordBottomSheet(BuildContext context) async {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 8, 1, 134),
+                    backgroundColor: AppColors.defaultColor,
                     foregroundColor: Colors.white,
                   ),
                   child: const Text('Reset Password'),
