@@ -90,8 +90,8 @@ class _ForumState extends State<Forum> {
                         File(selectedImage!.path),
                         height: 150,
                       )
-                    : const SizedBox(
-                        height: 150), // Placeholder if no image is selected
+                    : const Icon(Icons
+                        .image_not_supported_sharp), // Placeholder if no image is selected
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(

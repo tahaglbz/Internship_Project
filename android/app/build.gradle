@@ -56,6 +56,14 @@ android {
     }
 }
 
+dependencies {
+    // App Check Play Integrity provider for Android
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
+    
+    // Debug için App Check provider
+    implementation 'com.google.firebase:firebase-appcheck-debug'
+}
+
 flutter {
     source = "../.."
 }
