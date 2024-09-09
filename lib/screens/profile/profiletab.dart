@@ -137,57 +137,65 @@ class ProfileAppTab extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                        child: ListView.builder(
-                      itemCount: incomes.length,
-                      itemBuilder: (context, index) {
-                        var income = incomes[index];
-                        return Dismissible(
-                          key: Key(income['id'].toString()),
-                          background: Container(
-                            color: AppColors.defaultColor,
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                          ),
-                          secondaryBackground: Container(
-                            color: Colors.red,
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.only(right: 16.0),
-                            child: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ),
-                          confirmDismiss: (direction) async {
-                            if (direction == DismissDirection.startToEnd) {
-                              showAmountBottomSheet(
-                                context,
-                                (newAmount) {
-                                  firestoreService.updateIncome(
-                                      income['incomeName'].toString(),
-                                      double.parse(newAmount));
+                      child: ListView.builder(
+                        itemCount: incomes.length,
+                        itemBuilder: (context, index) {
+                          var income = incomes[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 1.0),
+                            child: Card(
+                              elevation: 4,
+                              child: Dismissible(
+                                key: Key(income['id'].toString()),
+                                background: Container(
+                                  color: AppColors.defaultColor,
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                secondaryBackground: Container(
+                                  color: Colors.red,
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                confirmDismiss: (direction) async {
+                                  if (direction ==
+                                      DismissDirection.startToEnd) {
+                                    showAmountBottomSheet(
+                                      context,
+                                      (newAmount) {
+                                        firestoreService.updateIncome(
+                                            income['incomeName'].toString(),
+                                            double.parse(newAmount));
+                                      },
+                                    );
+                                    return false;
+                                  } else if (direction ==
+                                      DismissDirection.endToStart) {
+                                    await firestoreService
+                                        .deleteIncomes(income['id'].toString());
+                                    return true;
+                                  }
+                                  return false;
                                 },
-                              );
-                              return false;
-                            } else if (direction ==
-                                DismissDirection.endToStart) {
-                              await firestoreService
-                                  .deleteIncomes(income['id'].toString());
-                              return true;
-                            }
-                            return false;
-                          },
-                          child: ListTile(
-                            title: Text(income['incomeName']),
-                            subtitle: Text(
-                                'Amount: ${income['amount'].toStringAsFixed(2)}'),
-                          ),
-                        );
-                      },
-                    ))
+                                child: ListTile(
+                                  title: Text(income['incomeName']),
+                                  subtitle: Text(
+                                      'Amount: ${income['amount'].toStringAsFixed(2)}'),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
                   ],
                 );
               },

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/extensions/media_query.dart';
-import 'package:my_app/screens/profile/profileController.dart';
 import 'package:my_app/screens/profile/profiletab.dart';
 import 'package:my_app/screens/profile/socialmediatab.dart';
 import '../../auth/firestore/firestoreService.dart';
@@ -13,7 +12,6 @@ import '../../widgets/appColors.dart';
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ProfileController controller = Get.put(ProfileController());
     final double deviceWidth = context.deviceWidth;
     double appBarHeight = deviceWidth * 0.28;
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
