@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/profile/profiletab.dart';
-import 'package:my_app/screens/profile/socialmediatab.dart';
+import 'package:my_app/screens/profile/social/socialmediatab.dart';
 import '../../auth/firestore/firestoreService.dart';
 import '../../widgets/ThemeController.dart';
 import '../../widgets/appColors.dart';
