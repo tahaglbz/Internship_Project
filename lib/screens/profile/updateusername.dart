@@ -1,7 +1,9 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 Future<String?> ShowEditUsernameBottomSheet(BuildContext context) {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
 
   return showModalBottomSheet<String>(
     context: context,
@@ -12,7 +14,7 @@ Future<String?> ShowEditUsernameBottomSheet(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: _usernameController,
+              controller: usernameController,
               decoration: const InputDecoration(
                 labelText: 'New Username',
               ),
@@ -20,7 +22,7 @@ Future<String?> ShowEditUsernameBottomSheet(BuildContext context) {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(_usernameController.text);
+                Navigator.of(context).pop(usernameController.text);
               },
               child: const Text('Submit'),
             ),

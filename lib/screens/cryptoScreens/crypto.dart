@@ -53,17 +53,6 @@ class _CryptoState extends State<Crypto> {
     }
   }
 
-  Future<void> _saveAsset() async {
-    final coinPrice = coinData?['quote']['USD']['price'] ?? 0.0;
-    final usdValue = coinPrice * coinAsset;
-    final imageUrl =
-        'https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData?['id']}.png';
-    final updatedDate = DateTime.now();
-
-    await firestoreService.saveAsset(
-        cryptoCont.text.trim(), coinAsset, imageUrl, usdValue, updatedDate);
-  }
-
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = context.deviceWidth;

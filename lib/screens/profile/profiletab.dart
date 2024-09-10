@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -55,7 +57,7 @@ class ProfileAppTab extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '${controller.bio.value}',
+                              controller.bio.value,
                               style: const TextStyle(
                                   color: AppColors.defaultColor,
                                   fontSize: 16,
@@ -108,7 +110,7 @@ class ProfileAppTab extends StatelessWidget {
                                     },
                                   );
                                 },
-                                icon: Icon(Icons.edit))
+                                icon: const Icon(Icons.edit))
                           ],
                         );
                       } else {

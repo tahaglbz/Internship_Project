@@ -31,6 +31,7 @@ class SocialMediaTab extends StatelessWidget {
               ),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
                   backgroundImage: profileImage.isNotEmpty
@@ -40,13 +41,19 @@ class SocialMediaTab extends StatelessWidget {
                   child: profileImage.isEmpty ? const Icon(Icons.person) : null,
                 ),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    username,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                Text(
+                  username,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const Spacer(),
+                const Text(
+                  'POSTS',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
               ],
@@ -63,18 +70,32 @@ class SocialMediaTab extends StatelessWidget {
                 final title = post['title'] ?? '';
                 final text = post['text'] ?? '';
                 final imageUrl = post['imageUrl'] ?? '';
+                // final postId =
+                //     post['postId'] ?? '';
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        timeAgo,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            timeAgo,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () async {
+                              // await controller.deletePost(postId);
+                            },
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -120,10 +141,10 @@ class SocialMediaTab extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Divider(
+                      const Divider(
                         thickness: 3,
                         color: Colors.grey,
-                      )
+                      ),
                     ],
                   ),
                 );

@@ -19,7 +19,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 8.0, // Adjust margin for the floating button
-      child: Container(
+      child: SizedBox(
         height: 60, // Adjust the height if needed
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

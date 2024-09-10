@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +89,7 @@ class MyApp extends StatelessWidget {
             transitionDuration: const Duration(seconds: 1)),
         GetPage(
             name: '/mainmenu',
-            page: () => MainMenu(),
+            page: () => const MainMenu(),
             transition: Transition.cupertinoDialog,
             transitionDuration: const Duration(seconds: 1)),
         GetPage(

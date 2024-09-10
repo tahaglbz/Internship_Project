@@ -14,7 +14,7 @@ import '../../widgets/appColors.dart';
 import '../analysisAndGraphs/datas.dart';
 
 class MainMenu extends StatefulWidget {
-  MainMenu({super.key});
+  const MainMenu({super.key});
 
   @override
   State<MainMenu> createState() => _MainMenuState();
@@ -688,7 +688,7 @@ class _MainMenuState extends State<MainMenu> {
                                               ),
                                             ),
                                             Text(
-                                              '\$${price}',
+                                              '\$$price',
                                               style: const TextStyle(
                                                 fontSize: 18,
                                                 color: AppColors.defaultColor,
