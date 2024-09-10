@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       themeMode: themeController.theme,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 255, 0, 149),
+          seedColor: const Color.fromARGB(255, 16, 1, 10),
         ),
         useMaterial3: true,
       ),

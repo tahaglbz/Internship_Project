@@ -15,6 +15,7 @@ class ProfileController extends GetxController {
   var username = ''.obs;
   var profilePictureUrl = ''.obs;
   var registrationDate = DateTime.now().obs;
+  var bio = ''.obs;
 
   @override
   void onInit() {
@@ -48,6 +49,7 @@ class ProfileController extends GetxController {
           profilePictureUrl.value = data['profilePicture'] ?? '';
           registrationDate.value =
               (data['registrationDate'] as Timestamp).toDate();
+          bio.value = data['bio'] ?? '';
         }
       } catch (e) {
         print('Failed to load user data: $e');
@@ -94,6 +96,22 @@ class ProfileController extends GetxController {
         username.value = newUsername;
       } catch (e) {
         print('Failed to update profile: $e');
+      }
+    }
+  }
+
+  Future<void> updateBio(String newBio) async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      try {
+        await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .update({'bio': newBio});
+        bio.value = newBio;
+      } catch (e) {
+        print('Failed to update bio: $e');
+        Get.snackbar('Error', 'Failed to update bio: $e');
       }
     }
   }
