@@ -131,11 +131,12 @@ class _ForumState extends State<Forum> {
                   ),
                   onPressed: () async {
                     if (selectedImage != null &&
-                        textController.text.isNotEmpty) {
+                        textController.text.isNotEmpty &&
+                        titleController.text.isNotEmpty) {
                       try {
                         await _createPost(selectedImage!, textController.text,
                             titleController.text);
-                        Get.back(); // Close BottomSheet
+                        Get.offAllNamed('/forum');
                       } catch (e) {
                         Get.snackbar('Error', 'Failed to create post: $e');
                       }
@@ -171,6 +172,7 @@ class _ForumState extends State<Forum> {
     }
 
     try {
+      // Firebase Storage'a resim yükleme işlemi
       String fileName = path.basename(image.path);
       File imageFile = File(image.path);
       FirebaseStorage storage = FirebaseStorage.instance;
@@ -179,15 +181,28 @@ class _ForumState extends State<Forum> {
       UploadTask uploadTask = ref.putFile(imageFile);
       TaskSnapshot taskSnapshot = await uploadTask;
 
-      // Resmin URL'ini alın
+      // Yüklenen resim için download URL'sini alma
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      await firestore
+
+      // Firestore'da kullanıcı postunu ekle ve referans al
+      DocumentReference postRef = await firestore
           .collection('users')
           .doc(currentUser!.uid)
           .collection('posts')
           .add({
+        'title': titleText,
+        'text': postText,
+        'imageUrl': downloadUrl,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      String postId = postRef.id;
+
+      await firestore.collection('postsAll').doc(postId).set({
+        'userId': currentUser!.uid,
+        'postId': postId,
         'title': titleText,
         'text': postText,
         'imageUrl': downloadUrl,

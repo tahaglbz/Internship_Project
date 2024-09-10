@@ -12,8 +12,8 @@ import '../../widgets/appColors.dart';
 class ProfileAppTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ProfileController controller = Get.find();
-    final firestoreService = Get.find<FirestoreService>();
+    final ProfileController controller = Get.put(ProfileController());
+    final firestoreService = Get.put(FirestoreService());
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
