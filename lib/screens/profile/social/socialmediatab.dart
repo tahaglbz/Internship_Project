@@ -70,8 +70,7 @@ class SocialMediaTab extends StatelessWidget {
                 final title = post['title'] ?? '';
                 final text = post['text'] ?? '';
                 final imageUrl = post['imageUrl'] ?? '';
-                // final postId =
-                //     post['postId'] ?? '';
+                final postId = post['postId'] ?? '';
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -92,7 +91,11 @@ class SocialMediaTab extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () async {
-                              // await controller.deletePost(postId);
+                              if (postId.isNotEmpty) {
+                                await controller.deletePost(postId);
+                              } else {
+                                Get.snackbar('Error', 'Post ID is missing.');
+                              }
                             },
                           ),
                         ],

@@ -172,33 +172,29 @@ class _ForumState extends State<Forum> {
     }
 
     try {
-      // Firebase Storage'a resim yükleme işlemi
       String fileName = path.basename(image.path);
       File imageFile = File(image.path);
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref = storage.ref().child('posts/$fileName');
-
       UploadTask uploadTask = ref.putFile(imageFile);
       TaskSnapshot taskSnapshot = await uploadTask;
-
-      // Yüklenen resim için download URL'sini alma
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      // Firestore'da kullanıcı postunu ekle ve referans al
-      DocumentReference postRef = await firestore
+      DocumentReference postRef = firestore
           .collection('users')
           .doc(currentUser!.uid)
           .collection('posts')
-          .add({
+          .doc();
+
+      String postId = postRef.id;
+      await postRef.set({
+        'postId': postId,
         'title': titleText,
         'text': postText,
         'imageUrl': downloadUrl,
         'createdAt': FieldValue.serverTimestamp(),
       });
-
-      String postId = postRef.id;
 
       await firestore.collection('postsAll').doc(postId).set({
         'userId': currentUser!.uid,
