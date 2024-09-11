@@ -36,7 +36,7 @@ class _ForumState extends State<Forum> {
         Get.offAllNamed('/mainmenu');
         break;
       case 1:
-        _showPostBottomSheet(context); // Open the bottom sheet
+        _showPostBottomSheet(context);
         break;
       case 2:
         Get.offAllNamed('/profile');
@@ -59,7 +59,7 @@ class _ForumState extends State<Forum> {
             left: 16.0,
             right: 16.0,
             top: 16.0,
-            bottom: bottomInset + 16.0, // Add padding for the keyboard
+            bottom: bottomInset + 16.0,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -90,8 +90,7 @@ class _ForumState extends State<Forum> {
                         File(selectedImage!.path),
                         height: 150,
                       )
-                    : const Icon(Icons
-                        .image_not_supported_sharp), // Placeholder if no image is selected
+                    : const Icon(Icons.image_not_supported_sharp),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
@@ -112,8 +111,7 @@ class _ForumState extends State<Forum> {
                       selectedImage =
                           await picker.pickImage(source: ImageSource.gallery);
                       if (selectedImage != null) {
-                        setState(
-                            () {}); // Refresh the bottom sheet to show the selected image
+                        setState(() {});
                         print('Selected image path: ${selectedImage!.path}');
                       } else {
                         print('No image selected.');
@@ -189,6 +187,7 @@ class _ForumState extends State<Forum> {
 
       String postId = postRef.id;
       await postRef.set({
+        'userId': currentUser!.uid,
         'postId': postId,
         'title': titleText,
         'text': postText,

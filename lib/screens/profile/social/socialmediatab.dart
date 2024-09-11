@@ -49,6 +49,17 @@ class SocialMediaTab extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
+                TextButton(
+                    onPressed: () => Get.offAllNamed('/forum'),
+                    child: const Text(
+                      'Go Forum',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    )),
+                const Spacer(),
                 const Text(
                   'POSTS',
                   style: TextStyle(
