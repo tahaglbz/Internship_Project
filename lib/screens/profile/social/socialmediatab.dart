@@ -183,10 +183,16 @@ class SocialMediaTab extends StatelessWidget {
       return DateFormat('dd/MM/yyyy').format(dateTime);
     } else if (difference.inDays > 1) {
       return '${difference.inDays} days ago';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
     } else if (difference.inHours > 1) {
       return '${difference.inHours} hours ago';
+    } else if (difference.inHours == 1) {
+      return '1 hour ago';
     } else if (difference.inMinutes > 1) {
       return '${difference.inMinutes} minutes ago';
+    } else if (difference.inMinutes == 1) {
+      return 'A minute ago';
     } else {
       return 'Just now';
     }
