@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/profile/social/socialcontroller.dart';
 import '../../widgets/ForumBottomNav.dart';
@@ -29,6 +30,29 @@ class _ForumState extends State<Forum> {
   SocialMediaController controller = SocialMediaController();
 
   XFile? selectedImage;
+
+  String _formatTimeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays > 7) {
+      return DateFormat('dd/MM/yyyy').format(dateTime);
+    } else if (difference.inDays > 1) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else if (difference.inHours > 1) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inHours == 1) {
+      return '1 hour ago';
+    } else if (difference.inMinutes > 1) {
+      return '${difference.inMinutes} minutes ago';
+    } else if (difference.inMinutes == 1) {
+      return 'A minute ago';
+    } else {
+      return 'Just now';
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -246,43 +270,100 @@ class _ForumState extends State<Forum> {
             itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
-              return Card(
-                margin: const EdgeInsets.all(8.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: post['profilePicture'] != ''
-                                ? NetworkImage(post['profilePicture'])
-                                : const AssetImage(
-                                        'lib/assets/default_avatar.png')
-                                    as ImageProvider,
+              final createdAt = (post['createdAt'] as Timestamp).toDate();
+              final formattedTimeAgo = _formatTimeAgo(createdAt);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  margin: const EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: post['profilePicture'] != ''
+                                  ? NetworkImage(post['profilePicture'])
+                                  : const AssetImage(
+                                          'lib/assets/default_avatar.png')
+                                      as ImageProvider,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              post['username'] ?? 'Unknown User',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    formattedTimeAgo,
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          post['title'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            post['username'] ?? 'Unknown User',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        post['title'] ?? '',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(post['text'] ?? ''),
-                      const SizedBox(height: 10),
-                      post['imageUrl'] != ''
-                          ? Image.network(post['imageUrl'])
-                          : const SizedBox(),
-                    ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(post['text'] ?? ''),
+                        const SizedBox(height: 10),
+                        post['imageUrl'] != ''
+                            ? Image.network(
+                                post['imageUrl'],
+                                width: 300,
+                                height: 300,
+                              )
+                            : const SizedBox(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.thumb_up),
+                              onPressed: () {
+                                // Handle like action
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.comment),
+                              onPressed: () {
+                                // Handle comment action
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.bookmark),
+                              onPressed: () {
+                                // Handle save action
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.share),
+                              onPressed: () {
+                                // Handle share action
+                              },
+                            ),
+                          ],
+                        ),
+                        const Divider(height: 40, color: Colors.grey),
+                      ],
+                    ),
                   ),
                 ),
               );

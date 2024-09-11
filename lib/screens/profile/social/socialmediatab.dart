@@ -129,7 +129,11 @@ class SocialMediaTab extends StatelessWidget {
                       if (imageUrl.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Image.network(imageUrl),
+                          child: Image.network(
+                            imageUrl,
+                            width: 300,
+                            height: 300,
+                          ),
                         ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
