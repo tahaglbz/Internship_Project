@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      initialRoute: '/mainmenu',
+      initialRoute: '/splashscreen',
       getPages: [
         GetPage(
             name: '/splashscreen',

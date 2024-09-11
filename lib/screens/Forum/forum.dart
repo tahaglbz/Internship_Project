@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/extensions/media_query.dart';
 import 'package:my_app/screens/profile/social/socialcontroller.dart';
@@ -249,7 +250,11 @@ class _ForumState extends State<Forum> {
           iconTheme: const IconThemeData(color: Colors.white),
           automaticallyImplyLeading: false,
           elevation: 0,
-          title: Image.asset('lib/assets/logo.png'),
+          title: Text(
+            'FORUM',
+            style: GoogleFonts.adamina(
+                color: Colors.white, fontSize: 40, fontWeight: FontWeight.w900),
+          ),
           centerTitle: true,
           backgroundColor: AppColors.defaultColor,
         ),
@@ -299,14 +304,14 @@ class _ForumState extends State<Forum> {
                                 fontSize: 16,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
                                   Text(
                                     formattedTimeAgo,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                   ),
                                 ],
