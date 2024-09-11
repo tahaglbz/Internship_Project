@@ -11,6 +11,11 @@ class SocialMediaTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final SocialMediaController controller = Get.put(SocialMediaController());
 
+    // Ekran yüklendiğinde postları yükle
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchPosts();
+    });
+
     return Obx(() {
       if (controller.posts.isEmpty) {
         return const Center(child: Text('No posts available.'));

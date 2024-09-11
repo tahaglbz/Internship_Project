@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/extensions/media_query.dart';
+import 'package:my_app/screens/profile/social/socialcontroller.dart';
 import '../../widgets/ForumBottomNav.dart';
 import '../../widgets/appColors.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,8 +26,10 @@ class _ForumState extends State<Forum> {
   final TextEditingController titleController = TextEditingController();
   final ImagePicker picker = ImagePicker();
   final User? currentUser = FirebaseAuth.instance.currentUser;
+  SocialMediaController controller = SocialMediaController();
 
   XFile? selectedImage;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -226,6 +229,66 @@ class _ForumState extends State<Forum> {
           centerTitle: true,
           backgroundColor: AppColors.defaultColor,
         ),
+      ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: controller.loadPosts(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("No posts available"));
+          }
+
+          final posts = snapshot.data!;
+
+          return ListView.builder(
+            itemCount: posts.length,
+            itemBuilder: (context, index) {
+              final post = posts[index];
+              return Card(
+                margin: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: post['profilePicture'] != ''
+                                ? NetworkImage(post['profilePicture'])
+                                : const AssetImage(
+                                        'lib/assets/default_avatar.png')
+                                    as ImageProvider,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            post['username'] ?? 'Unknown User',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        post['title'] ?? '',
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(post['text'] ?? ''),
+                      const SizedBox(height: 10),
+                      post['imageUrl'] != ''
+                          ? Image.network(post['imageUrl'])
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
       bottomNavigationBar: ForumBottom(
         selectedIndex: _selectedIndex,
