@@ -19,7 +19,6 @@ class SocialMediaController extends GetxController {
   }
 
   Future<void> deletePost(String? postId) async {
-    // Eğer postId null ya da boşsa, hata mesajı ver
     if (postId == null || postId.isEmpty) {
       Get.snackbar('Error', 'Invalid post ID.');
       return;
@@ -53,25 +52,21 @@ class SocialMediaController extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       try {
-        // Kullanıcı profil bilgilerini çek
         final userSnap =
             await _firestore.collection('users').doc(user.uid).get();
         userProfile.value = userSnap.data() ?? {};
 
-        // Tüm postları çek
         final snapshot = await _firestore
             .collection('postsAll')
             .orderBy('createdAt', descending: true)
             .get();
 
-        // Postların ve kullanıcı bilgilerini ekleyerek liste oluştur
         final postsList = await Future.wait(snapshot.docs.map((doc) async {
           final data = doc.data();
-          data['postId'] = doc.id; // Post ID'si ekle
+          data['postId'] = doc.id;
 
           final userId = data['userId'];
           if (userId != null) {
-            // İlgili postun sahibi olan kullanıcı bilgilerini çek
             final userDoc =
                 await _firestore.collection('users').doc(userId).get();
             final userData = userDoc.data();
@@ -99,7 +94,6 @@ class SocialMediaController extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       try {
-        // Kullanıcı profil bilgilerini çek
         final userSnap =
             await _firestore.collection('users').doc(user.uid).get();
         userProfile.value = userSnap.data() ?? {};
@@ -140,6 +134,54 @@ class SocialMediaController extends GetxController {
       }
     } else {
       posts.value = []; // Kullanıcı giriş yapmamışsa boş döner
+    }
+  }
+
+  Future<void> likeUpdate(String postId) async {
+    try {
+      DocumentReference postRef = _firestore.collection('postsAll').doc(postId);
+      DocumentSnapshot postSnapshot = await postRef.get();
+
+      if (!postSnapshot.exists) return;
+
+      Map<String, dynamic> postData =
+          postSnapshot.data() as Map<String, dynamic>;
+      List<dynamic> likedBy = postData['likedBy'] ?? [];
+      String currentUserId = _auth.currentUser!.uid;
+
+      if (likedBy.contains(currentUserId)) {
+        // Eğer kullanıcı zaten beğendiyse, beğeniyi geri al
+        likedBy.remove(currentUserId);
+        await postRef.update({
+          'like': FieldValue.increment(-1),
+          'likedBy': likedBy,
+        });
+
+        // UI'yi güncelle
+        int index = posts.indexWhere((post) => post['postId'] == postId);
+        if (index != -1) {
+          posts[index]['like'] -= 1;
+          posts[index]['likedBy'] = likedBy;
+          posts.refresh();
+        }
+      } else {
+        // Eğer kullanıcı beğenmediyse, beğeni ekle
+        likedBy.add(currentUserId);
+        await postRef.update({
+          'like': FieldValue.increment(1),
+          'likedBy': likedBy,
+        });
+
+        // UI'yi güncelle
+        int index = posts.indexWhere((post) => post['postId'] == postId);
+        if (index != -1) {
+          posts[index]['like'] += 1;
+          posts[index]['likedBy'] = likedBy;
+          posts.refresh();
+        }
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update like: $e');
     }
   }
 }

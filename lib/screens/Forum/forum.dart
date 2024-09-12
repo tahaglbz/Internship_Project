@@ -215,6 +215,8 @@ class _ForumState extends State<Forum> {
 
       String postId = postRef.id;
       await postRef.set({
+        'like': 0,
+        'likedBy': [],
         'userId': currentUser!.uid,
         'postId': postId,
         'title': titleText,

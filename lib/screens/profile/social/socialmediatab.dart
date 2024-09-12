@@ -1,4 +1,7 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +13,7 @@ class SocialMediaTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SocialMediaController controller = Get.put(SocialMediaController());
+    FirebaseAuth auth = FirebaseAuth.instance;
 
     // Ekran yüklendiğinde postları yükle
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -87,6 +91,7 @@ class SocialMediaTab extends StatelessWidget {
                 final text = post['text'] ?? '';
                 final imageUrl = post['imageUrl'] ?? '';
                 final postId = post['postId'] ?? '';
+                final like = post['like'] ?? 0;
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -138,10 +143,18 @@ class SocialMediaTab extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.thumb_up),
+                          ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.thumb_up,
+                              color: (post['likedBy'] != null &&
+                                      (post['likedBy'] as List)
+                                          .contains(auth.currentUser?.uid))
+                                  ? Colors.orange
+                                  : const Color.fromARGB(111, 158, 158, 158),
+                            ),
+                            label: Text(post['like'].toString()),
                             onPressed: () {
-                              // Handle like action
+                              controller.likeUpdate(postId);
                             },
                           ),
                           IconButton(
